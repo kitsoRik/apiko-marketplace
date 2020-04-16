@@ -1,0 +1,26 @@
+.label {
+    display: flex;
+    flex-direction: column;
+
+    &-solo-value {
+
+        &[error=true] {
+            color: red;
+        }
+    }
+
+    &-values {
+        margin-bottom: 5px;
+
+        display: flex;
+
+        &-value {
+            text-transform: uppercase;
+        }
+        
+        &-error-value {
+            margin-left: 10px;
+            color: red;
+        }
+    }
+}

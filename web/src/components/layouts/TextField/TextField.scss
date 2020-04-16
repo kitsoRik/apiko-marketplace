@@ -1,0 +1,38 @@
+.text-field {
+    display: flex;
+    align-items: center;
+
+    position: relative;
+
+    &- {
+        padding: 20px 13px;
+    
+        flex: 1;
+    
+        color: #000;
+    
+        font-size: 16px;
+    
+        border-radius: 5px;
+        border: 1px solid #DEDEE0;
+
+        &::placeholder {
+            color: #66666666;
+        }
+
+        &[error=true] {
+            border-color: red;
+        }
+    }
+
+    &-view-password {
+        margin-right: 15px;
+
+        width: 24px;
+        height: 16px;
+
+        position: absolute;
+
+        right: 0;
+    }
+}

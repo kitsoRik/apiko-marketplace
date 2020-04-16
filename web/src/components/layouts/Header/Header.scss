@@ -1,0 +1,36 @@
+.header {
+    padding: 18px 160px 18px 97px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__apiko-logo {
+        cursor: pointer;
+    }
+
+    &__buttons {
+        display: flex;
+
+        font-family: Helvetica;
+        line-height: 31px;
+
+        & > button {
+            height: 31px;
+
+            font-size: 14px;
+
+            text-transform: uppercase;
+            
+            &:nth-child(1) {
+                padding: 0 48px;
+
+                color: white;
+                background-color: #349A89;
+            }
+            &:nth-child(2) {
+                padding: 0 40px;
+            }
+        }
+    }
+}

@@ -1,0 +1,34 @@
+.register-page {
+    flex: 1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &-form-field {
+        margin-top: 15px;
+    }
+
+    &-forgot-label {
+        margin: 5px 0 15px;
+        text-align: right;
+    }
+
+    &-sumbit-button {
+        margin-top: 24px;
+    }
+
+    &-registered-label {
+        margin: 10px;
+    }
+
+    &-link {
+        color: #349A89;
+
+        & * {
+            text-decoration: none;
+            text-transform: uppercase;
+            color: inherit;
+        }
+    }
+}

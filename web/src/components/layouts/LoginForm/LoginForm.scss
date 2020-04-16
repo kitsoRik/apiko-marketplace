@@ -1,0 +1,41 @@
+.login-container {
+    width: 425px;
+
+    position: relative;
+
+    display: grid;
+    grid-template-rows: auto 75px;
+    grid-row-gap: 20px;
+
+
+    & > * {
+        background-color: #fff;
+        border-radius: 7px;
+    }
+    
+    &-loading {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        background-color: #0006;
+
+        & > img {
+            animation: rotating 0.4s linear infinite;
+        }
+    }
+}
+
+@keyframes rotating {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

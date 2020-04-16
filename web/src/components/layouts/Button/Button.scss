@@ -1,0 +1,23 @@
+.button {
+    padding: 20px 50px;
+
+    border: none;
+
+    &-default {
+        color: #fff;
+        background-color: #349A89;
+
+        border-radius: 5px;
+
+        font-size: 16px;
+
+        &[disabled] {
+            background-color: gray;
+        }
+    }
+
+    &-transparent {
+        color: #000;
+        background-color: transparent;
+    }
+}

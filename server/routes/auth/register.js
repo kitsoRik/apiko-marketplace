@@ -1,10 +1,11 @@
 const { sendAsError, sendAsResult } = require("../../helpers/response");
 const { requiredError, typeError, customError } = require("../../helpers/errors");
+const { createUser } = require("../../db/models/user");
+const { createUnverifyedLink } = require("../../db/models/unverifyed");
 
 const router = require("express").Router();
 
-router.post("/register", (req, res) => {
-
+router.post("/register", async (req, res) => {
     const { email, fullName, password } = req.body;
 
     if(!email) return sendAsError(res)(requiredError("EMAIL"));
@@ -18,11 +19,16 @@ router.post("/register", (req, res) => {
     if(email === "busy@gmail.com") return sendAsError(res)(customError("EMAIL_IS_BUSY"));
     if(email === "email") return sendAsError(res)(customError("BAD_EMAIL"));
 
-    sendAsResult(res)({
-        id: 0,
-        email,
+    const user = await createUser(
         fullName,
-    })
+        email,
+        password
+    );
+    delete user.password;
+
+    await createUnverifyedLink(user.id);
+
+    sendAsResult(res)(user);
 });
 
 module.exports = router;

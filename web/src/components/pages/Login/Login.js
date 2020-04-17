@@ -13,29 +13,29 @@ import LoginUpperContainerTitle from '../../layouts/LoginForm/LoginUpperContaine
 import api from '../../../services/api';
 import { checkValidEmail } from '../../../services/checkers/checkers';
 import { NOT_LOGINED, LOGINING, LOGINED_ERROR, LOGINED } from '../../../constants/login';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { login } from '../../../redux/actions/user-actions';
 
-const Login = (props) => {
-
-    const [loginStatus, setLoginStatus] = useState(NOT_LOGINED)
+const Login = ({ history, login, loginStatus }) => {
     const [error, setError] = useState(null);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const login = () => {
-        setLoginStatus(LOGINING);
-        api.login(email, password)
-            .then(({ success, result, error }) => {
-                if(success) {
-                    setLoginStatus(LOGINED);
-                } else {
-                    setLoginStatus(LOGINED_ERROR);
-                    switch(error.type) {
-                        case "EMAIL_IS_REQUIRED": setError("Email is required"); break;
-                        case "PASSWORD_IS_REQUIRED": setError("Password is required"); break;
-                        case "EMAIL_IS_NOT_VALID": setError("Email is not valid"); break;
-                        default: setError("Unknown error"); break;
-                    }
+    const _login = () => {
+        login(email, password)
+            .then(result => {
+                history.push("/");
+            })
+            .catch(({ type }) => {
+                alert(type);
+                switch(type) {
+                    case "EMAIL_IS_REQUIRED": setError("Email is required"); break;
+                    case "PASSWORD_IS_REQUIRED": setError("Password is required"); break;
+                    case "EMAIL_IS_NOT_VALID": setError("Email is not valid"); break;
+                    case "UNKNOWN_DATA": setError("Unknown data"); break;
+                    default: setError("Unknown error"); break;
                 }
             });
     }
@@ -49,9 +49,10 @@ const Login = (props) => {
             <LoginForm loading={loginStatus === LOGINING}>
                 <LoginUpperContainer>
                     <LoginUpperContainerTitle>Login</LoginUpperContainerTitle>
+                    { error && <Label error={true} value={error}/> }
                     <Label 
                         className="login-page-form-field" 
-                        value="Login"
+                        value="Email"
                         errorValueIfTouched={!checkValidEmail(email) ? "Email is not valid" : null}>
                         <TextField 
                             value={email} 
@@ -73,7 +74,7 @@ const Login = (props) => {
                         className="login-page-forgot-label" 
                         to="/forgot-password"
                         >Don't remeber password?</Link>
-                    <Button disabled={!allowSubmit()} onClick={() => login()}>
+                    <Button disabled={!allowSubmit()} onClick={_login}>
                         Continue
                     </Button>
                 </LoginUpperContainer>
@@ -88,4 +89,6 @@ const Login = (props) => {
      );
 }
 
-export default Login;
+export default compose(
+    connect(({ user: { loginStatus }}) => ({ loginStatus }), { login })
+)(Login);

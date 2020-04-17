@@ -1,23 +1,28 @@
 const { Router } = require("express");
-const { sendAsError } = require("../../helpers/response");
-const { requiredError } = require("../../helpers/errors");
+const { sendAsError, sendAsResult } = require("../../helpers/response");
+const { requiredError, customError } = require("../../helpers/errors");
+
+const { getUserById, getUserByEmailAndPassword } = require("../../db/models/user");
+const { createSession } = require("../../db/models/session");
 
 const router = Router();
 
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     if(!email) return sendAsError(res)(requiredError("EMAIL"));
     if(!password) return sendAsError(res)(requiredError("PASSWORD"));
-
-    res.send({
-        success: true,
-        user: {
-            id: 0,
-            email: "myemail@gmail.com",
-            fullName: "Pidburachynskyi Rostyslav",
-        }
-    })
+    
+    const user = await getUserByEmailAndPassword(email, password);
+    
+    if(!user) return sendAsError(res)(customError("UNKNOWN_DATA"));
+    delete user.password;
+    
+    const { sesid } = await createSession(user.id);
+    
+    res.cookie("sesid", sesid);
+    
+    sendAsResult(res)(user);
 });
 
 module.exports = router;

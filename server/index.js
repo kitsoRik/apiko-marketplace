@@ -1,6 +1,6 @@
 const express = require("express");
+const { connect } = require("./db/db");
 const app = express();
-
 
 app.use(/.*/, (req, res, next) => {
     if(req.headers.origin)
@@ -12,7 +12,13 @@ app.use(/.*/, (req, res, next) => {
 });
 
 app.use(require("body-parser").json());
+app.use(require("cookie-parser")());
 
 app.use("/api", require("./routes/auth"));
 
-app.listen(3500, () => console.log("Listening 3500 port"));
+const start = async () => {
+    await connect();
+    await app.listen(3500, () => console.log("Listening 3500 port"));
+}
+
+start();

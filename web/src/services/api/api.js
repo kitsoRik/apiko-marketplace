@@ -22,8 +22,17 @@ export const register = (email, fullName, password) =>
 export const login = (email, password) => 
     post("/auth/login", { email, password });
 
+export const unlogin = () =>
+    post("/auth/unlogin");
+
+export const loadData = () =>
+    post("/auth/data");
+
 export const restoreRequest = (email) => 
     post("/auth/restoreRequest", { email });
+
+export const checkRestoreKey = (key) => 
+    post("/auth/checkRestoreKey", { key });
 
 export const restorePassword = (password, leaveDevices) =>
     post("/auth/restorePassword", { password, leaveDevices });

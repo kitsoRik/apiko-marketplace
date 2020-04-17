@@ -1,0 +1,32 @@
+.user-icon {
+    height: 48px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & > span {
+        width: 48px;
+        height: 48px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: #130f02A9;
+
+        border-radius: 50%;
+
+        font-size: 18px;
+
+        cursor: pointer;
+        user-select: none;
+    }
+
+    & > img {
+        max-height: 100%;
+
+        border-radius: 50%;
+        overflow: hidden;
+    }
+}

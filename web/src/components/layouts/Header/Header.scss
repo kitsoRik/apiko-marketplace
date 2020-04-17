@@ -1,36 +1,94 @@
 .header {
+    &-wrapper {
+        display: flex;
+        justify-content: center;
+
+        transition: all 0.7s;
+
+        position: relative;
+        &::before {
+            content: "";
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            
+            transition: all .7s;
+
+            background: linear-gradient(180deg, #090810 0%, #171236 100%);
+            opacity: 0;
+
+            z-index: -1;
+        }
+
+        &[dark-mode]::before {
+            opacity: 1;
+        }
+    }
+
     padding: 18px 160px 18px 97px;
 
-    display: flex;
-    justify-content: space-between;
+    max-width: 1440px;
+
+    flex: 1;
+
+    display: grid;
+    grid-template-columns: 100px auto 18px 131px 131px 20px;
+    grid-column-gap: 10px;
+    grid-row-gap: 44px;
     align-items: center;
+
+    box-sizing: border-box;
 
     &__apiko-logo {
         cursor: pointer;
     }
 
-    &__buttons {
-        display: flex;
-
+    #sell-button {
         font-family: Helvetica;
         line-height: 31px;
+        height: 31px;
 
-        & > button {
-            height: 31px;
+        font-size: 14px;
 
-            font-size: 14px;
+        text-transform: uppercase;
+        padding: 0 48px;
 
-            text-transform: uppercase;
+        color: white;
+        background-color: #349A89;
+    }
+
+    #login-button {
+        padding: 0 40px;
+
+        height: 31px;
+
+        font-size: 14px;
+        text-transform: uppercase;
+
+        & a {
+            color: black;
+            text-decoration: none;
             
-            &:nth-child(1) {
-                padding: 0 48px;
+            transition: all .7s;
+        }
 
-                color: white;
-                background-color: #349A89;
-            }
-            &:nth-child(2) {
-                padding: 0 40px;
-            }
+        &[dark-mode] a{
+            color: white;
+        }
+    }
+
+    &-profile {
+        position: relative;
+    }
+
+    &-heart {
+        & > path {
+            fill: #2E2E2E;
+            transition: all .7s;
+        }
+
+        &[dark-mode] > path {
+            fill: #fff;
         }
     }
 }

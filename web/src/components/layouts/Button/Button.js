@@ -11,6 +11,10 @@ const Button = ({ className, type = "default", children, ...props }) => {
             typeClassName = "button-transparent";
             break;
         }
+        case "martinique": {
+            typeClassName = "button-martinique";
+            break;
+        }
         case "default":
         default: {
             typeClassName = "button-default";

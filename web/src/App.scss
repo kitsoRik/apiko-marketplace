@@ -1,5 +1,4 @@
 .app {
-	max-width: 1440px;
 
 	flex: 1;
 
@@ -11,5 +10,9 @@ main {
 	flex: 1;
 
 	display: flex;
-	flex-direction: column;
+	justify-content: center;
+
+	& > *:first-child {
+		max-width: 1440px;
+	}
 }

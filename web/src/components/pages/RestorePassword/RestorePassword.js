@@ -1,111 +1,41 @@
-import React, { useState } from 'react';
-import LoginForm from '../../layouts/LoginForm/LoginForm';
+import React, { useState, useEffect } from 'react';
+import qs from 'qs';
 
 import './RestorePassword.scss';
-import LoginUpperContainer from '../../layouts/LoginForm/LoginUpperContainer/LoginUpperContainer';
-import LoginUpperContainerTitle from '../../layouts/LoginForm/LoginUpperContainer/LoginUpperContainerTitle/LoginUpperContainerTitle';
-import TextField from '../../layouts/TextField/TextField';
-import Label from '../../layouts/Label/Label';
-import Button from '../../layouts/Button/Button';
-import { NOT_RESTORED, RESTORED, RESTORED_ERROR, RESTORING } from '../../../constants/restore';
+import { NOT_LOADED, LOADING, LOADED, LOADED_ERROR } from '../../../constants';
 import api from '../../../services/api';
-import Checkbox from '../../layouts/Checkbox/Checkbox';
+import NewPasswordPanel from './NewPasswordPanel';
+import ErrorKeyPanel from './ErrorKeyPanel/ErrorKeyPanel';
 
-const RestorePassword = (props) => {
+const RestorePassword = ({ history: { location: { search = "?" } }}) => {
+    const key = qs.parse(search.slice(1));
 
-    const [restoreStatus, setRestoreStatus] = useState(NOT_RESTORED);
+    const [keyLoadingStatus, setKeyLoadingStatus] = useState(NOT_LOADED)
     const [error, setError] = useState(null);
 
-    const [password, setPassword] = useState("");
-    const [passwordAgain, setPasswordAgain] = useState("");
-    const [leaveDevices, setLeaveDevices] = useState(true);
-
-    const allowSubmit = 
-        !checkPasswordValid(password) &&
-        !checkPasswordAgainValid(password, passwordAgain)
-
-    const restorePassword = () => {
-        setRestoreStatus(RESTORING);
-        api.restorePassword(password, leaveDevices)
+    useEffect(() => {
+        setKeyLoadingStatus(LOADING);
+        api.checkRestoreKey(key)
             .then(({ success, error }) => {
                 if(success) {
-                    setRestoreStatus(RESTORED);
+                    setKeyLoadingStatus(LOADED);
                 } else {
-                    setRestoreStatus(RESTORED_ERROR);
-
+                    setKeyLoadingStatus(LOADED_ERROR);
                     switch(error.type) {
-                        case "PASSWORD_IS_REQUIRED": setError("Password is required"); break;
-                        case "PASSWORD_MIN_LENGTH": setError("Password length must be 8 or greater"); break;
+                        case "UNKNOWN_KEY": setError("Unknown key"); break;
                         default: setError("Unknown error"); break;
-                    }
+                    }                
                 }
             });
-    }
+    }, [ ]);
 
-    const unrestoredPanel = (<LoginForm loading={restoreStatus === RESTORING}>
-                                <LoginUpperContainer>
-                                    <LoginUpperContainerTitle className="restore-password-page-title">
-                                        Restore password
-                                    </LoginUpperContainerTitle>
-                                    { error && <Label error="true" value={error} /> }
-                                    <Label 
-                                        value="New password"
-                                        errorValueIfTouched={checkPasswordValid(password)}>
-                                        <TextField 
-                                            value={password} 
-                                            password="true"
-                                            errorIfTouched={checkPasswordValid(password)}
-                                            onChange={(e) => setPassword(e.target.value)} />
-                                    </Label>
-                                    <Label 
-                                        className="restore-password-page-again-label" 
-                                        value="New password again"
-                                        errorValueIfTouched={checkPasswordAgainValid(password, passwordAgain)}>
-                                        <TextField 
-                                            value={passwordAgain} 
-                                            password="true"
-                                            errorIfTouched={checkPasswordAgainValid(password, passwordAgain)}
-                                            onChange={(e) => setPasswordAgain(e.target.value)} />
-                                    </Label>
-                                    <Checkbox 
-                                        className="restore-password-page-leave-devices-checkbox"
-                                        checked={leaveDevices} 
-                                        onChange={(e) => setLeaveDevices(e.target.checked)}
-                                        value="Go out in all devices" />
-                                    <Button 
-                                        disabled={!allowSubmit}
-                                        onClick={restorePassword}
-                                    >Continue</Button>
-                                </LoginUpperContainer>
-                            </LoginForm>);
-        const restoredPanel = (
-            <LoginForm>
-                <LoginUpperContainer>
-                    <LoginUpperContainerTitle>
-                        Password has restored
-                    </LoginUpperContainerTitle>
-                    <Label>Hey, your password has restored</Label>
-                </LoginUpperContainer>
-            </LoginForm>
-        )
-
-    return ( 
+    return (
         <div className="restore-password-page">
-            { restoreStatus !== RESTORED && unrestoredPanel }
-            { restoreStatus === RESTORED && restoredPanel }
+            { keyLoadingStatus === LOADED && <NewPasswordPanel /> }
+            { keyLoadingStatus === LOADING && <span>Checking key...</span>}
+            { keyLoadingStatus === LOADED_ERROR && <ErrorKeyPanel error={error}/>}
         </div>
-     );
-}
-
-function checkPasswordValid(pass) {
-    if(typeof pass !== 'string') throw new Error("It is not a string");
-    if(pass.length < 8) return "Length must be greater or equal eight"
-
-    return null;
-}
-
-function checkPasswordAgainValid(pass, again) {
-    return checkPasswordValid(pass) || pass !== again ? "Password not equal password again" : null;
+    )
 }
 
 export default RestorePassword;

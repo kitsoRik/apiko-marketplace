@@ -5,7 +5,7 @@ import ViewPasswordChecked from '../../../assets/icons/view-password-checked.svg
 
 import './TextField.scss';
 
-const TextField = ({ className, children, password, error, errorIfTouched, ...props }) => {
+const TextField = ({ className, icon, children, password, error, errorIfTouched, ...props }) => {
 
     const [touched, setTouched] = useState(false);
     const [viewPassword, setViewPassword] = useState(false);
@@ -14,7 +14,11 @@ const TextField = ({ className, children, password, error, errorIfTouched, ...pr
 
     return ( 
         <div className={`text-field ${className}`}>
+            <div className="text-field-icon">
+                { icon }
+            </div>
             <input 
+                style={{paddingLeft: `${icon ? 40 : 13}px`}}
                 className="text-field-" 
                 error={(err || error) ? "true" : "false"}
                 type={password && !viewPassword? 'password' : 'text'}

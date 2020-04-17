@@ -1,0 +1,9 @@
+.home-page {
+    &-header-minor {
+        height: 50px;
+        display: grid;
+        grid-template-columns: auto 200px 175px;
+        grid-template-rows: 50px;
+        grid-column-gap: 7px;
+    }
+}

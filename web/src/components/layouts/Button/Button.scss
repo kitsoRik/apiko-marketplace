@@ -11,18 +11,42 @@
 
         font-size: 14px;
 
-        &[disabled] {
-            background-color: gray;
+        &:hover {
+            background-color: red;
+        }
+
+        &:active {
+            background-color: #f2b;
         }
     }
 
     &-transparent {
         color: #000;
-        background-color: transparent;
+        background-color: transparent;  
+
+        &:hover {
+            background-color: #0002;
+        }
+
+        &:active {
+            background-color: #0001;
+        }
     }
 
     &-martinique {
         color: #fff;
         background-color: #3E3961;
+
+        &:hover {
+            background-color: #3E5991;
+        }
+
+        &:active {
+            background-color: #3E4971;
+        }
+    }
+
+    &[disabled] {
+        background-color: gray;
     }
 }

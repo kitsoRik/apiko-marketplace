@@ -1,8 +1,10 @@
 import React from 'react';
 
-const Icon = ({ children }) => {
+import "./Icon.scss";
+
+const Icon = ({ children, ...props }) => {
     return ( 
-        <div>
+        <div className="icon" {...props}>
             { children }
         </div>
      );

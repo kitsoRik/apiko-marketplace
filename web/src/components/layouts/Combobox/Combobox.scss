@@ -1,0 +1,32 @@
+.combobox {
+	position: relative;
+
+	&-options {
+		width: 100%;
+		position: absolute;
+		top: 100%;
+
+		z-index: 2500;
+	}
+
+	&::before, &::after {
+		content: " ";
+		position: absolute;
+		top: calc(50% - 7px);
+		right: calc(7px + 6px);
+		height: 15px;
+		width: 2px;
+
+		border-radius: 122px;
+
+		transform: rotate(45deg);
+
+		background-color: black;
+		pointer-events: none;
+	}
+
+	&::after {
+		right: calc(7px + 1px + 15px);
+		transform: rotate(-45deg);
+	}
+}

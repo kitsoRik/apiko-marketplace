@@ -20,5 +20,5 @@ sessionSchema.pre("save", function(next) {
 const sessionModel = model("Sessions", sessionSchema);
 
 exports.createSession = (userId) => sessionModel.create({ userId });
-exports.getSessidBySesid = (sesid) => sessionModel.findOne({ sesid });
+exports.getSessionBySesid = (sesid) => sessionModel.findOne({ sesid });
 exports.removeSession = (sesid) => sessionModel.findOneAndDelete({ sesid });

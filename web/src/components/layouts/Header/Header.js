@@ -7,14 +7,17 @@ import Button from '../Button';
 import TextField from '../TextField';
 import { Link, useHistory } from 'react-router-dom';
 import ApikoLogo from '../ApikoLogo/ApikoLogo';
-import { NOT_LOGINED, LOGINED } from '../../../constants/login';
+import { NOT_LOGINED, LOGINED, LOGINING, UNLOGINED, UNLOGINING } from '../../../constants/login';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import Icon from '../Icon';
 import UserIcon from '../UserIcon/UserIcon';
 import UserPanel from '../UserPanel/UserPanel';
+import _ from 'lodash';
+import ModalLoading from '../ModalLoading/ModalLoading';
+import { LOADING, NOT_LOADED, LOADED } from '../../../constants';
 
-const Header = ({ loginStatus, fullName }) => {
+const Header = ({ loginStatus, loadingDataState, fullName }) => {
     const history = useHistory();
     let darkMode = history.location.pathname === "/";
 
@@ -28,7 +31,9 @@ const Header = ({ loginStatus, fullName }) => {
 
     useEffect(() => {
         darkMode = window.location.pathname;
-    }, [window.location.pathname])
+    }, [window.location.pathname]);
+
+    let ref = React.createRef();
 
     return (
         <div className="header-wrapper" dark-mode={darkMode ? "true" : null}>
@@ -49,16 +54,19 @@ const Header = ({ loginStatus, fullName }) => {
 
                     <Button id="sell-button">Sell</Button>
 
-                    { loginStatus !== LOGINED && 
+                    { ((loginStatus === NOT_LOGINED || loginStatus === UNLOGINED) && loadingDataState !== LOADING) && 
                         <Button id="login-button" dark-mode={darkMode ? "true" : null} type="transparent">
                             <Link to="/login">Login</Link>
                         </Button>
                     }
-
-                    { loginStatus === LOGINED && 
-                        <div className="header-profile">
-                            <UserIcon onClick={() => setUserPanelOpen(!userPanelOpen)} fullName={fullName}/>
+                    
+                    { (loadingDataState === LOADING || loginStatus === LOGINED || loginStatus === LOGINING || loginStatus === UNLOGINING) && 
+                        <div className="header-profile" tabIndex={1} onBlur={() => setTimeout(() => setUserPanelOpen(false), 100) }>
+                            { loginStatus === LOGINED && loadingDataState === LOADED && <UserIcon onClick={() => setUserPanelOpen(!userPanelOpen) }  
+                                    fullName={fullName}/>}
                             { userPanelOpen && <UserPanel /> }
+                            { (loginStatus === LOGINING || loadingDataState === LOADING || loginStatus === UNLOGINING) && 
+                                <ModalLoading style={{height: `48px`, width: `48px`, borderRadius: `50%`}}/> }
                         </div>
                     }
                     
@@ -68,7 +76,7 @@ const Header = ({ loginStatus, fullName }) => {
 
                     { minorPanel && <div></div> }
                     { minorPanel && 
-                        <div style={{gridColumn: `2 / span 3`}}>
+                        <div className="header-minor-panel">
                             { minorPanel }
                         </div>
                     }
@@ -80,5 +88,5 @@ const Header = ({ loginStatus, fullName }) => {
 export let setHeaderMinorPanel = (panel) => { }
 
 export default compose(
-    connect(({ user: { loginStatus, data: { fullName }}}) => ({ loginStatus, fullName }))
+    connect(({ user: { loginStatus, loadingDataState, data: { fullName }}}) => ({ loginStatus, loadingDataState, fullName }))
 )(Header);

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 
 import './Login.scss';
-import TextField from '../../layouts/TextField/TextField';
-import Label from '../../layouts/Label/Label';
-import Button from '../../layouts/Button/Button';
+import TextField from '../../layouts/TextField';
+import Label from '../../layouts/Label';
+import Button from '../../layouts/Button';
 import { Link } from 'react-router-dom';
-import LoginForm from '../../layouts/LoginForm/LoginForm';
-import LoginUpperContainer from '../../layouts/LoginForm/LoginUpperContainer/LoginUpperContainer';
-import LoginLowerContainer from '../../layouts/LoginForm/LoginLowerContainer/LoginLowerContainer';
-import LoginUpperContainerTitle from '../../layouts/LoginForm/LoginUpperContainer/LoginUpperContainerTitle/LoginUpperContainerTitle';
+import LoginForm from '../../layouts/LoginForm';
+import LoginUpperContainer from '../../layouts/LoginForm/LoginUpperContainer';
+import LoginLowerContainer from '../../layouts/LoginForm/LoginLowerContainer';
+import LoginUpperContainerTitle from '../../layouts/LoginForm/LoginUpperContainer/LoginUpperContainerTitle';
 
 import api from '../../../services/api';
 import { checkValidEmail } from '../../../services/checkers/checkers';
@@ -16,6 +16,7 @@ import { NOT_LOGINED, LOGINING, LOGINED_ERROR, LOGINED } from '../../../constant
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { login } from '../../../redux/actions/user-actions';
+import withLoginedLock from '../../hocs/withLoginedLock';
 
 const Login = ({ history, login, loginStatus }) => {
     const [error, setError] = useState(null);
@@ -29,7 +30,6 @@ const Login = ({ history, login, loginStatus }) => {
                 history.push("/");
             })
             .catch(({ type }) => {
-                alert(type);
                 switch(type) {
                     case "EMAIL_IS_REQUIRED": setError("Email is required"); break;
                     case "PASSWORD_IS_REQUIRED": setError("Password is required"); break;
@@ -90,5 +90,6 @@ const Login = ({ history, login, loginStatus }) => {
 }
 
 export default compose(
-    connect(({ user: { loginStatus }}) => ({ loginStatus }), { login })
+    connect(({ user: { loginStatus }}) => ({ loginStatus }), { login }),
+    withLoginedLock
 )(Login);

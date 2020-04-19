@@ -10,7 +10,7 @@ module.exports.connect = async () => mongoose.connect("mongodb://localhost:27017
 .then(() => {
     console.log("Use mongo db successed")
 
-}).catch(() => {
-    console.log("Use mongo db failed");
+}).catch((e) => {
+    console.log(e);
     process.exit();
 });

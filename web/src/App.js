@@ -13,30 +13,32 @@ import { Provider, connect } from 'react-redux';
 import store from './redux/store';
 import { compose } from 'redux';
 import { loadData } from './redux/actions/user-actions';
+import Snackbar from './components/layouts/Snackbar/Snackbar';
 
 const App = ({ loadData }) => {
 
-  useEffect(() => {
-	loadData();
-  }, [ ]);
+	useEffect(() => {
+		loadData();
+	}, []);
 
-  return (
-      <BrowserRouter>
-      <div className="app">
-        <Header />
-        <main>
-            <Switch>
-              <Route exact path="/" component={Home}/>
-              <Route exact path="/login" component={Login}/>
-              <Route exact path="/register" component={Register}/>
-              <Route exact path="/forgot-password" component={ForgotPassword}/>
-              <Route exact path="/restore-password" component={RestorePassword}/>
-            </Switch>
-        </main>
-        <Footer />
-      </div>
-      </BrowserRouter>
-  );
+	return (
+		<BrowserRouter>
+			<div className="app">
+				<Header />
+				<main>
+					<Switch>
+						<Route exact path="/" component={Home} />
+						<Route exact path="/login" component={Login} />
+						<Route exact path="/register" component={Register} />
+						<Route exact path="/forgot-password" component={ForgotPassword} />
+						<Route exact path="/restore-password" component={RestorePassword} />
+					</Switch>
+				</main>
+				<Footer />
+			</div>
+			<Snackbar />
+		</BrowserRouter>
+	);
 }
 
 export default compose(

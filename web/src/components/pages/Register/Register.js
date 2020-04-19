@@ -11,27 +11,17 @@ import LoginLowerContainer from '../../layouts/LoginForm/LoginLowerContainer/Log
 import LoginForm from '../../layouts/LoginForm/LoginForm';
 import api from '../../../services/api';
 import { NOT_REGISTERED, REGISTERING, REGISTERED, REGISTERED_ERROR } from '../../../constants/register';
+import withLoginedLock from '../../hocs/withLoginedLock/withLoginedLock';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { register } from '../../../redux/actions/user-actions';
 
-const Register = ({ history }) => {
-
-    const [registerStatus, setRegisterStatus] = useState(NOT_REGISTERED);
+const Register = ({ history, registerStatus, registerError, register }) => {
 
     const [email, setEmail] = useState("");
     const [fullName, setFullName] = useState("");
     const [password, setPassword] = useState("");
     const [passwordAgain, setPasswordAgain] = useState("");
-
-    const register = () => {
-        setRegisterStatus(REGISTERING);
-        api.register(email, fullName, password)
-        .then(data => {
-            if(data.success) {
-                setRegisterStatus(REGISTERED);
-            } else {
-                setRegisterStatus(REGISTERED_ERROR);
-            }
-        });
-    }
 
     const allowSubmit = () => 
             !checkEmailValid(email)
@@ -39,10 +29,16 @@ const Register = ({ history }) => {
             && !checkPasswordValid(password)
             && !checkPasswordAgainValid(password, passwordAgain);
 
+    let registerErrorValue;
+
+    switch(registerError?.type) {
+        case "EMAIL_IS_BUSY": registerErrorValue = "Email is busy"; break;
+    }
     const registerForm = (
         <LoginForm loading={registerStatus === REGISTERING}>
                 <LoginUpperContainer>
                     <LoginUpperContainerTitle>Register</LoginUpperContainerTitle>
+                    { registerStatus === REGISTERED_ERROR && <Label error={true} value={registerErrorValue}/> }
                     <Label 
                         className="register-page-form-field" 
                         value="Email"
@@ -86,7 +82,7 @@ const Register = ({ history }) => {
                     <Button 
                         className="register-page-sumbit-button"
                         disabled={!allowSubmit()}
-                        onClick={register}>
+                        onClick={() => register(email, fullName, password)}>
                         Register
                     </Button>
                 </LoginUpperContainer>
@@ -99,20 +95,20 @@ const Register = ({ history }) => {
             </LoginForm>
     );
 
-    const registeredForm = (
-        <LoginForm>
-            <LoginUpperContainer>
-                <LoginUpperContainerTitle>Registered</LoginUpperContainerTitle>
-                <Label className="register-page-registered-label">Please, check your email for verify link</Label>
-                <Button onClick={() => history.push("/profile")}>Go to profile</Button>
-            </LoginUpperContainer>
-        </LoginForm>
-    )
+    // const registeredForm = (
+    //     <LoginForm>
+    //         <LoginUpperContainer>
+    //             <LoginUpperContainerTitle>Registered</LoginUpperContainerTitle>
+    //             <Label className="register-page-registered-label">Please, check your email for verify link</Label>
+    //             <Button onClick={() => history.push("/profile")}>Go to profile</Button>
+    //         </LoginUpperContainer>
+    //     </LoginForm>
+    // )
 
     return ( 
         <div className="register-page">
             { registerStatus !== REGISTERED && registerForm }      
-            { registerStatus === REGISTERED && registeredForm }
+            {/* { registerStatus === REGISTERED && registeredForm } */}
         </div>
      );
 }
@@ -142,4 +138,7 @@ function checkPasswordAgainValid(pass, again) {
     return checkPasswordValid(pass) || pass !== again ? "Password not equal password again" : null;
 }
 
-export default Register;
+export default compose(
+    withLoginedLock,
+    connect(({ user: { registerStatus, registerError }}) => ({ registerStatus, registerError }), { register })   
+)(Register);

@@ -9,9 +9,9 @@ import Button from '../Button';
 import { Link } from 'react-router-dom';
 import { unlogin } from '../../../redux/actions/user-actions';
 
-const UserPanel = ({ email, fullName, unlogin }) => {
+const UserPanel = ({ email, fullName, unlogin, ...props }) => {
     return ( 
-        <div className="user-panel">
+        <div className="user-panel" { ...props }>
             <div className="user-panel-upper">
                 <UserIcon fullName={fullName} />
                 <div className="user-panel-upper-info">
@@ -22,7 +22,7 @@ const UserPanel = ({ email, fullName, unlogin }) => {
                     </Link>
                 </div>
             </div>
-            <Button className="user-panel-edit-profile-button" type="transparent">Edit profile</Button>
+            <Button className="user-panel-edit-profile-button" type="transparent" disabled={true}>Edit profile</Button>
             <Button className="user-panel-logout-button" type="transparent" onClick={() => unlogin()}>Logout</Button>
         </div>
      );

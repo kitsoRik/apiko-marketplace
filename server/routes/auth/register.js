@@ -1,7 +1,10 @@
 const { sendAsError, sendAsResult } = require("../../helpers/response");
 const { requiredError, typeError, customError } = require("../../helpers/errors");
-const { createUser } = require("../../db/models/user");
+const { createUser, getUserByEmail } = require("../../db/models/user");
 const { createUnverifyedLink } = require("../../db/models/unverifyed");
+const { createSession } = require("../../db/models/session");
+
+const { hashPassword } = require("../../helpers/hash");
 
 const router = require("express").Router();
 
@@ -16,19 +19,26 @@ router.post("/register", async (req, res) => {
     if(typeof fullName !== 'string') return sendAsError(res)(typeError("FULL_NAME", "STRING"));
     if(typeof password !== 'string') return sendAsError(res)(typeError("PASSWORD", "STRING"));
 
-    if(email === "busy@gmail.com") return sendAsError(res)(customError("EMAIL_IS_BUSY"));
-    if(email === "email") return sendAsError(res)(customError("BAD_EMAIL"));
+    let user = await getUserByEmail(email);
 
-    const user = await createUser(
+    if(user) return sendAsError(res)(customError("EMAIL_IS_BUSY"));
+    
+    user = await createUser(
         fullName,
         email,
-        password
+        await hashPassword(password)
     );
-    delete user.password;
+    
+    const result = user.toObject();
+    delete result.password;
 
     await createUnverifyedLink(user.id);
+    
+    const { sesid } = await createSession(user.id);
+    
+    res.cookie("sesid", sesid);
 
-    sendAsResult(res)(user);
+    sendAsResult(res)(result);
 });
 
 module.exports = router;

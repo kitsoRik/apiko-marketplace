@@ -10,6 +10,7 @@ import LoginForm from '../../layouts/LoginForm/LoginForm';
 import api from '../../../services/api';
 import { checkValidEmail } from '../../../services/checkers/checkers';
 import { NOT_RESTORED, RESTORED, RESTORED_ERROR, RESTORING } from '../../../constants/restore';
+import withLoginedLock from '../../hocs/withLoginedLock';
 
 
 const ForgotPassword = (props) => {
@@ -79,4 +80,4 @@ const ForgotPassword = (props) => {
      );
 }
 
-export default ForgotPassword;
+export default withLoginedLock(ForgotPassword);

@@ -1,8 +1,13 @@
 import Axios from 'axios';
 
-Axios.defaults.baseURL = "http://localhost:3500/api"; //`https://apiko-marketplace-api-2019.herokuapp.com`;
-Axios.defaults.withCredentials = true;
-Axios.defaults.crossDomain = true;
+const axios = Axios.create({
+    baseURL: "http://rostiktest.pw:3500/api", //`https://apiko-marketplace-api-2019.herokuapp.com`;
+    withCredentials: true
+});
+
+const graphqlAxios = Axios.create({
+
+});
 
 
 const get = (path, params = {}) =>
@@ -10,11 +15,13 @@ const get = (path, params = {}) =>
     
 const post = (path, params = {}) =>
     new Promise((r) => setTimeout(() => r(), 1000))
-        .then(() => Axios.post(`${path}`, params))
+        .then(() => axios.post(`${path}`, params))
         .then(({ data }) => data)
         .catch(console.log);
 
-export const thisHost = "http://localhost:3000";
+export const graphql = (query) => 
+    post("/graphql", { query });
+    
 
 export const register = (email, fullName, password) => 
     post("/auth/register", { email, fullName, password });

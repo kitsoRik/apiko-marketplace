@@ -2,7 +2,7 @@ import React from 'react';
 
 import './UserIcon.scss';
 
-const UserIcon = ({ src, fullName = "PR", ...props }) => {
+const UserIcon = ({ src, fullName = "", ...props }) => {
 
     const initials = fullName.split(" ").map(s => s[0]);
 

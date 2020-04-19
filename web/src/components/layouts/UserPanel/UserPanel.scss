@@ -19,6 +19,7 @@
 
     &-upper {
         padding: 9px 16px 0;
+        margin-bottom: 6px;
         display: grid;
         grid-template-columns: 48px auto;
         grid-template-rows: 48px;
@@ -29,7 +30,10 @@
             flex-direction: column;
             font-size: 10pt;
 
+            overflow: hidden;
+
             &-name {
+                overflow: hidden auto;
                 font-weight: bold;
                 font-family: Helvetica;
             }

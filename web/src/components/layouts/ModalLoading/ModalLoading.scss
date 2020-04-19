@@ -1,0 +1,17 @@
+.modal-loading {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #0006;
+
+    & > img {
+        max-height: 100%;
+        max-width: 100%;
+        animation: rotating 0.4s linear infinite;
+    }
+}

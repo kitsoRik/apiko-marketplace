@@ -1,0 +1,32 @@
+.combobox-option {
+    padding: 8px;
+    width: 100%;
+
+    background-color: #F9FAFB;
+    color: #505050;
+
+    border: 1px solid #DEDEE0;
+
+    display: grid;
+    grid-template-columns: 18px auto;
+    grid-column-gap: 10px;
+
+    appearance: none;
+    outline: none;
+
+    border-radius: 5px;
+    box-sizing: border-box;
+
+    cursor: pointer;
+
+    user-select: none;
+
+    &:hover {
+        background-color: #E8E9EA;
+    }
+
+    &-icon {
+        height: 18px;
+        width: 18px;
+    }
+}

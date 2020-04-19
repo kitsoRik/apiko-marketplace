@@ -1,5 +1,4 @@
 .app {
-
 	flex: 1;
 
 	display: flex;
@@ -7,6 +6,8 @@
 }
 
 main {
+	position: relative;
+
 	flex: 1;
 
 	display: flex;

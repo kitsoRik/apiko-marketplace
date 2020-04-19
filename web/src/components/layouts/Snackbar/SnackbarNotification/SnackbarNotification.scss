@@ -1,0 +1,16 @@
+.snackbar-notification {
+    padding: 30px;
+
+
+    &[type=info] {
+        background-color: cyan;
+    }
+
+    &[type=warning] {
+        background-color: yellow;
+    }
+
+    &[type=error] {
+        background-color: red;
+    }
+}

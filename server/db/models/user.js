@@ -24,6 +24,10 @@ const userSchema = new Schema({
     savedProducts: {
         type: [Number], // products ids
         default: []
+    },
+    productsIds: {
+        type: [Number],
+        default: []
     }
 });
 
@@ -41,3 +45,7 @@ exports.createUser = (fullName, email, password) => userModel.create({ fullName,
 exports.getUserById = (id) => userModel.findOne({ id });
 exports.getUserByEmail = (email) => userModel.findOne({ email });
 exports.getUserByEmailAndPassword = (email, password) => userModel.findOne({ email, password });
+
+exports.getUserByProductId = (productId) => userModel.findOne({ productsIds: { $elemMatch: { $eq: productId }}});
+
+exports.getAllUsers = (page, limit) => userModel.find().skip((page - 1) * limit).limit(limit);

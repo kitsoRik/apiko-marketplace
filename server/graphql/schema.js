@@ -1,4 +1,6 @@
 const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLBoolean, GraphQLList, GraphQLSchema, GraphQLID, GraphQLFloat } = require("graphql");
+const { getAllUsers, getUserById, getUserByProductId } = require("../db/models/user");
+const { getProductsByIds, getAllProducts } = require("../db/models/product");
 
 let products = [
     {
@@ -143,11 +145,46 @@ let products = [
     }
 ]
 
+const UserType = new GraphQLObjectType({
+    name: "User",
+    fields: () => ({
+        id: { type: GraphQLID },
+        verifyed: { type: GraphQLBoolean },
+        fullName: { type: GraphQLString },
+        email: { type: GraphQLString },
+        saveproducts: { 
+                type: new GraphQLList(ProductType),
+                args: {
+                    page: { type: GraphQLInt },
+                    limit: { type: GraphQLInt },
+                },
+                resolve: ({ savedProducts }, { page, limit }, { user }) => {
+                    return getProductsByIds(savedProducts);
+                }
+            },
+        products: { 
+            type: new GraphQLList(ProductType),
+            args: {
+                page: { type: GraphQLInt },
+                limit: { type: GraphQLInt }
+            },
+            resolve: (source, { page, limit }, { user }) => {
+                return getProductsByIds([0]);
+            }
+        }
+    })
+})
+
 const ProductType = new GraphQLObjectType({
     name: "Todo",
     fields: () => ({
         id: { type: GraphQLID },
-        ownerId: { type: GraphQLID },
+        owner: { 
+            type: UserType,
+            resolve: async ({ id }) => {
+                return await getUserByProductId(id);
+            }
+        },
         title: { type: GraphQLString },
         description: { type: GraphQLString },
         price: { type: GraphQLFloat },
@@ -172,11 +209,21 @@ const Query = new GraphQLObjectType({
                     page: { type: GraphQLInt },
                     limit: { type: GraphQLInt },
                 },
-            resolve: (source, { limit }, { req, user }, info) => {
-                    console.log(products.map(p => ({ ...p, saved: user ? user.savedProducts.indexOf(p.id) !== -1 : false })));
-                    return products.map(p => ({ ...p, saved: user ? user.savedProducts.indexOf(p.id) !== -1 : false })).filter((p, i) => i < limit);
+            resolve: (source, { page, limit }, { req, user }, info) => {
+                    return getAllProducts(page, limit);
                 }
+            },
+        users: {
+            type: new GraphQLList(UserType),
+            args: {
+                id: { type: GraphQLID },
+                page: { type: GraphQLInt },
+                limit: { type: GraphQLInt },
+            },
+            resolve: (source, { page, limit }, { req, user }) => {
+                return getAllUsers({ page, limit });
             }
+        }
     })
 });
 
@@ -202,7 +249,6 @@ const Mutation = new GraphQLObjectType({
                 
                 if(state) user.savedProducts.push(+id);
                 else user.savedProducts = user.savedProducts.filter(p => p !== +id);
-                console.log(user);
                 user.save().then(console.log);
 
                 return state;

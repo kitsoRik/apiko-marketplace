@@ -1,0 +1,26 @@
+.user-information {
+    padding: 15px 0 30px;
+
+    display: grid;
+    grid-template-rows: auto min-content min-content;
+    
+    text-align: center;
+    
+    &-icon {
+        margin: 0 auto;
+
+        width: 96px;
+        height: 96px;
+    }
+
+    &-fullname {
+        font-family: Rubik;
+        font-size: 20px;
+        color: #141414;
+    }
+
+    &-location {
+        font-size: 13px;
+        color: #9099A7;
+    }
+}

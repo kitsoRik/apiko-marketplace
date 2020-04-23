@@ -14,6 +14,7 @@ import store from './redux/store';
 import { compose } from 'redux';
 import { loadData } from './redux/actions/user-actions';
 import Snackbar from './components/layouts/Snackbar/Snackbar';
+import Profile from './components/pages/Profile/Profile';
 
 const App = ({ loadData }) => {
 
@@ -32,6 +33,8 @@ const App = ({ loadData }) => {
 						<Route exact path="/register" component={Register} />
 						<Route exact path="/forgot-password" component={ForgotPassword} />
 						<Route exact path="/restore-password" component={RestorePassword} />
+						
+						<Route exact path="/profile" component={Profile} />
 					</Switch>
 				</main>
 				<Footer />

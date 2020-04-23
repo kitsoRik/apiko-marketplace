@@ -1,0 +1,27 @@
+.profile-page {
+    padding: 0 270px;
+
+    flex: 1;
+
+
+    box-sizing: border-box;
+
+    & &-panel {
+        flex: content;
+
+        display: grid;
+
+        grid-template-rows: min-content min-content auto;
+        grid-template-columns: 1fr;
+    }
+
+    &-main-content {
+
+        &-products {
+            padding: 0 25px;
+            display: grid;
+            grid-template-columns: repeat(4, 210px);
+            grid-gap: 17px 6px;
+        }
+    }
+}

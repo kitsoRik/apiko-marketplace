@@ -1,0 +1,28 @@
+.profile-tab {
+    padding: 15px 0;
+
+    width: 160px;
+    height: 75px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    border: 1px solid #EEEFF1;
+
+    cursor: pointer;
+
+    &[active] {
+        background-color: #349A89;
+        color: white;
+    }
+
+    &-main-text {
+        font-size: 22px;
+    }
+
+    &-minor-text {
+        font-size: 13px;
+    }
+}

@@ -19,7 +19,7 @@ import { LOADING, NOT_LOADED, LOADED } from '../../../constants';
 
 const Header = ({ loginStatus, loadingDataState, fullName }) => {
     const history = useHistory();
-    let darkMode = history.location.pathname === "/";
+    let darkMode = !['login', 'register'].find((p) => p === history.location.pathname);
 
     const [minorPanel, setMinorPanel] = useState();
 

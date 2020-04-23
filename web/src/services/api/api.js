@@ -1,7 +1,7 @@
 import Axios from 'axios';
 
 const axios = Axios.create({
-    baseURL: "http://rostiktest.pw:3500/api", //`https://apiko-marketplace-api-2019.herokuapp.com`;
+    baseURL: "http://localhost:3500/api", //`https://apiko-marketplace-api-2019.herokuapp.com`;
     withCredentials: true
 });
 

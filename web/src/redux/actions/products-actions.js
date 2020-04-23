@@ -77,7 +77,11 @@ export const changeSavedStateOfProduct = asyncActionFactoryWithGraphQLQuery(
     changeSavedStateOfProductQuerySuccess,
     changeSavedStateOfProductQueryFailed
 )
-        
+
+
+
+
+
         // graphql(saveQuery).then(({ data: { changeSavedStateOfProduct } }) => {
         //     setProducts(products.map(p => p.id === id ? ({ ...p, saved: changeSavedStateOfProduct }) : p));
         // });

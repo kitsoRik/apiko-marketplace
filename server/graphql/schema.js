@@ -1,7 +1,9 @@
 const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLBoolean, GraphQLList, GraphQLSchema, GraphQLID, GraphQLFloat } = require("graphql");
-const { getAllUsers, getUserById, getUserByProductId } = require("../db/models/user");
+const { getAllUsers, getUserById, getUserByProductId, saveUserById } = require("../db/models/user");
 const { getProductsByIds, getAllProducts } = require("../db/models/product");
-const { getFeedbacksByProductId } = require("../db/models/feedback");
+const { getFeedbacksByProductId, getFeedbacksByUserId } = require("../db/models/feedback");
+
+const { customError } = require("../helpers/errors");
 
 
 const UserType = new GraphQLObjectType({
@@ -31,7 +33,16 @@ const UserType = new GraphQLObjectType({
                 return getProductsByIds([0]);
             }
         },
-        pru
+        feedbacks: {
+            type: new GraphQLList(FeedbackType),
+            args: {
+                page: { type: GraphQLInt },
+                limit: { type: GraphQLInt }
+            },
+            resolve: async ({ id }, { page, limit }) => {
+                return await getFeedbacksByUserId(id);
+            }
+        }
     })
 })
 
@@ -161,6 +172,20 @@ const Mutation = new GraphQLObjectType({
                 user.save().then(console.log);
 
                 return state;
+            }
+        },
+        saveUser: {
+            type: UserType,
+            args: {
+                fullName: { type: GraphQLString },
+                phone: { type: GraphQLString }
+            },
+            resolve: (source, { fullName, phone }, { user }) => {
+                if(!user) {
+                    throw customError("ACCESS_BLOCKED");
+                }
+                
+                return saveUserById(user.id, fullName, phone);
             }
         }
     })

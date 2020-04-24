@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Label from '../../layouts/Label/Label';
 import TextField from '../../layouts/TextField/TextField';
-import Button from '../../layouts/Button/Button';
+import Button from '../../layouts/Button';
 import { Link } from 'react-router-dom';
 
 import './Register.scss';
@@ -79,12 +79,10 @@ const Register = ({ history, registerStatus, registerError, register }) => {
                             onChange={(e) => setPasswordAgain(e.target.value)} />
                     </Label>
 
-                    <Button 
+                    <Button.Default 
                         className="register-page-sumbit-button"
                         disabled={!allowSubmit()}
-                        onClick={() => register(email, fullName, password)}>
-                        Register
-                    </Button>
+                        onClick={() => register(email, fullName, password)} value="Register"/>
                 </LoginUpperContainer>
                 <LoginLowerContainer>
                     I already have account,&nbsp;
@@ -139,6 +137,6 @@ function checkPasswordAgainValid(pass, again) {
 }
 
 export default compose(
-    withLoginedLock,
+    withLoginedLock(false),
     connect(({ user: { registerStatus, registerError }}) => ({ registerStatus, registerError }), { register })   
 )(Register);

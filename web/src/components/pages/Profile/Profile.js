@@ -7,25 +7,20 @@ import UserInformation from './UserInformation/UserInformation';
 import Tabs from './Tabs/Tabs';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { loadUser, loadUserProducts } from '../../../redux/actions/users-actions';
+import { loadUser } from '../../../redux/actions/users-actions';
+import FeedbacksContent from './FeedbacksContent/FeedbacksContent';
+import ProductsContent from './ProductsContent/ProductsContent';
+import SalesContent from './SalesContent/SalesContent';
 
-const Profile = ({ loadUser, loadUserProducts, users, productsStore }) => {
+const Profile = ({ loadUser, users }) => {
 
 	const user = users.find(u => +u.id === 3);
 
-	const [tabIndex, setTabIndex] = useState(0);
+	const [tabIndex, setTabIndex] = useState(1);
 	
-	const products = productsStore[3]?.products;
-
 	useEffect(() => {
 		loadUser(3);
 	}, [ ]);
-
-	useEffect(() => {
-		if(tabIndex === 2) {
-			loadUserProducts(3);
-		}
-	}, [ tabIndex ]);
 
 	return (
 		<div className="profile-page">
@@ -33,20 +28,9 @@ const Profile = ({ loadUser, loadUserProducts, users, productsStore }) => {
 				<UserInformation user={{ fullName: "Pidburachynskyi Rostyslav", location: "Ternopil, Ukraine" }}/>
 				<Tabs tabIndex={tabIndex} setTabIndex={setTabIndex} />
 				<div className="profile-page-main-content">
-					{ tabIndex === 1 && 
-						<div className="profile-page-main-content-products">
-							{
-								user.products.map(p => <span></span>)
-							}
-						</div>
-					}
-					{ tabIndex === 2 && 
-						<div className="profile-page-main-content-products">
-							{
-								products?.map(p => <ProductCard key={p.id} { ...p } />)
-							}
-						</div>
-					}
+					{ tabIndex === 0 && <FeedbacksContent userId={3} /> }
+					{ tabIndex === 1 && <SalesContent userId={3} />}
+					{ tabIndex === 2 && <ProductsContent userId={3} /> }
 				</div>
 			</Panel>
 		</div>
@@ -54,5 +38,5 @@ const Profile = ({ loadUser, loadUserProducts, users, productsStore }) => {
 };
 
 export default compose(
-	connect(({ users: { users, productsStore }}) => ({ users, productsStore }), { loadUser, loadUserProducts })
+	connect(({ users: { users }}) => ({ users }), { loadUser })
 )(Profile);

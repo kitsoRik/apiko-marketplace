@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Label from '../../layouts/Label/Label';
 import TextField from '../../layouts/TextField/TextField';
-import Button from '../../layouts/Button/Button';
+import Button from '../../layouts/Button';
 
 import './ForgotPassword.scss';
 import LoginUpperContainer from '../../layouts/LoginForm/LoginUpperContainer/LoginUpperContainer';
@@ -68,16 +68,16 @@ const ForgotPassword = (props) => {
                                 onChange={(e) => setEmail(e.target.value)} />
                         </Label>}
                     { restoreStatus !== RESTORED && 
-                        <Button 
+                        <Button.Default 
                             disabled={!checkValidEmail(email)}
                             className="forgot-password-page-sumbit-button"
                             onClick={sendRestoreLink}>
                             Continue
-                        </Button>}
+                        </Button.Default>}
                 </LoginUpperContainer>
             </LoginForm>
         </div>
      );
 }
 
-export default withLoginedLock(ForgotPassword);
+export default withLoginedLock(false)(ForgotPassword);

@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { LOGINED } from '../../../constants/login';
+import { LOGINED, NOT_LOGINED, LOGINING } from '../../../constants/login';
+import ModalLoading from '../../layouts/ModalLoading/ModalLoading';
 
-const withLoginedLock = (WrapperComponent) => {
+const withLoginedLock = (needLogin = true) => (WrapperComponent) => {
     class HOC extends Component {
         render() {
             const { history, loginStatus } = this.props;
+            if(loginStatus === LOGINING) {
+                return <div style={{width: '100%', height: '100%'}}><ModalLoading /></div>
+            }
 
-            if(loginStatus === LOGINED) {
+            if(!needLogin && loginStatus === LOGINED) {
+                history.push("/");
+                return null;
+            }
+
+            if(needLogin && loginStatus === NOT_LOGINED) {
                 history.push("/");
                 return null;
             }

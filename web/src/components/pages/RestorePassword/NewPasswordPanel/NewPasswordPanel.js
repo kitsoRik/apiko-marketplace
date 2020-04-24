@@ -6,7 +6,7 @@ import LoginUpperContainer from '../../../layouts/LoginForm/LoginUpperContainer/
 import LoginUpperContainerTitle from '../../../layouts/LoginForm/LoginUpperContainer/LoginUpperContainerTitle/LoginUpperContainerTitle';
 import TextField from '../../../layouts/TextField/TextField';
 import Label from '../../../layouts/Label/Label';
-import Button from '../../../layouts/Button/Button';
+import Button from '../../../layouts/Button';
 import { NOT_RESTORED, RESTORED, RESTORED_ERROR, RESTORING } from '../../../../constants/restore';
 import api from '../../../../services/api';
 import Checkbox from '../../../layouts/Checkbox/Checkbox';
@@ -72,10 +72,9 @@ const NewPasswordPanel = (props) => {
                                         checked={leaveDevices} 
                                         onChange={(e) => setLeaveDevices(e.target.checked)}
                                         value="Go out in all devices" />
-                                    <Button 
+                                    <Button.Default 
                                         disabled={!allowSubmit}
-                                        onClick={restorePassword}
-                                    >Continue</Button>
+                                        onClick={restorePassword} value="Continue" />
                                 </LoginUpperContainer>
                             </LoginForm>);
         const restoredPanel = (

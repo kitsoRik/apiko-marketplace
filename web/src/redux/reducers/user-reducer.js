@@ -1,6 +1,6 @@
 import { NOT_LOGINED, LOGINING, LOGINED, LOGINED_ERROR, UNLOGINED, UNLOGINING, UNLOGINED_ERROR } from '../../constants/login';
-import { LOGIN_PENDING, LOGIN_SUCCESS, LOGIN_FAILED, LOAD_DATA_PENDING, LOAD_DATA_SUCCESS, LOAD_DATA_FAILED, UNLOGIN_PENDING, UNLOGIN_FAILED, UNLOGIN_SUCCESS, REGISTER_PENDING, REGISTER_SUCCESS, REGISTER_FAILED } from '../actions/user-actions';
-import { NOT_LOADED, LOADING, LOADED, LOADED_ERROR } from '../../constants';
+import { LOGIN_PENDING, LOGIN_SUCCESS, LOGIN_FAILED, LOAD_DATA_PENDING, LOAD_DATA_SUCCESS, LOAD_DATA_FAILED, UNLOGIN_PENDING, UNLOGIN_FAILED, UNLOGIN_SUCCESS, REGISTER_PENDING, REGISTER_SUCCESS, REGISTER_FAILED, SAVE_USER_PENDING, SAVE_USER_SUCCESS, SAVE_USER_FAILED } from '../actions/user-actions';
+import { NOT_LOADED, LOADING, LOADED, LOADED_ERROR, NOT_SAVED, SAVING, SAVED, SAVED_ERROR } from '../../constants';
 import { NOT_REGISTERED, REGISTERING, REGISTERED, REGISTERED_ERROR } from '../../constants/register';
 
 const initState = {
@@ -9,9 +9,11 @@ const initState = {
     },
     loadingDataError: null,
     loadingDataState: NOT_LOADED,
-    loginStatus: NOT_LOGINED,
+    loginStatus: LOGINING,
     registerStatus: NOT_REGISTERED,
-    registerError: null
+    registerError: null,
+
+    savingState: NOT_SAVED
 }
 
 const userReducer = (state = initState, action) => {
@@ -63,7 +65,7 @@ const userReducer = (state = initState, action) => {
         case LOGIN_FAILED: {
             return {
                 ...state,
-                loginStatus: LOGINED_ERROR
+                loginStatus: NOT_LOGINED
             }
         }
         case UNLOGIN_PENDING: {
@@ -92,7 +94,7 @@ const userReducer = (state = initState, action) => {
                 ...state,
                 loadingDataError: null,
                 loadingDataState: LOADING,
-                loginStatus: NOT_LOGINED
+                loginStatus: LOGINING
             }
         }
 
@@ -118,6 +120,35 @@ const userReducer = (state = initState, action) => {
                 loadingDataError: error,
                 loadingDataState: LOADED_ERROR,
                 loginStatus: NOT_LOGINED
+            }
+        }
+
+        case SAVE_USER_PENDING: {
+        
+            return {
+                ...state,
+                savingState: SAVING
+            }
+        }
+        
+        case SAVE_USER_SUCCESS: {
+        
+            const { user: { fullName } } = action.payload;
+
+            return {
+                ...state,
+                savingState: SAVED,
+                data: {
+                    ...state.data,
+                    fullName
+                }
+            }
+        }
+        
+        case SAVE_USER_FAILED: {
+            return {
+                ...state,
+                savingState: SAVED_ERROR
             }
         }
 

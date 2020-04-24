@@ -1,9 +1,12 @@
-import { LOAD_USER_PENDING, LOAD_USER_SUCCESS, LOAD_USER_FAILED, LOAD_USER_PRODUCTS_PENDING, LOAD_USER_PRODUCTS_SUCCESS, LOAD_USER_PRODUCTS_FAILED } from "../actions/users-actions"
+import { LOAD_USER_PENDING, LOAD_USER_SUCCESS, LOAD_USER_FAILED, LOAD_USER_PRODUCTS_PENDING, LOAD_USER_PRODUCTS_SUCCESS, LOAD_USER_PRODUCTS_FAILED, LOAD_USER_FEEDBACKS_PENDING, LOAD_USER_FEEDBACKS_SUCCESS, LOAD_USER_FEEDBACKS_FAILED } from "../actions/users-actions"
 import { LOADING, LOADED } from '../../constants';
 
 const initState = {
     users: [],
     productsStore: {
+        // userId - key
+    },
+    feedbacksStore: {
         // userId - key
     }
 }
@@ -51,9 +54,16 @@ const usersReducer = (state = initState, action) => {
         }
 
         case LOAD_USER_PRODUCTS_PENDING: {
+            const { userId } = action.payload;
 
             return {
-                ...state
+                ...state,
+                productsStore: {
+                    ...state.productsStore,
+                    [userId]: {
+                        loadingStatus: LOADING
+                    }
+                }
             }
         }
 
@@ -65,6 +75,7 @@ const usersReducer = (state = initState, action) => {
                 productsStore: {
                     ...state.productsStore,
                     [userId]: {
+                        loadingStatus: LOADED,
                         products
                     }
                 }
@@ -76,6 +87,54 @@ const usersReducer = (state = initState, action) => {
                 ...state
             }
         }
+
+        case LOAD_USER_FEEDBACKS_PENDING: {
+            const { userId, page } = action.payload;
+
+            return {
+                ...state,
+                feedbacksStore: {
+                    ...state.feedbacksStore,
+                    [userId]: {
+                        ...state.feedbacksStore[userId],
+                        feedbacks: [],
+                        pages: {
+                            [page]: []
+                        }
+                    }
+                }
+            }
+        }
+        
+        case LOAD_USER_FEEDBACKS_SUCCESS: {
+            const { feedbacks, userId, page } = action.payload;
+
+            const newFeedbacksIds = feedbacks.map(({ id }) => id);
+            const oldFeedbacks = state.feedbacksStore[userId].feedbacks.filter(({ id }) => !!newFeedbacksIds.find(+id));
+
+            return {
+                ...state,
+                feedbacksStore: {
+                    ...state.feedbacksStore,
+                    [userId]: {
+                        loadingStatus: LOADED,
+                        feedbacks: oldFeedbacks.concat(feedbacks),
+                        pages: {
+                            ...state.feedbacksStore[userId].pages,
+                            [page]: feedbacks.map(({ id }) => id)
+                        }
+                    }
+                }
+            }
+        }
+        
+        case LOAD_USER_FEEDBACKS_FAILED: {
+            return {
+                ...state
+            }
+        }
+
+        
         default: return state;
     }
 }

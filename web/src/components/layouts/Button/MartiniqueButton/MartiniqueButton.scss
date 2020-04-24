@@ -1,0 +1,16 @@
+.button-martinique {
+    padding: 20px 50px;
+
+    border: none;
+    
+    color: #fff;
+    background-color: #3E3961;
+
+    &:hover {
+        background-color: #3E5991;
+    }
+
+    &:active {
+        background-color: #3E4971;
+    }
+}

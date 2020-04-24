@@ -9,7 +9,6 @@ const graphqlAxios = Axios.create({
 
 });
 
-
 const get = (path, params = {}) =>
     Axios.get(`${path}`);
     

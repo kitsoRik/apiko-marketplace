@@ -39,4 +39,4 @@ const RestorePassword = ({ history: { location: { search = "?" } }}) => {
     )
 }
 
-export default withLoginedLock(RestorePassword);
+export default withLoginedLock(false)(RestorePassword);

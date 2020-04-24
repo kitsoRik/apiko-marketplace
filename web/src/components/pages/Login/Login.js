@@ -74,9 +74,7 @@ const Login = ({ history, login, loginStatus }) => {
                         className="login-page-forgot-label" 
                         to="/forgot-password"
                         >Don't remeber password?</Link>
-                    <Button disabled={!allowSubmit()} onClick={_login}>
-                        Continue
-                    </Button>
+                    <Button.Default disabled={!allowSubmit()} onClick={_login} value="Continue"/>
                 </LoginUpperContainer>
                 <LoginLowerContainer>
                     I have no account,&nbsp;
@@ -91,5 +89,5 @@ const Login = ({ history, login, loginStatus }) => {
 
 export default compose(
     connect(({ user: { loginStatus }}) => ({ loginStatus }), { login }),
-    withLoginedLock
+    withLoginedLock(false)
 )(Login);

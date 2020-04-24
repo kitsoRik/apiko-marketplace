@@ -4,10 +4,14 @@ import Loading from "../../../assets/icons/loading.svg";
 
 import './ModalLoading.scss';
 
-const ModalLoading = ({ style, className }) => {
-    console.log(style);
+const ModalLoading = ({ style, darken = true, className, ...props }) => {
     return ( 
-        <div className={`modal-loading ${className}`} style={style} onClick={e => e.preventDefault()}>
+        <div 
+            className={`modal-loading ${className}`} 
+            style={style} 
+            darken={darken ? "true" : null}
+            onClick={e => e.preventDefault()}
+            { ...props }>
             <img src={Loading}/>
         </div> 
      );

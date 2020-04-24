@@ -6,10 +6,13 @@ import UserIcon from '../UserIcon';
 
 import './UserPanel.scss';
 import Button from '../Button';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { unlogin } from '../../../redux/actions/user-actions';
 
 const UserPanel = ({ email, fullName, unlogin, ...props }) => {
+
+    const history = useHistory();
+
     return ( 
         <div className="user-panel" { ...props }>
             <div className="user-panel-upper">
@@ -22,8 +25,12 @@ const UserPanel = ({ email, fullName, unlogin, ...props }) => {
                     </Link>
                 </div>
             </div>
-            <Button className="user-panel-edit-profile-button" type="transparent" disabled={true}>Edit profile</Button>
-            <Button className="user-panel-logout-button" type="transparent" onClick={() => unlogin()}>Logout</Button>
+            <Button.Transparent 
+                className="user-panel-edit-profile-button" 
+                onClick={() => history.push("/edit-profile")} value="Edit profile" />
+            <Button.Transparent 
+                className="user-panel-logout-button" 
+                onClick={() => unlogin()} value="Logout"/>
         </div>
      );
 }

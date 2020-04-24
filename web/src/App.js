@@ -15,6 +15,7 @@ import { compose } from 'redux';
 import { loadData } from './redux/actions/user-actions';
 import Snackbar from './components/layouts/Snackbar/Snackbar';
 import Profile from './components/pages/Profile/Profile';
+import EditProfile from './components/pages/EditProfile/EditProfile';
 
 const App = ({ loadData }) => {
 
@@ -35,6 +36,7 @@ const App = ({ loadData }) => {
 						<Route exact path="/restore-password" component={RestorePassword} />
 						
 						<Route exact path="/profile" component={Profile} />
+						<Route exact path="/edit-profile" component={EditProfile} />
 					</Switch>
 				</main>
 				<Footer />

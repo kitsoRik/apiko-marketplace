@@ -69,13 +69,20 @@ export const loadUser = asyncActionFactoryWithGraphQLQuery(
 //     loadUserSalesFailed
 // );
 
-const loadUserFeedbacksPending = ({
-    type: LOAD_USER_FEEDBACKS_PENDING
+const loadUserFeedbacksPending = (userId, page) => ({
+    type: LOAD_USER_FEEDBACKS_PENDING,
+    payload: {
+        userId,
+        page
+    }
 });
 
-const loadUserFeedbacksSuccess = (data) => ({
+const loadUserFeedbacksSuccess = ({ user: { feedbacks }}, userId, page) => ({
     type: LOAD_USER_FEEDBACKS_SUCCESS,
-    data
+    payload: {
+        userId,
+        feedbacks
+    }
 });
 
 const loadUserFeedbacksFailed = (errors) => ({
@@ -83,18 +90,28 @@ const loadUserFeedbacksFailed = (errors) => ({
 });
 
 const loadUserFeedbacksQuery = (id) => 
-`
+`query {
+    user(id: ${id}) {
+      feedbacks {
+        id
+        text
+      }
+    }
+  }
 `;
 
 export const loadUserFeedbacks = asyncActionFactoryWithGraphQLQuery(
-    (id) => graphql(),
+    (id) => graphql(loadUserFeedbacksQuery(id)),
     loadUserFeedbacksPending,
     loadUserFeedbacksSuccess,
     loadUserFeedbacksFailed
 );
 
-const loadUserProductsPending = ({
-    type: LOAD_USER_PRODUCTS_PENDING
+const loadUserProductsPending = (userId) => ({
+    type: LOAD_USER_PRODUCTS_PENDING,
+    payload: {
+        userId
+    }
 });
 
 const loadUserProductsSuccess = ({ user: { products }}, userId) => ({

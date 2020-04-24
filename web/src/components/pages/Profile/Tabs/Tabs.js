@@ -16,6 +16,7 @@ const Tabs = ({ tabIndex, setTabIndex }) => {
             {
                 tabsInfo.map(({ main, minor }, index) => 
                     <Tab 
+                        key={main}
                         main={main} 
                         minor={minor} 
                         active={tabIndex === index} 

@@ -43,9 +43,13 @@ const userModel = model("Users", userSchema);
 
 exports.createUser = (fullName, email, password) => userModel.create({ fullName, email, password });
 exports.getUserById = (id) => userModel.findOne({ id });
-exports.getUserByEmail = (email) => userModel.findOne({ email });
+exports.getUserByEmail = (email) => userModel.findOne({ email }, { productsIds });
 exports.getUserByEmailAndPassword = (email, password) => userModel.findOne({ email, password });
+
+exports.getProductsIdsByUserId = (id) => userModel.findOne({ id }, { productsIds: true }).then(({ productsIds }) => productsIds)
 
 exports.getUserByProductId = (productId) => userModel.findOne({ productsIds: { $elemMatch: { $eq: productId }}});
 
 exports.getAllUsers = (page, limit) => userModel.find().skip((page - 1) * limit).limit(limit);
+
+exports.saveUserById = (id, fullName, phone) => userModel.findOneAndUpdate({ id }, { fullName, phone }, { new: true });

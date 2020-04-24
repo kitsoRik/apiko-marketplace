@@ -42,7 +42,7 @@ const Home = ({ loginStatus, products, loadProducts, changeSavedStateOfProduct }
                         </svg>
                     </Icon>
                 } />
-                <Button style={{ textTransform: "uppercase" }} type="martinique">Search</Button>
+                <Button.Martinique style={{ textTransform: "uppercase" }} value="Search" />
             </div>
         );
         return () => {

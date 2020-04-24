@@ -1,0 +1,24 @@
+.feedback-card {
+    padding: 5px;
+
+    display: grid;
+    grid-template-columns: min-content auto;
+    grid-template-rows: min-content auto;
+
+    grid-column-gap: 5px;
+
+    border: 1px solid #349A89;
+
+    &-user-icon {
+        grid-row: 1 / span 2;
+    }
+
+    &-rate {
+        & &-star-icon {
+            margin: 0 1px;
+            height: 14px;
+            width: 14px;
+        }
+    }
+
+}

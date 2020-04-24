@@ -1,0 +1,39 @@
+.pagination-sector {
+    margin: 0 2px;
+    padding: 5px;
+    
+    flex: 1;
+
+    background-color: transparent;
+    
+    border: 1px solid #349A89;
+    border-radius: 4px;
+
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+        color: yellow;
+        background-color: #349A89;
+    }
+
+    &[current=true] {
+        color: yellow;
+        background-color: #349A89;
+    }
+
+    &[disabled] {
+        &:hover {
+            color: white;
+            background-color: gray;
+        }
+    }
+
+    &-prev {
+        flex: 10;
+    }
+
+    &-next {
+        flex: 10;
+    }
+}

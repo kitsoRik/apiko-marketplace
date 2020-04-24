@@ -1,0 +1,14 @@
+.button-transparent {
+    color: #000;
+    background-color: transparent;  
+
+    border: none;
+
+    &:hover {
+        background-color: #0002;
+    }
+
+    &:active {
+        background-color: #0001;
+    }
+}

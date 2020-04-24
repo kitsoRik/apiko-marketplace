@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 
+const { getProductsIdsByUserId } = require("../models/user");
 
 const feedbackSchema = new Schema({
     id: {
@@ -40,3 +41,9 @@ const feedbackModel = model("Feedbacks", feedbackSchema);
 
 exports.createFeedback = (productId, userId, rate, text) => feedbackModel.create({ productId, userId, rate, text });
 exports.getFeedbacksByProductId = (productId, page, limit) => feedbackModel.find({ productId }).skip((page - 1) * limit).limit(limit);
+exports.getFeedbacksByProductIds = (productIds, page, limit) => feedbackModel.find({ productId: { $in: productIds } }).skip((page - 1) * limit).limit(limit);
+
+exports.getFeedbacksByUserId = async (userId, page = 1, limit = 10) => {
+
+    return this.getFeedbacksByProductIds(await getProductsIdsByUserId(userId), page, limit);
+};

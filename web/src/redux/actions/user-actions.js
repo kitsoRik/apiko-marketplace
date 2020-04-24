@@ -1,5 +1,5 @@
 import api from '../../services/api';
-import { asyncActionFactory } from './factory';
+import { asyncActionFactory, asyncActionFactoryWithGraphQLQuery } from './factory';
 
 export const
     LOGIN_PENDING = "LOGIN_PENDING",
@@ -16,7 +16,11 @@ export const
 
     LOAD_DATA_PENDING = "LOAD_DATA_PENDING",
     LOAD_DATA_SUCCESS = "LOAD_DATA_SUCCESS",
-    LOAD_DATA_FAILED = "LOAD_DATA_FAILED";
+    LOAD_DATA_FAILED = "LOAD_DATA_FAILED",
+
+    SAVE_USER_PENDING = "SAVE_USER_PENDING",
+    SAVE_USER_SUCCESS = "SAVE_USER_SUCCESS",
+    SAVE_USER_FAILED = "SAVE_USER_FAILED";
 
 const loadDataPending = ({
     type: LOAD_DATA_PENDING
@@ -101,3 +105,34 @@ export const unlogin = asyncActionFactory(
     unloginSuccess,
     unloginFailed
 )
+
+const saveUserPending = ({
+    type: SAVE_USER_PENDING
+});
+
+const saveUserSuccess = ({ saveUser }) => ({
+    type: SAVE_USER_SUCCESS,
+    payload: {
+        user: saveUser
+    }
+});
+
+const saveUserFailed = (errors) => ({
+    type: SAVE_USER_FAILED
+});
+
+const saveUserQuery = (fullName, phone) => 
+`mutation {
+    saveUser(fullName: "${fullName}", phone: "${phone}") {
+      id
+      fullName
+    }
+  }
+`;
+
+export const saveUser = asyncActionFactoryWithGraphQLQuery(
+    (fullName, phone) => api.graphql(saveUserQuery(fullName, phone)),
+    saveUserPending,
+    saveUserSuccess,
+    saveUserFailed
+);

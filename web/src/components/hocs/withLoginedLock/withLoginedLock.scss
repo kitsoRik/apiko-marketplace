@@ -1,0 +1,58 @@
+.with-logined-lock {
+    width: 100%;
+    height: 100%;
+    
+    flex: 1 1;
+    display: flex;
+    justify-content: center;
+
+    & > *:nth-child(2) {
+        visibility: hidden;
+        animation: lock-hide .3s linear;
+    }
+
+    & > *:nth-child(1) {
+        visibility: visible;
+
+        animation: lock-show .3s;
+    }
+
+    &[loading=true] {
+        & > *:nth-child(1) {
+            visibility: visible;
+            animation: lock-show .7s;
+        }
+    }
+}
+
+@keyframes lock-show {
+    0% {
+        opacity: 0;
+        visibility: visible;
+    }
+
+    99% {
+        visibility: visible;
+    }
+
+    100% {
+        opacity: 1;
+        visibility: hidden;
+    }
+}
+
+@keyframes lock-hide {
+    0% {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    99% {
+        visibility: visible;
+    }
+
+    100% {
+        opacity: 0;
+        visibility: hidden;
+    }
+}

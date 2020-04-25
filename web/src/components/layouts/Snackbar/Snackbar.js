@@ -33,8 +33,8 @@ const Snackbar = (props) => {
     return ( 
         <div className="snackbar">
             {
-                notifications.map(({ type, value }) => 
-                        <SnackbarNotification type={type} value={value} />
+                notifications.map(({ id, type, value }) => 
+                        <SnackbarNotification key={id} type={type} value={value} />
                     )
             }
         </div>

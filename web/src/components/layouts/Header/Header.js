@@ -18,10 +18,10 @@ import { LOADING, NOT_LOADED, LOADED } from '../../../constants';
 import HeartIcon from '../../icons/HeartIcon/';
 import PostboxIcon from '../../icons/PostboxIcon/PostboxIcon';
 
-const Header = ({ loginStatus, loadingDataState, fullName }) => {
+const Header = ({ loginStatus, loadingDataState, fullName, iconName }) => {
     const history = useHistory();
-    let darkMode = !['login', 'register'].find((p) => p === history.location.pathname);
-
+    let darkMode = !['/login', '/register'].find((p) => p === history.location.pathname);
+    
     const [minorPanel, setMinorPanel] = useState();
 
     const [userPanelOpen, setUserPanelOpen] = useState(false);
@@ -29,13 +29,9 @@ const Header = ({ loginStatus, loadingDataState, fullName }) => {
     useEffect(() => {
         setHeaderMinorPanel = setMinorPanel;
     }, [ ]);
-
-    useEffect(() => {
-        darkMode = window.location.pathname;
-    }, [window.location.pathname]);
-
+    
     let ref = React.createRef();
-
+    
     return (
         <div className="header-wrapper" dark-mode={darkMode ? "true" : null}>
             <header className="header">
@@ -51,14 +47,14 @@ const Header = ({ loginStatus, loadingDataState, fullName }) => {
                     { ((loginStatus === NOT_LOGINED || loginStatus === UNLOGINED) && loadingDataState !== LOADING) && 
                         <Button.Transparent 
                             id="login-button" 
-                            dark-mode={darkMode ? "true" : null} 
+                            darkMode={darkMode ? "true" : null} 
                             value="Login" 
-                            onClick={history.push("/login")}/>
+                            onClick={() => history.push("/login")}/>
                     }
                     
                     { (loadingDataState === LOADING || loginStatus === LOGINED || loginStatus === LOGINING || loginStatus === UNLOGINING) && 
                         <div className="header-profile" tabIndex={1} onBlur={() => setTimeout(() => setUserPanelOpen(false), 100) }>
-                            { loginStatus === LOGINED && loadingDataState === LOADED && <UserIcon onClick={() => setUserPanelOpen(!userPanelOpen) }  
+                            { loginStatus === LOGINED && loadingDataState === LOADED && <UserIcon src={iconName} onClick={() => setUserPanelOpen(!userPanelOpen) }  
                                     fullName={fullName}/>}
                             { userPanelOpen && <UserPanel /> }
                             { (loginStatus === LOGINING || loadingDataState === LOADING || loginStatus === UNLOGINING) && 
@@ -81,5 +77,5 @@ const Header = ({ loginStatus, loadingDataState, fullName }) => {
 export let setHeaderMinorPanel = (panel) => { }
 
 export default compose(
-    connect(({ user: { loginStatus, loadingDataState, data: { fullName }}}) => ({ loginStatus, loadingDataState, fullName }))
+    connect(({ user: { loginStatus, loadingDataState, data: { fullName, iconName }}}) => ({ loginStatus, loadingDataState, fullName, iconName }))
 )(Header);

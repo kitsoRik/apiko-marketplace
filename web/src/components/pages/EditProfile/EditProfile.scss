@@ -25,9 +25,11 @@
             display: flex;
             justify-content: center;
 
+
             & > *:first-child {
                 height: 100px;
                 width: 100px;
+                font-size: 33px;
             }
 
             & > *:nth-child(2) {

@@ -13,7 +13,7 @@ router.post("/login", async (req, res) => {
 
     if(!email) return sendAsError(res)(requiredError("EMAIL"));
     if(!password) return sendAsError(res)(requiredError("PASSWORD"));
-    console.log(await hashPassword(password));
+    
     const user = await getUserByEmailAndPassword(email, await hashPassword(password));
     
     if(!user) return sendAsError(res)(customError("UNKNOWN_DATA"));

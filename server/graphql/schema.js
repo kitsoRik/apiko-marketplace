@@ -217,7 +217,7 @@ const Mutation = new GraphQLObjectType({
                 
                 if(state) user.savedProducts.push(+id);
                 else user.savedProducts = user.savedProducts.filter(p => p !== +id);
-                user.save().then(console.log);
+                user.save();
 
                 return state;
             }

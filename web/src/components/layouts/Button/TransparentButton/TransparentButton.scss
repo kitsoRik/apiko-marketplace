@@ -4,6 +4,12 @@
 
     border: none;
 
+    transition: color .7s linear;
+
+    &[dark-mode=true] {
+        color: #fff;
+    }
+
     &:hover {
         background-color: #0002;
     }

@@ -1,30 +1,51 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { LOGINED, NOT_LOGINED, LOGINING } from '../../../constants/login';
 import ModalLoading from '../../layouts/ModalLoading/ModalLoading';
 
+import "./withLoginedLock.scss";
+import { notifyError } from '../../layouts/Snackbar/Snackbar';
+
 const withLoginedLock = (needLogin = true) => (WrapperComponent) => {
-    class HOC extends Component {
-        render() {
-            const { history, loginStatus } = this.props;
+    const HOC = (props) => {
+            const { history, loginStatus } = props;
+
+            const [needCheck, setNeedCheck] = useState(false);
+            const [errored, setErrored] = useState(false);
+
+            useEffect(() => {
+                if(loginStatus === LOGINING) setNeedCheck(true);
+            }, [ ]);
+
+            useEffect(() => {
+                if(errored) {
+                    notifyError("Access has blocked by login policy");
+                }
+            }, [ errored ]);
+
+            const wrapper = (
+                <div className="with-logined-lock" loading={loginStatus === LOGINING ? "true" : null}>
+                    { loginStatus !== LOGINING && <WrapperComponent {...props}/> }
+                    { needCheck && <ModalLoading /> }
+                </div>
+            )
+
             if(loginStatus === LOGINING) {
-                return <div style={{width: '100%', height: '100%'}}><ModalLoading /></div>
+                return wrapper;
             }
 
-            if(!needLogin && loginStatus === LOGINED) {
-                history.push("/");
-                return null;
+            if((!needLogin && loginStatus === LOGINED) 
+                || (needLogin && loginStatus === NOT_LOGINED)) {
+                    if(!errored) 
+                        setErrored(true);
+                    history.push("/");
+                    return null;
             }
 
-            if(needLogin && loginStatus === NOT_LOGINED) {
-                history.push("/");
-                return null;
-            }
-
-            return <WrapperComponent {...this.props}/>
-        }
+            return wrapper;
     }
+
     return compose(
         connect(({ user: { loginStatus }}) => ({ loginStatus }))
     )(HOC);

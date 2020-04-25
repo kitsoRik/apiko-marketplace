@@ -25,6 +25,10 @@ const userSchema = new Schema({
         type: [Number], // products ids
         default: []
     },
+    iconName: {
+        type: String,
+        default: ""
+    },
     productsIds: {
         type: [Number],
         default: []
@@ -53,3 +57,5 @@ exports.getUserByProductId = (productId) => userModel.findOne({ productsIds: { $
 exports.getAllUsers = (page, limit) => userModel.find().skip((page - 1) * limit).limit(limit);
 
 exports.saveUserById = (id, fullName, phone) => userModel.findOneAndUpdate({ id }, { fullName, phone }, { new: true });
+
+exports.updateUserIcon = (id, iconName) => userModel.findOneAndUpdate({ id } , { iconName }, { new: true });

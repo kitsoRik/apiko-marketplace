@@ -26,7 +26,7 @@ const Pagination = ({ className, pages = 0, page = 16, onChangePage = (page) => 
 
     return (
         <Form className={`pagination ${className ?? ""}`}>
-            <PaginationSector disabled={page === 1} className="pagination-sector-prev" value="PREV" onClick={() => changePage(page - 1)} />
+            <PaginationSector disabled={page === 1} className="pagination-sector-prev" value="<" onClick={() => changePage(page - 1)} />
             { leftPages?.map(p => <PaginationSector key={p} isCurrent={page === p} value={p} onClick={() => changePage(p)}/>) }
             { leftPages.length !== 0 && <span>...</span> }
 
@@ -34,7 +34,7 @@ const Pagination = ({ className, pages = 0, page = 16, onChangePage = (page) => 
 
             { rightPages.length !== 0 && <span>...</span> }
             { rightPages?.map(p => <PaginationSector key={p} isCurrent={page === p}  value={p} onClick={() => changePage(p)}/>) }
-            <PaginationSector disabled={page >= pages} className="pagination-sector-next" value="NEXT" onClick={() => changePage(page + 1)} />
+            <PaginationSector disabled={page >= pages} className="pagination-sector-next" value=">" onClick={() => changePage(page + 1)} />
         </Form>
     )
 };

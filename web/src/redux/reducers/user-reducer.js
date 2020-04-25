@@ -1,5 +1,5 @@
 import { NOT_LOGINED, LOGINING, LOGINED, LOGINED_ERROR, UNLOGINED, UNLOGINING, UNLOGINED_ERROR } from '../../constants/login';
-import { LOGIN_PENDING, LOGIN_SUCCESS, LOGIN_FAILED, LOAD_DATA_PENDING, LOAD_DATA_SUCCESS, LOAD_DATA_FAILED, UNLOGIN_PENDING, UNLOGIN_FAILED, UNLOGIN_SUCCESS, REGISTER_PENDING, REGISTER_SUCCESS, REGISTER_FAILED, SAVE_USER_PENDING, SAVE_USER_SUCCESS, SAVE_USER_FAILED } from '../actions/user-actions';
+import { LOGIN_PENDING, LOGIN_SUCCESS, LOGIN_FAILED, LOAD_DATA_PENDING, LOAD_DATA_SUCCESS, LOAD_DATA_FAILED, UNLOGIN_PENDING, UNLOGIN_FAILED, UNLOGIN_SUCCESS, REGISTER_PENDING, REGISTER_SUCCESS, REGISTER_FAILED, SAVE_USER_PENDING, SAVE_USER_SUCCESS, SAVE_USER_FAILED, CLEAR_SAVE, SAVE_USER_ICON_PENDING, SAVE_USER_ICON_SUCCESS, SAVE_USER_ICON_FAILED } from '../actions/user-actions';
 import { NOT_LOADED, LOADING, LOADED, LOADED_ERROR, NOT_SAVED, SAVING, SAVED, SAVED_ERROR } from '../../constants';
 import { NOT_REGISTERED, REGISTERING, REGISTERED, REGISTERED_ERROR } from '../../constants/register';
 
@@ -149,6 +149,38 @@ const userReducer = (state = initState, action) => {
             return {
                 ...state,
                 savingState: SAVED_ERROR
+            }
+        }
+
+        case CLEAR_SAVE: {
+            return {
+                ...state,
+                savingState: NOT_SAVED
+            }
+        }
+
+        case SAVE_USER_ICON_PENDING: {
+        
+            return {
+                ...state
+            }
+        }
+        
+        case SAVE_USER_ICON_SUCCESS: {
+            const { iconName } = action.payload;
+            
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    iconName
+                }
+            }
+        }
+        
+        case SAVE_USER_ICON_FAILED: {
+            return {
+                ...state
             }
         }
 

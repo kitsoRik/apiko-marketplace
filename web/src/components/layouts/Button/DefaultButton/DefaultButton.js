@@ -7,7 +7,7 @@ const DefaultButton = ({ className, style, value, disabled, ...props }) => {
         <button 
             className={`button-default ${className ?? ""}`}
             style={style}
-            disabled={disabled ? "true" : null}
+            disabled={disabled ? true : null}
             { ...props }
             >
             { value }

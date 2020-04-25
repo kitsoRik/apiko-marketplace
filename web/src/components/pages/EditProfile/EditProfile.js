@@ -10,14 +10,20 @@ import ModalLoading from '../../layouts/ModalLoading/ModalLoading';
 import withLoginedLock from '../../hocs/withLoginedLock';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { saveUser } from '../../../redux/actions/user-actions';
+import { saveUser, clearSave } from '../../../redux/actions/user-actions';
 import { SAVING, SAVED } from '../../../constants';
 import { notifyInfo } from '../../layouts/Snackbar/Snackbar';
+import Dialog from '../../layouts/Dialog/Dialog';
+import ChangeIconDialog from './ChangeIconDialog/ChangeIconDialog';
 
-const EditProfile = ({ data, savingState, saveUser }) => {
+const EditProfile = ({ data, savingState, saveUser, clearSave }) => {
+
+    const [changeIconDialogOpened, setChangeIconDialogOpened] = useState(false);
 
     const [fullName, setFullName] = useState(data.fullName);
     const [phone, setPhone] = useState("+38");
+    
+    useEffect(() => () => clearSave(), [ ]);
 
     useEffect(() => {
         if(savingState === SAVED) {
@@ -30,8 +36,11 @@ const EditProfile = ({ data, savingState, saveUser }) => {
             <Form className="edit-profile-page-form">
                 <h2 className="edit-profile-page-form-title">Edit profile</h2>
                 <div className="edit-profile-page-form-icon">
-                    <UserIcon />
-                    <Button.Outlined type="outlined" value="Upgrade Photo" />
+                    <UserIcon fullName={fullName} src={data.iconName} />
+                    <Button.Outlined 
+                        type="outlined" 
+                        value="Upgrade Photo" 
+                        onClick={() => setChangeIconDialogOpened(true)}/>
                 </div>
                 <Label className="edit-profile-page-form-full-name" value="Full name">
                     <TextField value={fullName} onChange={(e) => setFullName(e.target.value)}/>
@@ -41,6 +50,10 @@ const EditProfile = ({ data, savingState, saveUser }) => {
                 </Label>
                 <Button.Default className="edit-profile-page-form-save" onClick={() => saveUser(fullName, phone)} value="Save" />
                 { savingState === SAVING && <ModalLoading style={{ top: 0, left: 0 }}/> }
+
+                <ChangeIconDialog 
+                    open={changeIconDialogOpened}
+                    setOpen={setChangeIconDialogOpened}/>
             </Form>
         </div>
     )
@@ -48,5 +61,5 @@ const EditProfile = ({ data, savingState, saveUser }) => {
 
 export default compose(
     withLoginedLock(),
-    connect(({ user: { savingState, data }}) => ({ data, savingState }), { saveUser })
+    connect(({ user: { savingState, data }}) => ({ data, savingState }), { saveUser, clearSave })
 )(EditProfile);

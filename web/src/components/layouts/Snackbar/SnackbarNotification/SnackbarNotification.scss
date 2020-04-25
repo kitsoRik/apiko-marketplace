@@ -1,16 +1,36 @@
 .snackbar-notification {
-    padding: 30px;
+    margin: 10px 0;
+    padding: 10px;
 
+    border: 3px solid #349A89;
+    border-radius: 5px;
+
+    font-size: 1.3em;
+
+    animation: notification-show 0.3s;
 
     &[type=info] {
-        background-color: cyan;
+        color: #FF7A00;
+        background-color: #34CFBE;
     }
 
     &[type=warning] {
-        background-color: yellow;
+        color: #600CAC;
+        background-color: #FFCF00EE;
     }
 
     &[type=error] {
-        background-color: red;
+        color: #6BE400;
+        background-color: #E20048EE;
+    }
+}
+
+@keyframes notification-show {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
     }
 }

@@ -20,7 +20,13 @@ export const
 
     SAVE_USER_PENDING = "SAVE_USER_PENDING",
     SAVE_USER_SUCCESS = "SAVE_USER_SUCCESS",
-    SAVE_USER_FAILED = "SAVE_USER_FAILED";
+    SAVE_USER_FAILED = "SAVE_USER_FAILED",
+
+    SAVE_USER_ICON_PENDING = "SAVE_USER_ICON_PENDING",
+    SAVE_USER_ICON_SUCCESS = "SAVE_USER_ICON_SUCCESS",
+    SAVE_USER_ICON_FAILED = "SAVE_USER_ICON_FAILED",
+
+    CLEAR_SAVE = "CLEAR_SAVE";
 
 const loadDataPending = ({
     type: LOAD_DATA_PENDING
@@ -136,3 +142,29 @@ export const saveUser = asyncActionFactoryWithGraphQLQuery(
     saveUserSuccess,
     saveUserFailed
 );
+
+const saveUserIconPending = ({
+    type: SAVE_USER_ICON_PENDING
+});
+
+const saveUserIconSuccess = ({ iconName }) => ({
+    type: SAVE_USER_ICON_SUCCESS,
+    payload: {
+        iconName
+    }
+});
+
+const saveUserIconFailed = (errors) => ({
+    type: SAVE_USER_ICON_FAILED
+});
+
+export const saveUserIcon = asyncActionFactory(
+    (data) => api.saveUserIcon(data),
+    saveUserIconPending,
+    saveUserIconSuccess,
+    saveUserIconFailed
+);
+
+export const clearSave = () => ({
+    type: CLEAR_SAVE
+});

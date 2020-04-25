@@ -7,5 +7,3 @@ exports.hashPassword = async (password) => new Promise((resolve) => {
         resolve(deriveKey.toString("hex"));
     });
 });
-
-(async () => console.log(await this.hashPassword("123123123")))();

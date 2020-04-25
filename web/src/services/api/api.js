@@ -4,13 +4,6 @@ const axios = Axios.create({
     baseURL: "http://localhost:3500/api", //`https://apiko-marketplace-api-2019.herokuapp.com`;
     withCredentials: true
 });
-
-const graphqlAxios = Axios.create({
-
-});
-
-const get = (path, params = {}) =>
-    Axios.get(`${path}`);
     
 const post = (path, params = {}) =>
     new Promise((r) => setTimeout(() => r(), 1000))

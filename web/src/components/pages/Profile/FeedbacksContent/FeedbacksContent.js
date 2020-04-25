@@ -8,12 +8,22 @@ import { LOADING, LOADED } from '../../../../constants';
 import Pagination from '../../../layouts/Pagination/Pagination';
 import { mapFeedbacksIdsToFeedbacks } from '../../../../redux/mappers/users-mappers';
 import FeedbackCard from '../../../layouts/FeedbackCard/FeedbackCard';
+import ModalLoading from '../../../layouts/ModalLoading/ModalLoading';
 
 const FeedbacksContent = ({ userId, feedbacksStore, loadUserFeedbacks }) => {
     
-    const [page, setPage] = useState(1);
 
-    const feedbacks = [{ id: 1, text: "My custom text"}]
+    const userFeedbacksStore = feedbacksStore[userId];
+
+    useEffect(() => {
+        if(!userFeedbacksStore) loadUserFeedbacks(userId, 1);
+    }, [ ]);
+
+    if(!userFeedbacksStore) {
+        return null;
+    }
+    
+    const { searchSettings: { page, pages }, feedbacks, loadingStatus} = userFeedbacksStore;
 
     return (
         <div className="feedbacks-content">
@@ -22,7 +32,14 @@ const FeedbacksContent = ({ userId, feedbacksStore, loadUserFeedbacks }) => {
                     feedbacks.map(f => <FeedbackCard key={f.id} { ...f }/> )
                 }
             </div>
-            <Pagination onChangePage={setPage} page={page}/>
+
+            { loadingStatus === LOADING && 
+                <div className="feedbacks-content-loading">
+                    <ModalLoading darken={false} />
+                </div> 
+            }
+
+            <Pagination pages={pages} onChangePage={(page) => loadUserFeedbacks(3, page)} page={page}/>
         </div>
     )
 };

@@ -41,9 +41,11 @@ const feedbackModel = model("Feedbacks", feedbackSchema);
 
 exports.createFeedback = (productId, userId, rate, text) => feedbackModel.create({ productId, userId, rate, text });
 exports.getFeedbacksByProductId = (productId, page, limit) => feedbackModel.find({ productId }).skip((page - 1) * limit).limit(limit);
-exports.getFeedbacksByProductIds = (productIds, page, limit) => feedbackModel.find({ productId: { $in: productIds } }).skip((page - 1) * limit).limit(limit);
+exports.getFeedbacksByProductIds = (productIds) => feedbackModel.find({ productId: { $in: productIds } });
 
-exports.getFeedbacksByUserId = async (userId, page = 1, limit = 10) => {
+exports.getFeedbacksByUserId = async (userId, page = 1, limit = 10) => 
+    this.getFeedbacksByProductIds(await getProductsIdsByUserId(userId)).skip((page - 1) * limit).limit(limit);
 
-    return this.getFeedbacksByProductIds(await getProductsIdsByUserId(userId), page, limit);
-};
+exports.getFeedbacksByUserIdCount = async (userId) => 
+    this.getFeedbacksByProductIds(await getProductsIdsByUserId(userId)).countDocuments();
+

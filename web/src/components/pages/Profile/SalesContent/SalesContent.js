@@ -1,48 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import "./SalesContent.scss";
 import Pagination from '../../../layouts/Pagination/Pagination';
 import SaleCard from '../../../layouts/SaleCard/SaleCard';
+import { loadUserSales } from '../../../../redux/actions/users-actions';
+import { LOADING } from '../../../../constants';
+import ModalLoading from '../../../layouts/ModalLoading/ModalLoading';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 
-const SalesContent = ({ userId }) => {
+const SalesContent = ({ userId, salesStore, loadUserSales }) => {
 
-    const [page, setPage] = useState(1);
+    const userSalesStore = salesStore[userId];
 
-    const sales = [
-        {
-            id: 0,
-            user: {
-                id: 3,
-                fullName: "Rostyslav"
-            },
-            product: {
-                id: 0,
-                title: "My custom product"
-            },
-            date: new Date(2019, 7, 22),
-        },
-        {
-            id: 0,
-            user: {
-                id: 3,
-                fullName: "Rostyslav"
-            },
-            product: {
-                id: 0,
-                title: "My custom product"
-            },
-            date: new Date(2019, 7, 22),
-        }
-    ]
+    useEffect(() => {
+        if(!userSalesStore) loadUserSales(userId, 1);
+    }, [ ]);
+
+    if(!userSalesStore) return null;
+
+    const { sales, loadingStatus, searchSettings: { page, pages } } = userSalesStore;
 
     return (
-        <div className="profile-sales-content">
-            <div className="profile-sales-content-container">
-                { sales.map(sale => <SaleCard key={sale.id} { ...sale } />) }
-            </div>
-            <Pagination page={page} onChangePage={setPage}/>
+        <div className="sales-content">
+            { loadingStatus !== LOADING && 
+                <div className="sales-content-container">
+                    { sales.map(s => <SaleCard key={s.id} {...s}/>) }
+                </div>
+            }
+            { loadingStatus === LOADING && 
+                <div className="sales-content-loading">
+                    <ModalLoading darken={false} />
+                </div> 
+            }
+            <Pagination onChangePage={(p) => loadUserSales(userId, p)} page={page} pages={pages}/>
         </div>
     )
 };
 
-export default SalesContent;
+export default compose(
+    connect(({ users: { salesStore }}) => ({ salesStore }), { loadUserSales })
+)(SalesContent);

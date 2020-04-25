@@ -34,6 +34,7 @@ const Register = ({ history, registerStatus, registerError, register }) => {
     switch(registerError?.type) {
         case "EMAIL_IS_BUSY": registerErrorValue = "Email is busy"; break;
     }
+    
     const registerForm = (
         <LoginForm loading={registerStatus === REGISTERING}>
                 <LoginUpperContainer>

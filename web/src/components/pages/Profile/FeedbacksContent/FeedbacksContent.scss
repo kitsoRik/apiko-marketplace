@@ -6,4 +6,15 @@
         display: flex;
         flex-direction: column;
     }
+    
+    &-loading {
+        width: 100%;
+        height: 230px;
+        
+        position: relative;
+
+        & > * {
+            padding: 20px;
+        }
+    }
 }

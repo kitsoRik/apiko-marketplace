@@ -11,18 +11,15 @@ import ModalLoading from '../../../layouts/ModalLoading/ModalLoading';
 
 const ProductsContent = ({ userId, productsStore, loadUserProducts }) => {
     
-    const [page, setPage] = useState(1);
+    const userProductsStore = productsStore[userId];
 
     useEffect(() => {
-        loadUserProducts(userId);
+        if(!userProductsStore) loadUserProducts(userId, 1);
     }, [ ]);
 
-    if(!productsStore[userId]) {
-        return <span>WAIT</span>
-    }
+    if(!userProductsStore) return null;
 
-    const { products, loadingStatus } = productsStore[userId];
-
+    const { products, loadingStatus, searchSettings: { page, pages } } = userProductsStore;
     return (
         <div className="products-content">
             { loadingStatus !== LOADING && 
@@ -35,7 +32,7 @@ const ProductsContent = ({ userId, productsStore, loadUserProducts }) => {
                     <ModalLoading darken={false} />
                 </div> 
             }
-            <Pagination onChangePage={setPage} page={page}/>
+            <Pagination onChangePage={(p) => loadUserProducts(userId, p)} page={page} pages={pages} />
         </div>
     )
 };

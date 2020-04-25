@@ -1,14 +1,11 @@
-import { LOAD_USER_PENDING, LOAD_USER_SUCCESS, LOAD_USER_FAILED, LOAD_USER_PRODUCTS_PENDING, LOAD_USER_PRODUCTS_SUCCESS, LOAD_USER_PRODUCTS_FAILED, LOAD_USER_FEEDBACKS_PENDING, LOAD_USER_FEEDBACKS_SUCCESS, LOAD_USER_FEEDBACKS_FAILED } from "../actions/users-actions"
+import { LOAD_USER_PENDING, LOAD_USER_SUCCESS, LOAD_USER_FAILED, LOAD_USER_PRODUCTS_PENDING, LOAD_USER_PRODUCTS_SUCCESS, LOAD_USER_PRODUCTS_FAILED, LOAD_USER_FEEDBACKS_PENDING, LOAD_USER_FEEDBACKS_SUCCESS, LOAD_USER_FEEDBACKS_FAILED, LOAD_USER_SALES_PENDING, LOAD_USER_SALES_SUCCESS, LOAD_USER_SALES_FAILED } from "../actions/users-actions"
 import { LOADING, LOADED } from '../../constants';
 
 const initState = {
     users: [],
-    productsStore: {
-        // userId - key
-    },
-    feedbacksStore: {
-        // userId - key
-    }
+    productsStore: { },
+    feedbacksStore: { },
+    salesStore: { }
 }
 
 const usersReducer = (state = initState, action) => {
@@ -54,29 +51,43 @@ const usersReducer = (state = initState, action) => {
         }
 
         case LOAD_USER_PRODUCTS_PENDING: {
-            const { userId } = action.payload;
+            const { userId, page } = action.payload;
 
             return {
                 ...state,
                 productsStore: {
                     ...state.productsStore,
                     [userId]: {
-                        loadingStatus: LOADING
+                        ...state.productsStore[userId],
+                        loadingStatus: LOADING,
+                        products: [],
+                        searchSettings: {
+                            page: page,
+                            limit: 10
+                        }
                     }
                 }
             }
         }
 
         case LOAD_USER_PRODUCTS_SUCCESS: {
-            const { products, userId } = action.payload;
-
+            const { products, productsCount, userId } = action.payload;
+            
+            const newproductsIds = products.map(({ id }) => id);
+            const oldproducts = state.productsStore[userId].products.filter(({ id }) => !!newproductsIds.find(+id));
+            
             return {
                 ...state,
                 productsStore: {
                     ...state.productsStore,
                     [userId]: {
+                        ...state.productsStore[userId],
                         loadingStatus: LOADED,
-                        products
+                        products: oldproducts.concat(products),
+                        searchSettings: {
+                            ...state.productsStore[userId].searchSettings,
+                            pages: Math.ceil(productsCount / state.productsStore[userId].searchSettings.limit),
+                        }
                     }
                 }
             }
@@ -97,9 +108,11 @@ const usersReducer = (state = initState, action) => {
                     ...state.feedbacksStore,
                     [userId]: {
                         ...state.feedbacksStore[userId],
+                        loadingStatus: LOADING,
                         feedbacks: [],
-                        pages: {
-                            [page]: []
+                        searchSettings: {
+                            page: page,
+                            limit: 10
                         }
                     }
                 }
@@ -107,21 +120,19 @@ const usersReducer = (state = initState, action) => {
         }
         
         case LOAD_USER_FEEDBACKS_SUCCESS: {
-            const { feedbacks, userId, page } = action.payload;
-
-            const newFeedbacksIds = feedbacks.map(({ id }) => id);
-            const oldFeedbacks = state.feedbacksStore[userId].feedbacks.filter(({ id }) => !!newFeedbacksIds.find(+id));
+            const { feedbacks, feedbacksCount, userId } = action.payload;
 
             return {
                 ...state,
                 feedbacksStore: {
                     ...state.feedbacksStore,
                     [userId]: {
+                        ...state.feedbacksStore[userId],
                         loadingStatus: LOADED,
-                        feedbacks: oldFeedbacks.concat(feedbacks),
-                        pages: {
-                            ...state.feedbacksStore[userId].pages,
-                            [page]: feedbacks.map(({ id }) => id)
+                        feedbacks,
+                        searchSettings: {
+                            ...state.feedbacksStore[userId].searchSettings,
+                            pages:  Math.ceil(feedbacksCount / state.feedbacksStore[userId].searchSettings.limit)
                         }
                     }
                 }
@@ -129,6 +140,52 @@ const usersReducer = (state = initState, action) => {
         }
         
         case LOAD_USER_FEEDBACKS_FAILED: {
+            return {
+                ...state
+            }
+        }
+
+        case LOAD_USER_SALES_PENDING: {
+            const { userId, page } = action.payload;
+
+            return {
+                ...state,
+                salesStore: {
+                    ...state.salesStore,
+                    [userId]: {
+                        ...state.salesStore[userId],
+                        loadingStatus: LOADING,
+                        sales: [],
+                        searchSettings: {
+                            page: page,
+                            limit: 10
+                        }
+                    }
+                }
+            }
+        }
+        
+        case LOAD_USER_SALES_SUCCESS: {
+            const { sales, salesCount, userId } = action.payload;
+
+            return {
+                ...state,
+                salesStore: {
+                    ...state.salesStore,
+                    [userId]: {
+                        ...state.salesStore[userId],
+                        loadingStatus: LOADED,
+                        sales,
+                        searchSettings: {
+                            ...state.salesStore[userId].searchSettings,
+                            pages:  Math.ceil(salesCount / state.salesStore[userId].searchSettings.limit)
+                        }
+                    }
+                }
+            }
+        }
+        
+        case LOAD_USER_SALES_FAILED: {
             return {
                 ...state
             }

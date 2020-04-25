@@ -24,21 +24,9 @@ const Login = ({ history, login, loginStatus }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const _login = () => {
-        login(email, password)
-            .then(result => {
-                history.push("/");
-            })
-            .catch(({ type }) => {
-                switch(type) {
-                    case "EMAIL_IS_REQUIRED": setError("Email is required"); break;
-                    case "PASSWORD_IS_REQUIRED": setError("Password is required"); break;
-                    case "EMAIL_IS_NOT_VALID": setError("Email is not valid"); break;
-                    case "UNKNOWN_DATA": setError("Unknown data"); break;
-                    default: setError("Unknown error"); break;
-                }
-            });
-    }
+    const _login = () => login(email, password)
+                            .then(() => history.push("/"))
+                            .catch((error) => setError(textFromError(error)));
 
     const allowSubmit = () => {
         return checkValidEmail(email) && password;
@@ -85,6 +73,16 @@ const Login = ({ history, login, loginStatus }) => {
             </LoginForm>
         </div>
      );
+}
+
+const textFromError = ({ type }) => {
+    switch(type) {
+        case "EMAIL_IS_REQUIRED": return "Email is required";
+        case "PASSWORD_IS_REQUIRED":  return "Password is required";
+        case "EMAIL_IS_NOT_VALID": return "Email is not valid";
+        case "UNKNOWN_DATA": return "Unknown data";
+        default: return "Unknown error";
+    }
 }
 
 export default compose(

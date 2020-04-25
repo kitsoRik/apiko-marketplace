@@ -1,7 +1,7 @@
-const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLBoolean, GraphQLList, GraphQLSchema, GraphQLID, GraphQLFloat } = require("graphql");
+const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLBoolean, GraphQLList, GraphQLSchema, GraphQLID, GraphQLFloat, GraphQLNonNull } = require("graphql");
 const { getAllUsers, getUserById, getUserByProductId, saveUserById } = require("../db/models/user");
-const { getProductsByIds, getAllProducts } = require("../db/models/product");
-const { getFeedbacksByProductId, getFeedbacksByUserId } = require("../db/models/feedback");
+const { getProductsByIds, getAllProducts, getProductById } = require("../db/models/product");
+const { getFeedbacksByProductId, getFeedbacksByUserId, getFeedbacksByUserIdCount } = require("../db/models/feedback");
 
 const { customError } = require("../helpers/errors");
 
@@ -29,8 +29,14 @@ const UserType = new GraphQLObjectType({
                 page: { type: GraphQLInt },
                 limit: { type: GraphQLInt }
             },
-            resolve: (source, { page, limit }, { user }) => {
-                return getProductsByIds([0]);
+            resolve: async ({ productsIds }, { page, limit }, { user }) => {
+                return getProductsByIds(productsIds).skip((page - 1) * limit).limit(limit);
+            }
+        },
+        productsCount: {
+            type: GraphQLInt,
+            resolve: ({ productsIds }) => {
+                return getProductsByIds(productsIds).countDocuments();
             }
         },
         feedbacks: {
@@ -40,7 +46,29 @@ const UserType = new GraphQLObjectType({
                 limit: { type: GraphQLInt }
             },
             resolve: async ({ id }, { page, limit }) => {
-                return await getFeedbacksByUserId(id);
+                return getFeedbacksByUserId(id, page, limit);
+            }
+        },
+        feedbacksCount: {
+            type: GraphQLInt,
+            resolve: async ({ id }) => {
+                return await getFeedbacksByUserIdCount(id) ;
+            }
+        },
+        sales: {
+            type: new GraphQLList(SaleType),
+            args: {
+                page: { type: new GraphQLNonNull(GraphQLInt) },
+                limit: { type: new GraphQLNonNull(GraphQLInt) }
+            },
+            resolve: ({ id }, { page, limit }) => {
+                return [{ id: 0, userId: 3, productId: 0, date: new Date(2020, 24, 04 )}];
+            }
+        },
+        salesCount: {
+            type: GraphQLInt,
+            resolve: ({ id }) => {
+                return 1;
             }
         }
     })
@@ -93,6 +121,26 @@ const FeedbackType = new GraphQLObjectType({
         createdAt: { type: GraphQLString },
     })
 });
+
+const SaleType = new GraphQLObjectType({
+    name: "sale",
+    fields: () => ({
+        id: { type: GraphQLID },
+        user: { 
+            type: UserType,
+            resolve: ({ userId }) => {
+                return getUserById(userId);
+            }
+        },
+        product: { 
+            type: ProductType,
+            resolve: async ({ productId }) => {
+                return await getProductById(productId);
+            }
+        },
+        date: { type: GraphQLString }
+    })
+})
 
 const Query = new GraphQLObjectType({
     name: 'query',

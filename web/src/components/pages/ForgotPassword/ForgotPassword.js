@@ -20,31 +20,16 @@ const ForgotPassword = (props) => {
     const [email, setEmail] = useState("");
     const [error, setError] = useState(null);
 
-    const sendRestoreLink = () => {
+    const sendRestoreLink = async () => {
         setRestoreStatus(RESTORING);
-        api.restoreRequest(email)
-        .then(({ success, result, error }) => {
-            if(success) {
-                setRestoreStatus(RESTORED);
-            } else {
-                setRestoreStatus(RESTORED_ERROR);
+        const { success, result, error } = await api.restoreRequest(email)
 
-                switch(error.type) {
-                    case "EMAIL_IS_REQUIRED": {
-                        setError("Email cannot be empty");
-                        break;
-                    }
-                    case "EMAIL_IS_NOT_VALID": {
-                        setError("Email is not valid");
-                        break;
-                    }
-                    default: {
-                        setError("Unknown error");
-                        break;
-                    }
-                }
-            }
-        });
+        if(success) {
+            setRestoreStatus(RESTORED);
+        } else {
+            setRestoreStatus(RESTORED_ERROR);
+            setError(textFromError(error));
+        }
     }
     
     return ( 
@@ -78,6 +63,14 @@ const ForgotPassword = (props) => {
             </LoginForm>
         </div>
      );
+}
+
+const textFromError = ({ type }) => {
+    switch(type) {
+        case "EMAIL_IS_REQUIRED": return "Email cannot be empty";
+        case "EMAIL_IS_NOT_VALID": return "Email is not valid";
+        default: return "Unknown error";
+    }
 }
 
 export default withLoginedLock(false)(ForgotPassword);

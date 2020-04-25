@@ -46,7 +46,7 @@ const productModel = model("Products", productSchema);
 exports.createProduct = (title, description, price, category, imageName, photosNames) => 
     productModel.create({ title, description, price, category, imageName, photosNames });
 
-exports.getProductById = (id) => productModel.find({ id });
+exports.getProductById = (id) => productModel.findOne({ id });
 exports.getProductsByIds = (ids) => productModel.find({ id: { $in: ids }});
 
 exports.getAllProducts = (page, limit) => productModel.find().skip((page - 1) * limit).limit(limit);

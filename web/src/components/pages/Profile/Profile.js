@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 import "./Profile.scss";
 import Panel from '../../layouts/Panel/Panel';
-import ProductCard from '../../layouts/ProductCard';
 import UserInformation from './UserInformation/UserInformation';
 import Tabs from './Tabs/Tabs';
 import { compose } from 'redux';
@@ -11,15 +10,16 @@ import { loadUser } from '../../../redux/actions/users-actions';
 import FeedbacksContent from './FeedbacksContent/FeedbacksContent';
 import ProductsContent from './ProductsContent/ProductsContent';
 import SalesContent from './SalesContent/SalesContent';
+import withLoginedLock from '../../hocs/withLoginedLock';
 
-const Profile = ({ loadUser, users }) => {
-
-	const user = users.find(u => +u.id === 3);
+const Profile = ({ loadUser, data, users }) => {
+	const id = data.id;
+	const user = users.find(u => +u.id === id);
 
 	const [tabIndex, setTabIndex] = useState(1);
-	
+
 	useEffect(() => {
-		loadUser(3);
+		loadUser(id);
 	}, [ ]);
 
 	return (
@@ -28,9 +28,9 @@ const Profile = ({ loadUser, users }) => {
 				<UserInformation user={{ fullName: "Pidburachynskyi Rostyslav", location: "Ternopil, Ukraine" }}/>
 				<Tabs tabIndex={tabIndex} setTabIndex={setTabIndex} />
 				<div className="profile-page-main-content">
-					{ tabIndex === 0 && <FeedbacksContent userId={3} /> }
-					{ tabIndex === 1 && <SalesContent userId={3} />}
-					{ tabIndex === 2 && <ProductsContent userId={3} /> }
+					{ tabIndex === 0 && <FeedbacksContent userId={id} /> }
+					{ tabIndex === 1 && <SalesContent userId={id} />}
+					{ tabIndex === 2 && <ProductsContent userId={id} /> }
 				</div>
 			</Panel>
 		</div>
@@ -38,5 +38,6 @@ const Profile = ({ loadUser, users }) => {
 };
 
 export default compose(
-	connect(({ users: { users }}) => ({ users }), { loadUser })
+	connect(({ user: { data }, users: { users }}) => ({ data, users }), { loadUser }),
+	withLoginedLock(true)
 )(Profile);

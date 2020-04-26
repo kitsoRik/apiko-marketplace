@@ -9,28 +9,30 @@ const TextField = ({ className, type = "big", icon, children, value, password, e
 
     const [touched, setTouched] = useState(false);
     const [viewPassword, setViewPassword] = useState(false);
-    
+
     const err = errorIfTouched && touched;
 
-    return ( 
+    return (
         <div className={`text-field ${className}`} type={type}>
-            <div className="text-field-icon">
-                { icon }
-            </div>
-            <input 
-                style={{paddingLeft: `${icon ? 40 : 13}px`}}
-                className="text-field-" 
+            {icon &&
+                <div className="text-field-icon">
+                    {icon}
+                </div>
+            }
+            <input
+                style={{ paddingLeft: `${icon ? 40 : 13}px` }}
+                className="text-field-"
                 error={(err || error) ? "true" : "false"}
-                type={password && !viewPassword? 'password' : 'text'}
+                type={password && !viewPassword ? 'password' : 'text'}
                 onBlur={() => setTouched(true)}
                 value={value}
-                { ...props } />
-                { password && <img 
-                    className="text-field-view-password" 
-                    src={!viewPassword ? ViewPassword : ViewPasswordChecked}
-                    onClick={() => setViewPassword(!viewPassword)}/> }
+                {...props} />
+            {password && <img
+                className="text-field-view-password"
+                src={!viewPassword ? ViewPassword : ViewPasswordChecked}
+                onClick={() => setViewPassword(!viewPassword)} />}
         </div>
-     );
+    );
 }
 
 export default TextField;

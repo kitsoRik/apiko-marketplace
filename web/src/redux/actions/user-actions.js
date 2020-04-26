@@ -127,8 +127,8 @@ const saveUserFailed = (errors) => ({
     type: SAVE_USER_FAILED
 });
 
-const saveUserQuery = (fullName, phone) => 
-`mutation {
+const saveUserQuery = (fullName, phone) =>
+    `mutation {
     saveUser(fullName: "${fullName}", phone: "${phone}") {
       id
       fullName

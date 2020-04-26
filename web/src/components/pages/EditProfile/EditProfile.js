@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import "./EditProfile.scss";
 import Form from '../../layouts/Form';
-import UserIcon from '../../layouts/UserIcon';
+import UserIcon from '../../icons/UserIcon';
 import Label from '../../layouts/Label';
 import TextField from '../../layouts/TextField';
 import Button from '../../layouts/Button';
@@ -12,7 +12,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { saveUser, clearSave } from '../../../redux/actions/user-actions';
 import { SAVING, SAVED } from '../../../constants';
-import { notifyInfo } from '../../layouts/Snackbar/Snackbar';
+import { notifyInfo } from '../../other/Snackbar/Snackbar';
 import Dialog from '../../layouts/Dialog/Dialog';
 import ChangeIconDialog from './ChangeIconDialog/ChangeIconDialog';
 
@@ -22,14 +22,14 @@ const EditProfile = ({ data, savingState, saveUser, clearSave }) => {
 
     const [fullName, setFullName] = useState(data.fullName);
     const [phone, setPhone] = useState("+38");
-    
-    useEffect(() => () => clearSave(), [ ]);
+
+    useEffect(() => () => clearSave(), []);
 
     useEffect(() => {
-        if(savingState === SAVED) {
+        if (savingState === SAVED) {
             notifyInfo("Saved!");
         }
-    }, [ savingState ]);
+    }, [savingState]);
 
     return (
         <div className="edit-profile-page">
@@ -37,23 +37,23 @@ const EditProfile = ({ data, savingState, saveUser, clearSave }) => {
                 <h2 className="edit-profile-page-form-title">Edit profile</h2>
                 <div className="edit-profile-page-form-icon">
                     <UserIcon fullName={fullName} src={data.iconName} />
-                    <Button.Outlined 
-                        type="outlined" 
-                        value="Upgrade Photo" 
-                        onClick={() => setChangeIconDialogOpened(true)}/>
+                    <Button.Outlined
+                        type="outlined"
+                        value="Upgrade Photo"
+                        onClick={() => setChangeIconDialogOpened(true)} />
                 </div>
                 <Label className="edit-profile-page-form-full-name" value="Full name">
-                    <TextField value={fullName} onChange={(e) => setFullName(e.target.value)}/>
+                    <TextField value={fullName} onChange={(e) => setFullName(e.target.value)} />
                 </Label>
                 <Label className="edit-profile-page-form-phone" value="Phone number">
-                    <TextField value={phone} onChange={e => setPhone(e.target.value)}/>
+                    <TextField value={phone} onChange={e => setPhone(e.target.value)} />
                 </Label>
                 <Button.Default className="edit-profile-page-form-save" onClick={() => saveUser(fullName, phone)} value="Save" />
-                { savingState === SAVING && <ModalLoading style={{ top: 0, left: 0 }}/> }
+                {savingState === SAVING && <ModalLoading style={{ top: 0, left: 0 }} />}
 
-                <ChangeIconDialog 
+                <ChangeIconDialog
                     open={changeIconDialogOpened}
-                    setOpen={setChangeIconDialogOpened}/>
+                    setOpen={setChangeIconDialogOpened} />
             </Form>
         </div>
     )
@@ -61,5 +61,5 @@ const EditProfile = ({ data, savingState, saveUser, clearSave }) => {
 
 export default compose(
     withLoginedLock(),
-    connect(({ user: { savingState, data }}) => ({ data, savingState }), { saveUser, clearSave })
+    connect(({ user: { savingState, data } }) => ({ data, savingState }), { saveUser, clearSave })
 )(EditProfile);

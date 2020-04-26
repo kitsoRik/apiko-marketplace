@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import "./Snackbar.scss";
-import SnackbarNotification from './SnackbarNotification/SnackbarNotification';
+import SnackbarNotification from './SnackbarNotification';
 
 let _notifications = [];
 
@@ -21,33 +21,33 @@ const Snackbar = (props) => {
         notifyError = (value) => notifyAny({ id: notifyId++, type: "error", value });
 
         notifyWithType = (type, value) => {
-            switch(type) {
+            switch (type) {
                 case "info": return notifyInfo(value);
                 case "warning": return notifyWarning(value);
                 case "error": return notifyError(value);
                 default: throw "Unknown type for notify";
             }
         }
-    }, [ ]);
+    }, []);
 
-    return ( 
+    return (
         <div className="snackbar">
             {
-                notifications.map(({ id, type, value }) => 
-                        <SnackbarNotification key={id} type={type} value={value} />
-                    )
+                notifications.map(({ id, type, value }) =>
+                    <SnackbarNotification key={id} type={type} value={value} />
+                )
             }
         </div>
-     );
+    );
 }
 
 let notifyId = 1;
 
-let notifyAny = (next) => {}
+let notifyAny = (next) => { }
 
-export let notifyInfo = (value) => {  }
+export let notifyInfo = (value) => { }
 export let notifyWarning = (value) => { }
-export let notifyError = (value) => {  }
+export let notifyError = (value) => { }
 
 export let notifyWithType = (type, value) => { }
 

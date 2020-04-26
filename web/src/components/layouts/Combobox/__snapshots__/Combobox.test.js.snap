@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Combobox should render with options 1`] = `
+<div
+  className="combobox"
+  onBlur={[Function]}
+  tabIndex={0}
+>
+  <div
+    className="combobox-option"
+    onClick={[Function]}
+  >
+    <div>
+      Hello
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Combobox should render without options 1`] = `
+<div
+  className="combobox"
+  onBlur={[Function]}
+  tabIndex={0}
+/>
+`;

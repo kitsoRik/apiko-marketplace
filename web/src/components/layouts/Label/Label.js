@@ -6,25 +6,25 @@ const Label = ({ value, as = "span", error, errorValueIfTouched, className, chil
 
     const [touched, setTouched] = useState(false);
 
-    if(!children) {
-        return textToComponent(as, { 
-            className: `label-solo-value ${className}`, error: error ? "true" : "false", ...props 
+    if (!children) {
+        return textToComponent(as, {
+            className: `label-solo-value ${className}`, error: error ? "true" : null, ...props
         }, value);
     }
 
-    return ( 
+    return (
         <div className={`label ${className}`} {...props} onBlur={() => setTouched(true)}>
             <div className="label-values">
                 {
-                    textToComponent(as, { 
-                        className: `label-values-value ${className}`, error: error ? "true" : "false", ...props 
+                    textToComponent(as, {
+                        className: `label-values-value ${className}`, error: error ? "true" : null, ...props
                     }, value)
                 }
-                {(touched || error) && <span className="label-values-error-value">{ error || errorValueIfTouched }</span>}
+                {(touched || error) && <span className="label-values-error-value">{error || errorValueIfTouched}</span>}
             </div>
-            { children }
+            {children}
         </div>
-     );
+    );
 }
 
 const textToComponent = (as, props = null, content = "") => React.createElement(as, props, content);

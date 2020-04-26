@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OutlinedButton should render with className 1`] = `
+<button
+  className="button-outlined my-custom-class-name"
+/>
+`;
+
+exports[`OutlinedButton should render with value 1`] = `
+<button
+  className="button-outlined "
+>
+  My custom value
+</button>
+`;
+
+exports[`OutlinedButton should render without value 1`] = `
+<button
+  className="button-outlined "
+/>
+`;

@@ -34,12 +34,13 @@ const loadUserFailed = (errors) => ({
     type: LOAD_USER_FAILED
 });
 
-const loadUserQuery = (id) => 
+const loadUserQuery = (id) =>
     `
     query {
         user(id: ${id}) {
             id
          fullName
+         iconName
        }
      }
      `
@@ -81,7 +82,7 @@ const loadUserFeedbacksPending = (userId, page) => ({
     }
 });
 
-const loadUserFeedbacksSuccess = ({ user: { feedbacks, feedbacksCount }}, userId, page) => ({
+const loadUserFeedbacksSuccess = ({ user: { feedbacks, feedbacksCount } }, userId, page) => ({
     type: LOAD_USER_FEEDBACKS_SUCCESS,
     payload: {
         userId,
@@ -94,8 +95,8 @@ const loadUserFeedbacksFailed = (errors) => ({
     type: LOAD_USER_FEEDBACKS_FAILED
 });
 
-const loadUserFeedbacksQuery = (id, page, limit) => 
-`query {
+const loadUserFeedbacksQuery = (id, page, limit) =>
+    `query {
     user(id: ${id}) {
       feedbacks(page: ${page}, limit: ${limit}) {
         id
@@ -106,7 +107,7 @@ const loadUserFeedbacksQuery = (id, page, limit) =>
   }
 `;
 
-const mapStateToFeedbacksSearchSettings = (userId, { users: { feedbacksStore: { [userId]: { searchSettings: { page, limit } } } }}) => 
+const mapStateToFeedbacksSearchSettings = (userId, { users: { feedbacksStore: { [userId]: { searchSettings: { page, limit } } } } }) =>
     [page, limit];
 
 export const loadUserFeedbacks = asyncActionFactoryWithGraphQLQuery(
@@ -124,7 +125,7 @@ const loadUserProductsPending = (userId, page) => ({
     }
 });
 
-const loadUserProductsSuccess = ({ user: { products, productsCount }}, userId, page) => ({
+const loadUserProductsSuccess = ({ user: { products, productsCount } }, userId, page) => ({
     type: LOAD_USER_PRODUCTS_SUCCESS,
     payload: {
         userId,
@@ -137,8 +138,8 @@ const loadUserProductsFailed = (errors) => ({
     type: LOAD_USER_PRODUCTS_FAILED
 });
 
-const loadUserProductsQuery = (id, page, limit) => 
-`query {
+const loadUserProductsQuery = (id, page, limit) =>
+    `query {
     user(id: ${id}) {
      products(page: ${page}, limit: ${limit}) {
         id
@@ -151,7 +152,7 @@ const loadUserProductsQuery = (id, page, limit) =>
    }
  }
 `
-const mapStateToProductsSearchSettings = (userId, { users: { productsStore: { [userId]: { searchSettings: { page, limit } } } }}) => 
+const mapStateToProductsSearchSettings = (userId, { users: { productsStore: { [userId]: { searchSettings: { page, limit } } } } }) =>
     [page, limit];
 
 export const loadUserProducts = asyncActionFactoryWithGraphQLQuery(
@@ -169,10 +170,10 @@ const loadUserSalesPending = (userId, page) => ({
     }
 });
 
-const loadUserSalesSuccess = ({ user: { sales, salesCount }}, userId, page) => ({
+const loadUserSalesSuccess = ({ user: { sales, salesCount } }, userId, page) => ({
     type: LOAD_USER_SALES_SUCCESS,
     payload: {
-        sales, 
+        sales,
         userId,
         salesCount
     }
@@ -182,8 +183,8 @@ const loadUserSalesFailed = (errors) => ({
     type: LOAD_USER_SALES_FAILED
 });
 
-const loadUserSalesQuery = (id, page, limit) => 
-`query {
+const loadUserSalesQuery = (id, page, limit) =>
+    `query {
     user(id: ${id}) {
       sales(page: ${page}, limit: ${limit}) {
         id
@@ -198,7 +199,7 @@ const loadUserSalesQuery = (id, page, limit) =>
   }
 `
 
-const mapStateToSalesSearchSettings = (userId, { users: { salesStore: { [userId]: { searchSettings: { page, limit } } } }}) => 
+const mapStateToSalesSearchSettings = (userId, { users: { salesStore: { [userId]: { searchSettings: { page, limit } } } } }) =>
     [page, limit];
 
 export const loadUserSales = asyncActionFactoryWithGraphQLQuery(

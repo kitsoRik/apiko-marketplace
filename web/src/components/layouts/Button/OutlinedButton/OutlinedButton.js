@@ -2,10 +2,10 @@ import React from 'react';
 
 import "./OutlinedButton.scss";
 
-const OutlinedButton = ({ className, style, value, ...props }) => {
+const OutlinedButton = ({ className, value, ...props }) => {
     return (
-        <button className={`button-outlined ${className ?? ""}`} style={style} { ...props } >
-            { value }
+        <button className={`button-outlined ${className ?? ""}`} {...props} >
+            {value}
         </button>
     )
 };

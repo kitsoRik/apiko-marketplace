@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dialog should render with content 1`] = `
+<div
+  className="dialog "
+  style={
+    Object {
+      "visibility": "visible",
+    }
+  }
+>
+  <div
+    className="form "
+    onClick={[Function]}
+  >
+    <div>
+      Content
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Dialog should render with title 1`] = `
+<div
+  className="dialog "
+  style={
+    Object {
+      "visibility": "visible",
+    }
+  }
+>
+  <div
+    className="form "
+    onClick={[Function]}
+  >
+    <h2
+      className="dialog-title "
+    />
+  </div>
+</div>
+`;
+
+exports[`Dialog should render with title and content 1`] = `
+<div
+  className="dialog "
+  style={
+    Object {
+      "visibility": "visible",
+    }
+  }
+>
+  <div
+    className="form "
+    onClick={[Function]}
+  >
+    <h2
+      className="dialog-title "
+    />
+    <div>
+      Content
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Dialog should render without children 1`] = `
+<div
+  className="dialog "
+  style={
+    Object {
+      "visibility": "visible",
+    }
+  }
+>
+  <div
+    className="form "
+    onClick={[Function]}
+  />
+</div>
+`;

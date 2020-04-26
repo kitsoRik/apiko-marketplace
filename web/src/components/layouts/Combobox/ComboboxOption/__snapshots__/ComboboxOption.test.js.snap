@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ComboboxOption should render with value and text 1`] = `
+<div
+  className="combobox-option"
+>
+  <div>
+    text
+  </div>
+</div>
+`;
+
+exports[`ComboboxOption should render without value and text 1`] = `
+<div
+  className="combobox-option"
+>
+  <div />
+</div>
+`;

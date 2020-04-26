@@ -1,5 +1,4 @@
 .user-panel {
-
     width: 205px;
 
     position: absolute;
@@ -8,7 +7,7 @@
 
     display: grid;
     grid-template-rows: auto repeat(2, 43px);
-    
+
     background-color: #fff;
 
     border-radius: 4px;
@@ -45,7 +44,7 @@
             &-profile-button {
                 margin-top: 6px;
 
-                color: #349A89;
+                color: #349a89;
                 background-color: transparent;
                 border: none;
 
@@ -61,19 +60,18 @@
     &-edit-profile-button {
         padding: 14px 16px 11px;
 
-        color: #349A89;
-        border-bottom: 1px solid #E4E4E4;
-        
+        color: #349a89;
+        border-bottom: 1px solid #e4e4e4;
+
         text-align: left;
         text-transform: uppercase;
     }
-    
+
     &-logout-button {
         padding: 14px 16px 11px;
 
-        color: #349A89;
+        color: #349a89;
         text-align: left;
         text-transform: uppercase;
     }
-
 }

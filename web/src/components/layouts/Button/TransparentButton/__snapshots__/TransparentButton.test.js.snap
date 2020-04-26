@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TransparentButton should render disabled 1`] = `
+<button
+  className="button-transparent "
+  dark-mode={null}
+  disabled="true"
+>
+  My custom value
+</button>
+`;
+
+exports[`TransparentButton should render with className 1`] = `
+<button
+  className="button-transparent my-custom-class-name"
+  dark-mode={null}
+  disabled={null}
+/>
+`;
+
+exports[`TransparentButton should render with darkMode=false 1`] = `
+<button
+  className="button-transparent "
+  dark-mode={null}
+  disabled={null}
+>
+  My custom value
+</button>
+`;
+
+exports[`TransparentButton should render with darkMode=true 1`] = `
+<button
+  className="button-transparent "
+  dark-mode="true"
+  disabled={null}
+>
+  My custom value
+</button>
+`;
+
+exports[`TransparentButton should render with value 1`] = `
+<button
+  className="button-transparent "
+  dark-mode={null}
+  disabled={null}
+>
+  My custom value
+</button>
+`;
+
+exports[`TransparentButton should render without value 1`] = `
+<button
+  className="button-transparent "
+  dark-mode={null}
+  disabled={null}
+/>
+`;

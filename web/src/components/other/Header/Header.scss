@@ -11,8 +11,8 @@
             position: absolute;
             height: 100%;
             width: 100%;
-            
-            transition: all .7s;
+
+            transition: all 0.7s;
 
             background: linear-gradient(180deg, #090810 0%, #171236 100%);
             opacity: 0;
@@ -43,7 +43,7 @@
         cursor: pointer;
     }
 
-    #sell-button {
+    & &-sell-button {
         font-family: Helvetica;
         line-height: 31px;
         height: 31px;
@@ -56,7 +56,7 @@
         color: white;
     }
 
-    #login-button {
+    & &-login-button {
         padding: 0;
 
         height: 31px;
@@ -67,18 +67,18 @@
         & a {
             color: black;
             text-decoration: none;
-            
-            transition: all .7s;
+
+            transition: all 0.7s;
         }
 
-        &[dark-mode] a{
+        &[dark-mode] a {
             color: white;
         }
     }
 
     &-profile {
         height: 100%;
-        
+
         position: relative;
 
         display: flex;
@@ -87,8 +87,8 @@
 
     &-heart {
         & > path {
-            fill: #2E2E2E;
-            transition: all .7s;
+            fill: #2e2e2e;
+            transition: all 0.7s;
         }
 
         &[dark-mode] > path {

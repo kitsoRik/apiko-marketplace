@@ -4,13 +4,13 @@ import "./DefaultButton.scss";
 
 const DefaultButton = ({ className, style, value, disabled, ...props }) => {
     return (
-        <button 
+        <button
             className={`button-default ${className ?? ""}`}
             style={style}
             disabled={disabled ? true : null}
-            { ...props }
-            >
-            { value }
+            {...props}
+        >
+            {value}
         </button>
     )
 };

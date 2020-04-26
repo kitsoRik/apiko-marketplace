@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Label should render with children 1`] = `
+<div
+  className="label undefined"
+  onBlur={[Function]}
+>
+  <div
+    className="label-values"
+  >
+    <span
+      className="label-values-value undefined"
+      error={null}
+    >
+      
+    </span>
+  </div>
+  <div>
+    Children
+  </div>
+</div>
+`;
+
+exports[`Label should render with children and error 1`] = `
+<div
+  className="label undefined"
+  onBlur={[Function]}
+>
+  <div
+    className="label-values"
+  >
+    <span
+      className="label-values-value undefined"
+      error="true"
+    >
+      
+    </span>
+    <span
+      className="label-values-error-value"
+    >
+      My custom value
+    </span>
+  </div>
+  <div>
+    Children
+  </div>
+</div>
+`;
+
+exports[`Label should render with children and error if touched 1`] = `
+<div
+  className="label undefined"
+  onBlur={[Function]}
+>
+  <div
+    className="label-values"
+  >
+    <span
+      className="label-values-value undefined"
+      error={null}
+    >
+      
+    </span>
+  </div>
+  <div>
+    Children
+  </div>
+</div>
+`;
+
+exports[`Label should render with children and value 1`] = `
+<div
+  className="label undefined"
+  onBlur={[Function]}
+>
+  <div
+    className="label-values"
+  >
+    <span
+      className="label-values-value undefined"
+      error={null}
+    >
+      My custom value
+    </span>
+  </div>
+  <div>
+    Children
+  </div>
+</div>
+`;
+
+exports[`Label should render with className 1`] = `
+<span
+  className="label-solo-value my-custom-class-name"
+  error={null}
+>
+  My custom value
+</span>
+`;
+
+exports[`Label should render with error 1`] = `
+<span
+  className="label-solo-value undefined"
+  error="true"
+>
+  
+</span>
+`;
+
+exports[`Label should render with error if touched 1`] = `
+<span
+  className="label-solo-value undefined"
+  error={null}
+>
+  
+</span>
+`;
+
+exports[`Label should render with text 1`] = `
+<span
+  className="label-solo-value undefined"
+  error={null}
+>
+  My custom text
+</span>
+`;
+
+exports[`Label should render with text as h1 1`] = `
+<h1
+  className="label-solo-value undefined"
+  error={null}
+>
+  My custom value
+</h1>
+`;
+
+exports[`Label should render without text 1`] = `
+<span
+  className="label-solo-value undefined"
+  error={null}
+>
+  
+</span>
+`;

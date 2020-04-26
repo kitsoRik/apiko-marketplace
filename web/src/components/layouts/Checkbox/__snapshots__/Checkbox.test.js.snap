@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Checkbox should render with value 1`] = `
+<div
+  className="checkbox undefined"
+>
+  <input
+    checked={false}
+    className="checkbox-input"
+    type="checkbox"
+  />
+  <span
+    className="label-solo-value checkbox-label"
+    error={null}
+  >
+    My custom value
+  </span>
+</div>
+`;
+
+exports[`Checkbox should render with value and checked option 1`] = `
+<div
+  className="checkbox undefined"
+>
+  <input
+    checked={false}
+    className="checkbox-input"
+    type="checkbox"
+  />
+  <span
+    className="label-solo-value checkbox-label"
+    error={null}
+  >
+    My custom value
+  </span>
+</div>
+`;
+
+exports[`Checkbox should render without value 1`] = `
+<div
+  className="checkbox undefined"
+>
+  <input
+    checked={false}
+    className="checkbox-input"
+    type="checkbox"
+  />
+  <span
+    className="label-solo-value checkbox-label"
+    error={null}
+  >
+    
+  </span>
+</div>
+`;

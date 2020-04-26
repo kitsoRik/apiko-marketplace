@@ -13,17 +13,18 @@ const UserType = new GraphQLObjectType({
         verifyed: { type: GraphQLBoolean },
         fullName: { type: GraphQLString },
         email: { type: GraphQLString },
-        saveproducts: { 
-                type: new GraphQLList(ProductType),
-                args: {
-                    page: { type: GraphQLInt },
-                    limit: { type: GraphQLInt },
-                },
-                resolve: ({ savedProducts }, { page, limit }, { user }) => {
-                    return getProductsByIds(savedProducts);
-                }
+        iconName: { type: GraphQLString },
+        saveproducts: {
+            type: new GraphQLList(ProductType),
+            args: {
+                page: { type: GraphQLInt },
+                limit: { type: GraphQLInt },
             },
-        products: { 
+            resolve: ({ savedProducts }, { page, limit }, { user }) => {
+                return getProductsByIds(savedProducts);
+            }
+        },
+        products: {
             type: new GraphQLList(ProductType),
             args: {
                 page: { type: GraphQLInt },
@@ -52,7 +53,7 @@ const UserType = new GraphQLObjectType({
         feedbacksCount: {
             type: GraphQLInt,
             resolve: async ({ id }) => {
-                return await getFeedbacksByUserIdCount(id) ;
+                return await getFeedbacksByUserIdCount(id);
             }
         },
         sales: {
@@ -62,7 +63,7 @@ const UserType = new GraphQLObjectType({
                 limit: { type: new GraphQLNonNull(GraphQLInt) }
             },
             resolve: ({ id }, { page, limit }) => {
-                return [{ id: 0, userId: 3, productId: 0, date: new Date(2020, 24, 04 )}];
+                return [{ id: 0, userId: 3, productId: 0, date: new Date(2020, 24, 04) }];
             }
         },
         salesCount: {
@@ -78,7 +79,7 @@ const ProductType = new GraphQLObjectType({
     name: "Todo",
     fields: () => ({
         id: { type: GraphQLID },
-        owner: { 
+        owner: {
             type: UserType,
             resolve: async ({ id }) => {
                 return await getUserByProductId(id);
@@ -104,7 +105,7 @@ const FeedbackType = new GraphQLObjectType({
     name: "Feedback",
     fields: () => ({
         id: { type: GraphQLID },
-        user: { 
+        user: {
             type: UserType,
             resolve: ({ userId }) => {
                 return getUserById(userId);
@@ -126,13 +127,13 @@ const SaleType = new GraphQLObjectType({
     name: "sale",
     fields: () => ({
         id: { type: GraphQLID },
-        user: { 
+        user: {
             type: UserType,
             resolve: ({ userId }) => {
                 return getUserById(userId);
             }
         },
-        product: { 
+        product: {
             type: ProductType,
             resolve: async ({ productId }) => {
                 return await getProductById(productId);
@@ -145,21 +146,21 @@ const SaleType = new GraphQLObjectType({
 const Query = new GraphQLObjectType({
     name: 'query',
     fields: () => ({
-        products: { 
-                type: new GraphQLList(ProductType),
-                args: {
-                    title: { type: GraphQLString },
-                    location: { type: GraphQLString },
-                    category: { type: GraphQLString },
-                    priceFrom: { type: GraphQLFloat },
-                    priceTo: { type: GraphQLFloat },
-                    page: { type: GraphQLInt },
-                    limit: { type: GraphQLInt },
-                },
-            resolve: (source, { page, limit }, { req, user }, info) => {
-                    return getAllProducts(page, limit);
-                }
+        products: {
+            type: new GraphQLList(ProductType),
+            args: {
+                title: { type: GraphQLString },
+                location: { type: GraphQLString },
+                category: { type: GraphQLString },
+                priceFrom: { type: GraphQLFloat },
+                priceTo: { type: GraphQLFloat },
+                page: { type: GraphQLInt },
+                limit: { type: GraphQLInt },
             },
+            resolve: (source, { page, limit }, { req, user }, info) => {
+                return getAllProducts(page, limit);
+            }
+        },
         users: {
             type: new GraphQLList(UserType),
             args: {
@@ -200,22 +201,22 @@ const Mutation = new GraphQLObjectType({
     fields: () => ({
         changeSavedStateOfProduct: {
             type: GraphQLBoolean,
-            args: { 
+            args: {
                 id: {
                     type: GraphQLID
-                }, 
+                },
                 state: {
                     type: GraphQLBoolean
                 },
             },
             resolve: (source, { id, state }, { user }) => {
-                if(!user) throw "WHAT";
-                if(state && user.savedProducts.find(p => p === +id)) throw "WHAT1";
+                if (!user) throw "WHAT";
+                if (state && user.savedProducts.find(p => p === +id)) throw "WHAT1";
 
-                if(!state && user.savedProducts.indexOf(+id) === -1) throw "WHAT2";
-                
-                
-                if(state) user.savedProducts.push(+id);
+                if (!state && user.savedProducts.indexOf(+id) === -1) throw "WHAT2";
+
+
+                if (state) user.savedProducts.push(+id);
                 else user.savedProducts = user.savedProducts.filter(p => p !== +id);
                 user.save();
 
@@ -229,10 +230,10 @@ const Mutation = new GraphQLObjectType({
                 phone: { type: GraphQLString }
             },
             resolve: (source, { fullName, phone }, { user }) => {
-                if(!user) {
+                if (!user) {
                     throw customError("ACCESS_BLOCKED");
                 }
-                
+
                 return saveUserById(user.id, fullName, phone);
             }
         }

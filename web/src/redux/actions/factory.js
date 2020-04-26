@@ -7,7 +7,7 @@ export const asyncActionFactory = (
             if (pendingActions) callForAll(dispatch, Array.isArray(pendingActions) ? pendingActions : [pendingActions], ...args, getState());
 
             const data = await apiFunc(...args, getState());
-            
+
             if (data.success && successActions) callForAll(dispatch, Array.isArray(successActions) ? successActions : [successActions], data.result, ...args, getState());
             else if (!data.success && failedActions) callForAll(dispatch, Array.isArray(failedActions) ? failedActions : [failedActions], data.error, ...args, getState());
 

@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Form should render with children 1`] = `
+<div
+  className="form "
+>
+  Children
+</div>
+`;
+
+exports[`Form should render with className 1`] = `
+<div
+  className="form my-custom-class-name"
+>
+  Children
+</div>
+`;
+
+exports[`Form should rendered 1`] = `
+<div
+  className="form "
+/>
+`;

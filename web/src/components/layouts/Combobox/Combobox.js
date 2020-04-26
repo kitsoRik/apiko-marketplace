@@ -13,7 +13,7 @@ const Combobox = ({ value, children = [], onChange, ...props }) => {
     }
 
     const onClickOption = (value) => {
-        if(onChange)
+        if (onChange)
             onChange(value);
         setDropable(false);
     }
@@ -24,10 +24,10 @@ const Combobox = ({ value, children = [], onChange, ...props }) => {
         if (c.type === ComboboxOption) optionsElements.push(c);
     });
 
-    let select;
+    let select = null;
 
     optionsElements = React.Children.map(optionsElements, c => {
-        if(c.props.value === value) {
+        if (c.props.value === value) {
             select = React.cloneElement(c, { ...c.props, onClick: onClick });
         }
         return React.cloneElement(c, { ...c.props, onClick: () => onClickOption(c.props.value) })
@@ -35,8 +35,8 @@ const Combobox = ({ value, children = [], onChange, ...props }) => {
 
 
     return (
-        <div tabIndex={0} className="combobox" onBlur={() => setDropable(false)} { ...props }>
-                { select }
+        <div tabIndex={0} className="combobox" onBlur={() => setDropable(false)} {...props}>
+            {select}
             {dropable && <div className="combobox-options">
                 {
                     optionsElements

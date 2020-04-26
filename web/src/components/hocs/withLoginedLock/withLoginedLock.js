@@ -5,7 +5,7 @@ import { LOGINED, NOT_LOGINED, LOGINING } from '../../../constants/login';
 import ModalLoading from '../../layouts/ModalLoading/ModalLoading';
 
 import "./withLoginedLock.scss";
-import { notifyError } from '../../layouts/Snackbar/Snackbar';
+import { notifyError } from '../../other/Snackbar/Snackbar';
 
 const withLoginedLock = (needLogin = true) => (WrapperComponent) => {
     const HOC = (props) => {

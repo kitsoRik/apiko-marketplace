@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Dialog should render with className 1`] = `
+<h2
+  className="dialog-title my-custom-class-name"
+/>
+`;
+
+exports[`Dialog should render with value 1`] = `
+<h2
+  className="dialog-title "
+>
+  My custom title
+</h2>
+`;
+
+exports[`Dialog should render without value 1`] = `
+<h2
+  className="dialog-title "
+/>
+`;

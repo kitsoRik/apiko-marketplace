@@ -20,17 +20,17 @@ const Profile = ({ loadUser, data, users }) => {
 
 	useEffect(() => {
 		loadUser(id);
-	}, [ ]);
+	}, []);
 
 	return (
 		<div className="profile-page">
 			<Panel className="profile-page-panel">
-				<UserInformation user={{ fullName: "Pidburachynskyi Rostyslav", location: "Ternopil, Ukraine" }}/>
+				{user && <UserInformation user={user} />}
 				<Tabs tabIndex={tabIndex} setTabIndex={setTabIndex} />
 				<div className="profile-page-main-content">
-					{ tabIndex === 0 && <FeedbacksContent userId={id} /> }
-					{ tabIndex === 1 && <SalesContent userId={id} />}
-					{ tabIndex === 2 && <ProductsContent userId={id} /> }
+					{tabIndex === 0 && <FeedbacksContent userId={id} />}
+					{tabIndex === 1 && <SalesContent userId={id} />}
+					{tabIndex === 2 && <ProductsContent userId={id} />}
 				</div>
 			</Panel>
 		</div>
@@ -38,6 +38,6 @@ const Profile = ({ loadUser, data, users }) => {
 };
 
 export default compose(
-	connect(({ user: { data }, users: { users }}) => ({ data, users }), { loadUser }),
+	connect(({ user: { data }, users: { users } }) => ({ data, users }), { loadUser }),
 	withLoginedLock(true)
 )(Profile);

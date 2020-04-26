@@ -1,0 +1,184 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TextField should render with icon 1`] = `
+<div
+  className="text-field undefined"
+  type="big"
+>
+  <div
+    className="text-field-icon"
+  >
+    1
+  </div>
+  <input
+    className="text-field-"
+    error="false"
+    onBlur={[Function]}
+    style={
+      Object {
+        "paddingLeft": "40px",
+      }
+    }
+    type="text"
+  />
+</div>
+`;
+
+exports[`TextField should render with placeholder 1`] = `
+<div
+  className="text-field undefined"
+  type="big"
+>
+  <div
+    className="text-field-icon"
+  >
+    1
+  </div>
+  <input
+    className="text-field-"
+    error="false"
+    onBlur={[Function]}
+    placeholder="My custom placeholder"
+    style={
+      Object {
+        "paddingLeft": "40px",
+      }
+    }
+    type="text"
+  />
+</div>
+`;
+
+exports[`TextField should render with placeholder and icon 1`] = `
+<div
+  className="text-field undefined"
+  type="big"
+>
+  <div
+    className="text-field-icon"
+  >
+    1
+  </div>
+  <input
+    className="text-field-"
+    error="false"
+    onBlur={[Function]}
+    placeholder="My custom placeholder"
+    style={
+      Object {
+        "paddingLeft": "40px",
+      }
+    }
+    type="text"
+  />
+</div>
+`;
+
+exports[`TextField should render with placeholder and text 1`] = `
+<div
+  className="text-field undefined"
+  type="big"
+>
+  <input
+    className="text-field-"
+    error="false"
+    onBlur={[Function]}
+    placeholder="My custom placeholder"
+    style={
+      Object {
+        "paddingLeft": "13px",
+      }
+    }
+    type="text"
+    value="My custom value"
+  />
+</div>
+`;
+
+exports[`TextField should render with text 1`] = `
+<div
+  className="text-field undefined"
+  type="big"
+>
+  <input
+    className="text-field-"
+    error="false"
+    onBlur={[Function]}
+    style={
+      Object {
+        "paddingLeft": "13px",
+      }
+    }
+    type="text"
+    value="My custom value"
+  />
+</div>
+`;
+
+exports[`TextField should render with text and icon 1`] = `
+<div
+  className="text-field undefined"
+  type="big"
+>
+  <div
+    className="text-field-icon"
+  >
+    1
+  </div>
+  <input
+    className="text-field-"
+    error="false"
+    onBlur={[Function]}
+    style={
+      Object {
+        "paddingLeft": "40px",
+      }
+    }
+    type="text"
+    value="My custom value"
+  />
+</div>
+`;
+
+exports[`TextField should render with type=password 1`] = `
+<div
+  className="text-field undefined"
+  type="big"
+>
+  <input
+    className="text-field-"
+    error="false"
+    onBlur={[Function]}
+    style={
+      Object {
+        "paddingLeft": "13px",
+      }
+    }
+    type="password"
+  />
+  <img
+    className="text-field-view-password"
+    onClick={[Function]}
+    src="view-password.svg"
+  />
+</div>
+`;
+
+exports[`TextField should render without text 1`] = `
+<div
+  className="text-field undefined"
+  type="big"
+>
+  <input
+    className="text-field-"
+    error="false"
+    onBlur={[Function]}
+    style={
+      Object {
+        "paddingLeft": "13px",
+      }
+    }
+    type="text"
+  />
+</div>
+`;

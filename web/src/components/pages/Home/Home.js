@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { setHeaderMinorPanel } from '../../layouts/Header/Header';
+import { setHeaderMinorPanel } from '../../other/Header/Header';
 import TextField from '../../layouts/TextField';
 import Icon from '../../layouts/Icon';
 
@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 
 import { loadProducts, changeSavedStateOfProduct } from '../../../redux/actions/products-actions';
 import { productsWithChangingSavedState } from '../../../redux/mappers/products-mappers';
-import { notifyInfo, notifyError, notifyWarning } from '../../layouts/Snackbar/Snackbar';
+import { notifyInfo, notifyError, notifyWarning } from '../../other/Snackbar/Snackbar';
 import { LOGINED } from '../../../constants/login';
 
 const Home = ({ loginStatus, products, loadProducts, changeSavedStateOfProduct }) => {
@@ -22,7 +22,7 @@ const Home = ({ loginStatus, products, loadProducts, changeSavedStateOfProduct }
     const [category, setCategory] = useState("unknown");
 
     useEffect(() => {
-        if(products.length === 0)
+        if (products.length === 0)
             loadProducts();
 
         setHeaderMinorPanel(
@@ -51,7 +51,7 @@ const Home = ({ loginStatus, products, loadProducts, changeSavedStateOfProduct }
     }, []);
 
     const changeSavedState = (id, state) => {
-        if(loginStatus === LOGINED) {
+        if (loginStatus === LOGINED) {
             changeSavedStateOfProduct(id, state);
         } else {
             notifyWarning("Please, login before saveing product.")

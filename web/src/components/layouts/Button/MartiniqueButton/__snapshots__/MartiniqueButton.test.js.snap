@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MartiniqueButton should render disabled 1`] = `
+<button
+  className="button-martinique "
+  disabled="true"
+>
+  My custom calue
+</button>
+`;
+
+exports[`MartiniqueButton should render with value 1`] = `
+<button
+  className="button-martinique "
+  disabled={null}
+>
+  My custom value
+</button>
+`;
+
+exports[`MartiniqueButton should render without value 1`] = `
+<button
+  className="button-martinique "
+  disabled={null}
+/>
+`;

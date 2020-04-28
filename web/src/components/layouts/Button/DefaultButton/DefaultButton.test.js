@@ -1,35 +1,50 @@
 import React from 'react';
-import DefaultButton from '../DefaultButton';
-import renderer from 'react-test-renderer';
+import { create } from 'react-test-renderer';
+import DefaultButton from './DefaultButton';
+import { mount } from 'enzyme';
 
-test('Default button', () => {
-    const component = renderer.create(
-        <DefaultButton value="123" />,
-    );
+describe('Default button', () => {
+    it("should render without value", () => {
+        const component = create(<DefaultButton />);
+        const json = component.toJSON();
 
-    let tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+        expect(json).toMatchSnapshot();
+    });
 
+    it("should render with value", () => {
+        const component = create(<DefaultButton value="My custom value" />);
+        const json = component.toJSON();
 
-    tree.props.value = "Hello";
-    tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+        expect(json).toMatchSnapshot();
+    });
 
+    it("should render disabled", () => {
+        const component = create(<DefaultButton value={"My custom calue"} disabled={true} />);
+        const json = component.toJSON();
 
-    tree.props.disabled = true;
-    tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+        expect(json).toMatchSnapshot();
+    });
 
+    it("should have class", () => {
+        const component = mount(<DefaultButton />);
+        expect(component.find("button").hasClass("button-default")).toEqual(true);
+    });
 
-    tree.props.disabled = false;
-    tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+    it("should skip click event", () => {
+        const onClick = jest.fn();
+        const component = mount(<DefaultButton onClick={onClick} disabled={true} />);
+        component.find("button").simulate("click");
+        expect(onClick).toBeCalledTimes(0);
+    });
 
-    tree.props.className = "My custom class name";
-    tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+    it("should emit click event", () => {
+        const onClick = jest.fn();
+        const component = mount(<DefaultButton onClick={onClick} />);
+        const button = component.find("button");
 
-    tree.props.style = { width: '50px' };
-    tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+        button.simulate("click");
+        expect(onClick).toBeCalledTimes(1);
+        button.simulate("click");
+        expect(onClick).toBeCalledTimes(2);
+    });
 });

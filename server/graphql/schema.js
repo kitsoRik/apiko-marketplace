@@ -63,13 +63,13 @@ const UserType = new GraphQLObjectType({
                 limit: { type: new GraphQLNonNull(GraphQLInt) }
             },
             resolve: ({ id }, { page, limit }) => {
-                return [{ id: 0, userId: 3, productId: 0, date: new Date(2020, 24, 04) }];
+                return [];
             }
         },
         salesCount: {
             type: GraphQLInt,
             resolve: ({ id }) => {
-                return 1;
+                return 0;
             }
         }
     })

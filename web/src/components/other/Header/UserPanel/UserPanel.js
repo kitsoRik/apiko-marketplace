@@ -9,14 +9,14 @@ import { Link, useHistory } from 'react-router-dom';
 import Button from '../../../layouts/Button';
 import { unlogin } from '../../../../redux/actions/user-actions';
 
-const UserPanel = ({ email, fullName, unlogin, ...props }) => {
+const UserPanel = ({ email, fullName, unlogin, iconName, ...props }) => {
 
     const history = useHistory();
 
     return (
         <div className="user-panel" {...props}>
             <div className="user-panel-upper">
-                <UserIcon fullName={fullName} />
+                <UserIcon fullName={fullName} src={iconName} />
                 <div className="user-panel-upper-info">
                     <span className="user-panel-upper-info-name">{fullName}</span>
                     <span className="user-panel-upper-info-email">{email}</span>
@@ -36,5 +36,5 @@ const UserPanel = ({ email, fullName, unlogin, ...props }) => {
 }
 
 export default compose(
-    connect(({ user: { data: { email, fullName } } }) => ({ email, fullName }), { unlogin })
+    connect(({ user: { data: { email, fullName, iconName } } }) => ({ email, fullName, iconName }), { unlogin })
 )(UserPanel);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import "./SalesContent.scss";
 import Pagination from '../../../layouts/Pagination/Pagination';
@@ -14,30 +14,30 @@ const SalesContent = ({ userId, salesStore, loadUserSales }) => {
     const userSalesStore = salesStore[userId];
 
     useEffect(() => {
-        if(!userSalesStore) loadUserSales(userId, 1);
-    }, [ ]);
+        if (!userSalesStore) loadUserSales(userId, 1);
+    }, []);
 
-    if(!userSalesStore) return null;
+    if (!userId || !userSalesStore) return null;
 
     const { sales, loadingStatus, searchSettings: { page, pages } } = userSalesStore;
 
     return (
         <div className="sales-content">
-            { loadingStatus !== LOADING && 
+            {loadingStatus !== LOADING &&
                 <div className="sales-content-container">
-                    { sales.map(s => <SaleCard key={s.id} {...s}/>) }
+                    {sales.map(s => <SaleCard key={s.id} {...s} />)}
                 </div>
             }
-            { loadingStatus === LOADING && 
+            {loadingStatus === LOADING &&
                 <div className="sales-content-loading">
                     <ModalLoading darken={false} />
-                </div> 
+                </div>
             }
-            <Pagination onChangePage={(p) => loadUserSales(userId, p)} page={page} pages={pages}/>
+            <Pagination onChangePage={(p) => loadUserSales(userId, p)} page={page} pages={pages} />
         </div>
     )
 };
 
 export default compose(
-    connect(({ users: { salesStore }}) => ({ salesStore }), { loadUserSales })
+    connect(({ users: { salesStore } }) => ({ salesStore }), { loadUserSales })
 )(SalesContent);

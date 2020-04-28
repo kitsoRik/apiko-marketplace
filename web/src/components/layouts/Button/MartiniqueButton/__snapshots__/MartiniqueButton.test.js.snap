@@ -3,7 +3,7 @@
 exports[`MartiniqueButton should render disabled 1`] = `
 <button
   className="button-martinique "
-  disabled="true"
+  disabled={true}
 >
   My custom calue
 </button>
@@ -12,7 +12,7 @@ exports[`MartiniqueButton should render disabled 1`] = `
 exports[`MartiniqueButton should render with value 1`] = `
 <button
   className="button-martinique "
-  disabled={null}
+  disabled={false}
 >
   My custom value
 </button>
@@ -21,6 +21,6 @@ exports[`MartiniqueButton should render with value 1`] = `
 exports[`MartiniqueButton should render without value 1`] = `
 <button
   className="button-martinique "
-  disabled={null}
+  disabled={false}
 />
 `;

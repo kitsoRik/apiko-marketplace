@@ -35,8 +35,8 @@ const userSchema = new Schema({
     }
 });
 
-userSchema.pre("save", async function(n) {
-    if(this.id !== 0) return;
+userSchema.pre("save", async function (n) {
+    if (this.id !== 0) return;
 
     const obj = await userModel.find().sort({ field: 'desc', id: -1 }).limit(1);
     this.id = obj[0] ? obj[0].id + 1 : 0;
@@ -47,15 +47,15 @@ const userModel = model("Users", userSchema);
 
 exports.createUser = (fullName, email, password) => userModel.create({ fullName, email, password });
 exports.getUserById = (id) => userModel.findOne({ id });
-exports.getUserByEmail = (email) => userModel.findOne({ email }, { productsIds });
+exports.getUserByEmail = (email) => userModel.findOne({ email }, { productsIds: true });
 exports.getUserByEmailAndPassword = (email, password) => userModel.findOne({ email, password });
 
 exports.getProductsIdsByUserId = (id) => userModel.findOne({ id }, { productsIds: true }).then(({ productsIds }) => productsIds)
 
-exports.getUserByProductId = (productId) => userModel.findOne({ productsIds: { $elemMatch: { $eq: productId }}});
+exports.getUserByProductId = (productId) => userModel.findOne({ productsIds: { $elemMatch: { $eq: productId } } });
 
 exports.getAllUsers = (page, limit) => userModel.find().skip((page - 1) * limit).limit(limit);
 
 exports.saveUserById = (id, fullName, phone) => userModel.findOneAndUpdate({ id }, { fullName, phone }, { new: true });
 
-exports.updateUserIcon = (id, iconName) => userModel.findOneAndUpdate({ id } , { iconName }, { new: true });
+exports.updateUserIcon = (id, iconName) => userModel.findOneAndUpdate({ id }, { iconName }, { new: true });

@@ -29,6 +29,7 @@ const TextField = ({ className, type = "big", icon, children, value, password, e
                 {...props} />
             {password && <img
                 className="text-field-view-password"
+                alt="View password"
                 src={!viewPassword ? ViewPassword : ViewPasswordChecked}
                 onClick={() => setViewPassword(!viewPassword)} />}
         </div>

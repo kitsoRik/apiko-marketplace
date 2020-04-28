@@ -5,7 +5,7 @@ import SnackbarNotification from './SnackbarNotification';
 
 let _notifications = [];
 
-const Snackbar = (props) => {
+const Snackbar = () => {
     const [notifications, setNotification] = useState([]);
 
     useEffect(() => {

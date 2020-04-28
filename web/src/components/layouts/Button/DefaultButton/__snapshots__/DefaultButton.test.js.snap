@@ -1,55 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Default button 1`] = `
+exports[`Default button should render disabled 1`] = `
 <button
   className="button-default "
-  disabled={null}
+  disabled={true}
 >
-  123
+  My custom calue
 </button>
 `;
 
-exports[`Default button 2`] = `
+exports[`Default button should render with value 1`] = `
 <button
   className="button-default "
   disabled={null}
 >
-  123
+  My custom value
 </button>
 `;
 
-exports[`Default button 3`] = `
+exports[`Default button should render without value 1`] = `
 <button
   className="button-default "
   disabled={null}
->
-  123
-</button>
-`;
-
-exports[`Default button 4`] = `
-<button
-  className="button-default "
-  disabled={null}
->
-  123
-</button>
-`;
-
-exports[`Default button 5`] = `
-<button
-  className="button-default "
-  disabled={null}
->
-  123
-</button>
-`;
-
-exports[`Default button 6`] = `
-<button
-  className="button-default "
-  disabled={null}
->
-  123
-</button>
+/>
 `;

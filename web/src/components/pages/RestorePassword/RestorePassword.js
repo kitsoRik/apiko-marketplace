@@ -8,7 +8,7 @@ import NewPasswordPanel from './NewPasswordPanel';
 import ErrorKeyPanel from './ErrorKeyPanel/ErrorKeyPanel';
 import withLoginedLock from '../../hocs/withLoginedLock';
 
-const RestorePassword = ({ history: { location: { search = "?" } }}) => {
+const RestorePassword = ({ history: { location: { search = "?" } } }) => {
     const key = qs.parse(search.slice(1));
 
     const [keyLoadingStatus, setKeyLoadingStatus] = useState(NOT_LOADED)
@@ -18,23 +18,23 @@ const RestorePassword = ({ history: { location: { search = "?" } }}) => {
         setKeyLoadingStatus(LOADING);
         api.checkRestoreKey(key)
             .then(({ success, error }) => {
-                if(success) {
+                if (success) {
                     setKeyLoadingStatus(LOADED);
                 } else {
                     setKeyLoadingStatus(LOADED_ERROR);
-                    switch(error.type) {
+                    switch (error.type) {
                         case "UNKNOWN_KEY": setError("Unknown key"); break;
                         default: setError("Unknown error"); break;
-                    }                
+                    }
                 }
             });
-    }, [ ]);
+    }, []);
 
     return (
         <div className="restore-password-page">
-            { keyLoadingStatus === LOADED && <NewPasswordPanel /> }
-            { keyLoadingStatus === LOADING && <span>Checking key...</span>}
-            { keyLoadingStatus === LOADED_ERROR && <ErrorKeyPanel error={error}/>}
+            {keyLoadingStatus === LOADED && <NewPasswordPanel />}
+            {keyLoadingStatus === LOADING && <span>Checking key...</span>}
+            {keyLoadingStatus === LOADED_ERROR && <ErrorKeyPanel error={error} />}
         </div>
     )
 }

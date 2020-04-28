@@ -18,7 +18,7 @@ const UserIcon = ({ src, fullName = "", className, ...props }) => {
 
     return (
         <div className={`user-icon ${className ?? ""}`} {...props}>
-            <img src={`http://localhost:3500/static/icons/users/${src}`} />
+            <img src={`http://5.45.118.116:3500/static/icons/users/${src}`} alt="User icon" />
         </div>
     );
 }

@@ -2,11 +2,11 @@ import React from 'react';
 
 import "./MartiniqueButton.scss";
 
-const MartiniqueButton = ({ className, value, disabled, ...props }) => {
+const MartiniqueButton = ({ className, value, disabled = false, ...props }) => {
     return (
         <button
             className={`button-martinique ${className ?? ""}`}
-            disabled={disabled ? "true" : null}
+            disabled={disabled}
             {...props}
         >
             {value}

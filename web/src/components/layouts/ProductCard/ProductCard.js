@@ -2,7 +2,6 @@ import React from 'react';
 
 import Black from '../../../assets/icons/black.png';
 import "./ProductCard.scss";
-import Icon from '../Icon';
 import ModalLoading from '../ModalLoading/ModalLoading';
 import HeartIcon from '../../icons/HeartIcon';
 
@@ -10,7 +9,7 @@ const ProductCard = ({ className, id, title, price, iconName, changingSaveState,
     return (
         <div className={`product-card ${className ?? ""}`} {...props}>
             <div className="product-card-icon">
-                <img src={Black} />
+                <img src={Black} alt="Product icon" />
             </div>
             <div className="product-card-info">
                 <span className="product-card-info-name">{title}</span>

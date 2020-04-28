@@ -13,7 +13,6 @@ import { connect } from 'react-redux';
 import { saveUser, clearSave } from '../../../redux/actions/user-actions';
 import { SAVING, SAVED } from '../../../constants';
 import { notifyInfo } from '../../other/Snackbar/Snackbar';
-import Dialog from '../../layouts/Dialog/Dialog';
 import ChangeIconDialog from './ChangeIconDialog/ChangeIconDialog';
 
 const EditProfile = ({ data, savingState, saveUser, clearSave }) => {
@@ -36,7 +35,7 @@ const EditProfile = ({ data, savingState, saveUser, clearSave }) => {
             <Form className="edit-profile-page-form">
                 <h2 className="edit-profile-page-form-title">Edit profile</h2>
                 <div className="edit-profile-page-form-icon">
-                    <UserIcon fullName={fullName} src={data.iconName} />
+                    <UserIcon fullName={data.fullName} src={data.iconName} />
                     <Button.Outlined
                         type="outlined"
                         value="Upgrade Photo"

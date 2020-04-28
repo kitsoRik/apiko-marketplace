@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Label should be rendered 1`] = `
+<div
+  className="input-image "
+  isDrag={null}
+  onClick={[Function]}
+>
+  <input
+    onChange={[Function]}
+    onDragEnter={[Function]}
+    onDragLeave={[Function]}
+    type="file"
+  />
+  <div
+    className="input-image-container"
+  >
+    <img
+      alt="Unknown"
+      src={null}
+    />
+  </div>
+</div>
+`;
+
+exports[`Label should render with className 1`] = `
+<div
+  className="input-image my-custom-class-name"
+  isDrag={null}
+  onClick={[Function]}
+>
+  <input
+    onChange={[Function]}
+    onDragEnter={[Function]}
+    onDragLeave={[Function]}
+    type="file"
+  />
+  <div
+    className="input-image-container"
+  >
+    <img
+      alt="Unknown"
+      src={null}
+    />
+  </div>
+</div>
+`;

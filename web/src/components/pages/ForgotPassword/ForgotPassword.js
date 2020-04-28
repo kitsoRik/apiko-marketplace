@@ -22,38 +22,38 @@ const ForgotPassword = (props) => {
 
     const sendRestoreLink = async () => {
         setRestoreStatus(RESTORING);
-        const { success, result, error } = await api.restoreRequest(email)
+        const { success, error } = await api.restoreRequest(email)
 
-        if(success) {
+        if (success) {
             setRestoreStatus(RESTORED);
         } else {
             setRestoreStatus(RESTORED_ERROR);
             setError(textFromError(error));
         }
     }
-    
-    return ( 
+
+    return (
         <div className="forgot-password-page">
             <LoginForm loading={restoreStatus === RESTORING}>
                 <LoginUpperContainer>
                     <LoginUpperContainerTitle>Restore Password</LoginUpperContainerTitle>
-                    { restoreStatus === RESTORED &&
+                    {restoreStatus === RESTORED &&
                         <Label className="forgot-password-page-sended">
                             If {email} is exists, message with restore link will have sent
                         </Label>}
-                    { restoreStatus !== RESTORED && 
-                        <Label 
-                            className="login-page__container-upper-form-field" 
+                    {restoreStatus !== RESTORED &&
+                        <Label
+                            className="login-page__container-upper-form-field"
                             value="Email"
                             error={error}>
-                            <TextField 
-                                value={email} 
+                            <TextField
+                                value={email}
                                 placeholder={"Example@gmail.com"}
                                 error={error}
                                 onChange={(e) => setEmail(e.target.value)} />
                         </Label>}
-                    { restoreStatus !== RESTORED && 
-                        <Button.Default 
+                    {restoreStatus !== RESTORED &&
+                        <Button.Default
                             disabled={!checkValidEmail(email)}
                             className="forgot-password-page-sumbit-button"
                             onClick={sendRestoreLink}>
@@ -62,11 +62,11 @@ const ForgotPassword = (props) => {
                 </LoginUpperContainer>
             </LoginForm>
         </div>
-     );
+    );
 }
 
 const textFromError = ({ type }) => {
-    switch(type) {
+    switch (type) {
         case "EMAIL_IS_REQUIRED": return "Email cannot be empty";
         case "EMAIL_IS_NOT_VALID": return "Email is not valid";
         default: return "Unknown error";

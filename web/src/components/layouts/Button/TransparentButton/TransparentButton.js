@@ -6,7 +6,7 @@ const TransparentButton = ({ className, value, disabled = false, darkMode = null
   return (
     <button
       className={`button-transparent ${className ?? ""}`}
-      disabled={disabled ? "true" : null}
+      disabled={disabled}
       dark-mode={darkMode ? "true" : null}
       {...props}>
       {value}

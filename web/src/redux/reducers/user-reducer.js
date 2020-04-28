@@ -1,6 +1,6 @@
-import { NOT_LOGINED, LOGINING, LOGINED, LOGINED_ERROR, UNLOGINED, UNLOGINING, UNLOGINED_ERROR } from '../../constants/login';
+import { NOT_LOGINED, LOGINING, LOGINED, UNLOGINED, UNLOGINING, UNLOGINED_ERROR } from '../../constants/login';
 import { LOGIN_PENDING, LOGIN_SUCCESS, LOGIN_FAILED, LOAD_DATA_PENDING, LOAD_DATA_SUCCESS, LOAD_DATA_FAILED, UNLOGIN_PENDING, UNLOGIN_FAILED, UNLOGIN_SUCCESS, REGISTER_PENDING, REGISTER_SUCCESS, REGISTER_FAILED, SAVE_USER_PENDING, SAVE_USER_SUCCESS, SAVE_USER_FAILED, CLEAR_SAVE, SAVE_USER_ICON_PENDING, SAVE_USER_ICON_SUCCESS, SAVE_USER_ICON_FAILED } from '../actions/user-actions';
-import { NOT_LOADED, LOADING, LOADED, LOADED_ERROR, NOT_SAVED, SAVING, SAVED, SAVED_ERROR } from '../../constants';
+import { NOT_LOADED, LOADING, LOADED, LOADED_ERROR, NOT_SAVED, SAVING, SAVED, SAVED_ERROR, UNLOADED } from '../../constants';
 import { NOT_REGISTERED, REGISTERING, REGISTERED, REGISTERED_ERROR } from '../../constants/register';
 
 const initState = {
@@ -9,7 +9,7 @@ const initState = {
     },
     loadingDataError: null,
     loadingDataState: NOT_LOADED,
-    loginStatus: LOGINING,
+    loginStatus: NOT_LOGINED,
     registerStatus: NOT_REGISTERED,
     registerError: null,
 
@@ -17,12 +17,13 @@ const initState = {
 }
 
 const userReducer = (state = initState, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case REGISTER_PENDING: {
             return {
                 ...state,
                 registerStatus: REGISTERING,
-                registerError: null
+                registerError: null,
+                loadingDataState: LOADING,
             }
         }
 
@@ -30,10 +31,9 @@ const userReducer = (state = initState, action) => {
             const data = action.result;
             return {
                 ...state,
-                registerStatus: REGISTERED,
                 data,
+                registerStatus: REGISTERED,
                 loadingDataState: LOADED,
-                loginStatus: LOGINED
             }
         }
 
@@ -42,13 +42,14 @@ const userReducer = (state = initState, action) => {
             return {
                 ...state,
                 registerStatus: REGISTERED_ERROR,
-                registerError: error
+                registerError: error,
             }
         }
         case LOGIN_PENDING: {
             return {
                 ...state,
-                loginStatus: LOGINING
+                loginStatus: LOGINING,
+                loadingDataState: LOADING,
             }
         }
 
@@ -65,7 +66,8 @@ const userReducer = (state = initState, action) => {
         case LOGIN_FAILED: {
             return {
                 ...state,
-                loginStatus: NOT_LOGINED
+                loginStatus: NOT_LOGINED,
+                loadingDataState: LOADED_ERROR,
             }
         }
         case UNLOGIN_PENDING: {
@@ -78,7 +80,8 @@ const userReducer = (state = initState, action) => {
         case UNLOGIN_SUCCESS: {
             return {
                 ...state,
-                loginStatus: UNLOGINED
+                loginStatus: UNLOGINED,
+                loadingDataState: UNLOADED,
             }
         }
 
@@ -93,8 +96,7 @@ const userReducer = (state = initState, action) => {
             return {
                 ...state,
                 loadingDataError: null,
-                loadingDataState: LOADING,
-                loginStatus: LOGINING
+                loadingDataState: LOADING
             }
         }
 
@@ -107,8 +109,7 @@ const userReducer = (state = initState, action) => {
                     ...user
                 },
                 loadingDataError: null,
-                loadingDataState: LOADED,
-                loginStatus: LOGINED
+                loadingDataState: LOADED
             }
         }
 
@@ -118,21 +119,20 @@ const userReducer = (state = initState, action) => {
             return {
                 ...state,
                 loadingDataError: error,
-                loadingDataState: LOADED_ERROR,
-                loginStatus: NOT_LOGINED
+                loadingDataState: LOADED_ERROR
             }
         }
 
         case SAVE_USER_PENDING: {
-        
+
             return {
                 ...state,
                 savingState: SAVING
             }
         }
-        
+
         case SAVE_USER_SUCCESS: {
-        
+
             const { user: { fullName } } = action.payload;
 
             return {
@@ -144,7 +144,7 @@ const userReducer = (state = initState, action) => {
                 }
             }
         }
-        
+
         case SAVE_USER_FAILED: {
             return {
                 ...state,
@@ -160,15 +160,15 @@ const userReducer = (state = initState, action) => {
         }
 
         case SAVE_USER_ICON_PENDING: {
-        
+
             return {
                 ...state
             }
         }
-        
+
         case SAVE_USER_ICON_SUCCESS: {
             const { iconName } = action.payload;
-            
+
             return {
                 ...state,
                 data: {
@@ -177,7 +177,7 @@ const userReducer = (state = initState, action) => {
                 }
             }
         }
-        
+
         case SAVE_USER_ICON_FAILED: {
             return {
                 ...state

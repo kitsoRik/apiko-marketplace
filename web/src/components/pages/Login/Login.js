@@ -10,9 +10,8 @@ import LoginUpperContainer from '../../layouts/LoginForm/LoginUpperContainer';
 import LoginLowerContainer from '../../layouts/LoginForm/LoginLowerContainer';
 import LoginUpperContainerTitle from '../../layouts/LoginForm/LoginUpperContainer/LoginUpperContainerTitle';
 
-import api from '../../../services/api';
 import { checkValidEmail } from '../../../services/checkers/checkers';
-import { NOT_LOGINED, LOGINING, LOGINED_ERROR, LOGINED } from '../../../constants/login';
+import { LOGINING } from '../../../constants/login';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { login } from '../../../redux/actions/user-actions';
@@ -25,44 +24,44 @@ const Login = ({ history, login, loginStatus }) => {
     const [password, setPassword] = useState("");
 
     const _login = () => login(email, password)
-                            .then(() => history.push("/"))
-                            .catch((error) => setError(textFromError(error)));
+        .then(() => history.push("/"))
+        .catch((error) => setError(textFromError(error)));
 
     const allowSubmit = () => {
         return checkValidEmail(email) && password;
     }
 
-    return ( 
+    return (
         <div className="login-page">
             <LoginForm loading={loginStatus === LOGINING}>
                 <LoginUpperContainer>
                     <LoginUpperContainerTitle>Login</LoginUpperContainerTitle>
-                    { error && <Label error={true} value={error}/> }
-                    <Label 
-                        className="login-page-form-field" 
+                    {error && <Label error={true} value={error} />}
+                    <Label
+                        className="login-page-form-field"
                         value="Email"
                         errorValueIfTouched={!checkValidEmail(email) ? "Email is not valid" : null}>
-                        <TextField 
-                            value={email} 
+                        <TextField
+                            value={email}
                             errorIfTouched={!checkValidEmail(email)}
                             placeholder={"Example@gmail.com"}
                             onChange={(e) => setEmail(e.target.value)} />
                     </Label>
-                    <Label 
-                        className="login-page-form-field" 
+                    <Label
+                        className="login-page-form-field"
                         value="Password"
                         errorValueIfTouched={!password ? "Password is required" : null}>
-                        <TextField 
-                            value={password} 
+                        <TextField
+                            value={password}
                             password={true}
                             errorIfTouched={!password}
                             onChange={(e) => setPassword(e.target.value)} />
                     </Label>
-                    <Link 
-                        className="login-page-forgot-label" 
+                    <Link
+                        className="login-page-forgot-label"
                         to="/forgot-password"
-                        >Don't remeber password?</Link>
-                    <Button.Default disabled={!allowSubmit()} onClick={_login} value="Continue"/>
+                    >Don't remeber password?</Link>
+                    <Button.Default disabled={!allowSubmit()} onClick={_login} value="Continue" />
                 </LoginUpperContainer>
                 <LoginLowerContainer>
                     I have no account,&nbsp;
@@ -72,13 +71,13 @@ const Login = ({ history, login, loginStatus }) => {
                 </LoginLowerContainer>
             </LoginForm>
         </div>
-     );
+    );
 }
 
 const textFromError = ({ type }) => {
-    switch(type) {
+    switch (type) {
         case "EMAIL_IS_REQUIRED": return "Email is required";
-        case "PASSWORD_IS_REQUIRED":  return "Password is required";
+        case "PASSWORD_IS_REQUIRED": return "Password is required";
         case "EMAIL_IS_NOT_VALID": return "Email is not valid";
         case "UNKNOWN_DATA": return "Unknown data";
         default: return "Unknown error";
@@ -86,6 +85,6 @@ const textFromError = ({ type }) => {
 }
 
 export default compose(
-    connect(({ user: { loginStatus }}) => ({ loginStatus }), { login }),
+    connect(({ user: { loginStatus } }) => ({ loginStatus }), { login }),
     withLoginedLock(false)
 )(Login);

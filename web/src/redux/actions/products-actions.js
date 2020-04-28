@@ -1,4 +1,4 @@
-import { asyncActionFactory, asyncActionFactoryWithGraphQLQuery } from "./factory";
+import { asyncActionFactoryWithGraphQLQuery } from "./factory";
 import api from "../../services/api";
 
 export const 

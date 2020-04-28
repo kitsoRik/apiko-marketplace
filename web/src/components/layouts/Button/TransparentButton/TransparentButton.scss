@@ -1,17 +1,27 @@
 .button-transparent {
     color: #000;
-    background-color: transparent;  
+    background-color: transparent;
 
     border: none;
+    border-radius: 4px;
 
-    transition: color .7s linear;
+    transition: 0.1s linear;
+    transition-property: color background-color;
 
-    &[dark-mode=true] {
+    &[dark-mode="true"] {
         color: #fff;
+
+        &:hover {
+            background-color: #fff6;
+        }
     }
 
     &:hover {
         background-color: #0002;
+    }
+
+    &:disabled {
+        background-color: gray;
     }
 
     &:active {

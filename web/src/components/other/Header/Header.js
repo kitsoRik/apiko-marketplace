@@ -5,7 +5,7 @@ import { Link, useHistory } from 'react-router-dom';
 import ApikoLogo from '../ApikoLogo/ApikoLogo';
 import PostboxIcon from '../../icons/PostboxIcon/PostboxIcon';
 import { NOT_LOGINED, UNLOGINED, LOGINED, LOGINING, UNLOGINING } from '../../../constants/login';
-import { LOADING, LOADED } from '../../../constants';
+import { LOADING, LOADED, NOT_LOADED, UNLOADED, LOADED_ERROR } from '../../../constants';
 import UserPanel from './UserPanel/UserPanel';
 import ModalLoading from '../../layouts/ModalLoading/ModalLoading';
 import HeartIcon from '../../icons/HeartIcon';
@@ -28,7 +28,9 @@ const Header = ({ loginStatus, loadingDataState, fullName, iconName }) => {
         return () => setHeaderMinorPanel = null;
     }, []);
 
-    let ref = React.createRef();
+    const visibleLoginButton = loadingDataState === LOADED_ERROR || loadingDataState === UNLOADED;
+    const visibleUserIcon = loadingDataState === LOADED;
+    const visibleUserIconLoading = loadingDataState === LOADING || loginStatus === LOGINING || loginStatus === UNLOGINING;
 
     return (
         <div className="header-wrapper" dark-mode={darkMode ? "true" : null}>
@@ -41,7 +43,7 @@ const Header = ({ loginStatus, loadingDataState, fullName, iconName }) => {
 
                 <Button.Default className="header-sell-button" value="Sell" />
 
-                {((loginStatus === NOT_LOGINED || loginStatus === UNLOGINED) && loadingDataState !== LOADING) &&
+                {visibleLoginButton &&
                     <Button.Transparent
                         className="header-login-button"
                         darkMode={darkMode ? "true" : null}
@@ -49,19 +51,18 @@ const Header = ({ loginStatus, loadingDataState, fullName, iconName }) => {
                         onClick={() => history.push("/login")} />
                 }
 
-                {(loadingDataState === LOADING || loginStatus === LOGINED || loginStatus === LOGINING || loginStatus === UNLOGINING) &&
+                {(visibleUserIcon || visibleUserIconLoading) &&
                     <div
                         className="header-profile"
                         tabIndex={1}
                         onBlur={() => setTimeout(() => setUserPanelOpen(false), 100)}>
-                        {loginStatus === LOGINED && loadingDataState === LOADED &&
+                        {visibleUserIcon &&
                             <UserIcon
                                 src={iconName}
                                 fullName={fullName}
                                 onClick={() => setUserPanelOpen(!userPanelOpen)} />}
                         {userPanelOpen && <UserPanel />}
-                        {(loginStatus === LOGINING || loadingDataState === LOADING || loginStatus === UNLOGINING) &&
-                            <ModalLoading style={{ height: `48px`, width: `48px`, borderRadius: `50%` }} />}
+                        {visibleUserIconLoading && <ModalLoading style={{ height: `48px`, width: `48px`, borderRadius: `50%` }} />}
                     </div>
                 }
 

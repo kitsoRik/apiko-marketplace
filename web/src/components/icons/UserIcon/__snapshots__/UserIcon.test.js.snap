@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserIcon should render with image 1`] = `
+<div
+  className="user-icon "
+>
+  <img
+    alt="User icon"
+    src="http://localhost:3500/static/icons/users/http://..."
+  />
+</div>
+`;
+
+exports[`UserIcon should render without image 1`] = `
+<div
+  className="user-icon "
+>
+  <span
+    style={
+      Object {
+        "background": "orange",
+        "color": "black",
+      }
+    }
+  >
+    P
+    R
+  </span>
+</div>
+`;

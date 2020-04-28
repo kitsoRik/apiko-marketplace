@@ -9,13 +9,13 @@ const initState = {
         page: 1,
         limit: 12,
         priceFrom: -1,
-        priceTo: -1    
+        priceTo: -1
     },
     changingSavedStateOfProductsIds: []
 }
 
 const productsReducer = (state = initState, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case LOAD_PRODUCTS_PENDING: {
 
             return {
@@ -31,7 +31,7 @@ const productsReducer = (state = initState, action) => {
             }
         }
         case LOAD_PRODUCTS_FAILED: {
-            
+
             return {
                 ...state
             }
@@ -48,12 +48,12 @@ const productsReducer = (state = initState, action) => {
         }
 
         case CHANGE_SAVED_STATE_OF_PRODUCT_SUCCESS: {
-            const { id, data: { changeSavedStateOfProduct }} = action;
+            const { id, data: { changeSavedStateOfProduct } } = action;
             const { products, changingSavedStateOfProductsIds } = state;
 
             return {
                 ...state,
-                products: products.map(p => p.id == id ? ({ ...p, saved: changeSavedStateOfProduct}) : p),
+                products: products.map(p => +p.id === +id ? ({ ...p, saved: changeSavedStateOfProduct }) : p),
                 changingSavedStateOfProductsIds: changingSavedStateOfProductsIds.filter(i => i !== id)
             }
         }

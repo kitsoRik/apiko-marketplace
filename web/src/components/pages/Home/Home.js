@@ -14,10 +14,10 @@ import { connect } from 'react-redux';
 
 import { loadProducts, changeSavedStateOfProduct } from '../../../redux/actions/products-actions';
 import { productsWithChangingSavedState } from '../../../redux/mappers/products-mappers';
-import { notifyInfo, notifyError, notifyWarning } from '../../other/Snackbar/Snackbar';
-import { LOGINED } from '../../../constants/login';
+import { notifyWarning } from '../../other/Snackbar/Snackbar';
+import { LOADED } from '../../../constants';
 
-const Home = ({ loginStatus, products, loadProducts, changeSavedStateOfProduct }) => {
+const Home = ({ loadingDataState, products, loadProducts, changeSavedStateOfProduct }) => {
 
     const [category, setCategory] = useState("unknown");
 
@@ -51,10 +51,10 @@ const Home = ({ loginStatus, products, loadProducts, changeSavedStateOfProduct }
     }, []);
 
     const changeSavedState = (id, state) => {
-        if (loginStatus === LOGINED) {
+        if (loadingDataState === LOADED) {
             changeSavedStateOfProduct(id, state);
         } else {
-            notifyWarning("Please, login before saveing product.")
+            notifyWarning("Please, login before saving product.")
         }
     }
 
@@ -81,10 +81,10 @@ const Home = ({ loginStatus, products, loadProducts, changeSavedStateOfProduct }
     );
 }
 
-const mapStateToProps = ({ user: { loginStatus },
+const mapStateToProps = ({ user: { loadingDataState },
     products: { products, changingSavedStateOfProductsIds }
 }) => ({
-    loginStatus,
+    loadingDataState,
     products: productsWithChangingSavedState(products, changingSavedStateOfProductsIds)
 });
 

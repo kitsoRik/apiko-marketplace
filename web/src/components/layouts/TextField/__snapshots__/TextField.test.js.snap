@@ -157,6 +157,7 @@ exports[`TextField should render with type=password 1`] = `
     type="password"
   />
   <img
+    alt="View password"
     className="text-field-view-password"
     onClick={[Function]}
     src="view-password.svg"

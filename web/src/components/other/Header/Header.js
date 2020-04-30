@@ -41,7 +41,7 @@ const Header = ({ loginStatus, loadingDataState, fullName, iconName }) => {
                 <div></div>
                 {loginStatus === LOGINED ? <PostboxIcon /> : <div></div>}
 
-                <Button.Default className="header-sell-button" value="Sell" />
+                <Button.Default className="header-sell-button" value="Sell" onClick={() => history.push("/add-product")} />
 
                 {visibleLoginButton &&
                     <Button.Transparent
@@ -66,7 +66,7 @@ const Header = ({ loginStatus, loadingDataState, fullName, iconName }) => {
                     </div>
                 }
 
-                <HeartIcon className="header-heart" dark-mode={darkMode ? "true" : null} width="24" height="24" />
+                <HeartIcon filed={history.location.pathname === "/saved-items"} color="#fff" onClick={() => history.push("/saved-items")} className="header-heart" dark-mode={darkMode ? "true" : null} width="24" height="24" />
 
                 {minorPanel &&
                     <div className="header-minor-panel">

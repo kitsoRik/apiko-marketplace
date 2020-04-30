@@ -1,8 +1,9 @@
 import React from 'react';
 
 import './UserIcon.scss';
+import { userIconBaseUrl } from '../../../services/api/api';
 
-const UserIcon = ({ src, fullName = "", className, ...props }) => {
+const UserIcon = ({ src, fullName = "", className, local = false, ...props }) => {
 
     const initials = fullName.split(" ").map(s => s[0]);
 
@@ -18,7 +19,7 @@ const UserIcon = ({ src, fullName = "", className, ...props }) => {
 
     return (
         <div className={`user-icon ${className ?? ""}`} {...props}>
-            <img src={`http://5.45.118.116:3500/static/icons/users/${src}`} alt="User icon" />
+            <img src={`${local ? "" : userIconBaseUrl}${src}`} alt="User icon" />
         </div>
     );
 }

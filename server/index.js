@@ -5,7 +5,7 @@ const app = express();
 
 
 app.use(/.*/, (req, res, next) => {
-    if(req.headers.origin) 
+    if (req.headers.origin)
         res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
     else res.setHeader('Access-Control-Allow-Origin', "*");
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -23,6 +23,7 @@ app.use(require("./graphql"));
 
 app.use("/api", require("./routes/auth"));
 app.use("/api", require("./routes/user"));
+app.use("/api", require("./routes/products"));
 
 const start = async () => {
     await connect();

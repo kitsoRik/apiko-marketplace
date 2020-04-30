@@ -13,11 +13,12 @@ import { connect } from 'react-redux';
 import { saveUser, clearSave } from '../../../redux/actions/user-actions';
 import { SAVING, SAVED } from '../../../constants';
 import { notifyInfo } from '../../other/Snackbar/Snackbar';
-import ChangeIconDialog from './ChangeIconDialog/ChangeIconDialog';
+import { saveUserIcon } from '../../../services/api/api';
 
 const EditProfile = ({ data, savingState, saveUser, clearSave }) => {
 
-    const [changeIconDialogOpened, setChangeIconDialogOpened] = useState(false);
+    const [imageData, setImageData] = useState(null);
+    const [image, setImage] = useState(data.iconName);
 
     const [fullName, setFullName] = useState(data.fullName);
     const [phone, setPhone] = useState("+38");
@@ -30,29 +31,54 @@ const EditProfile = ({ data, savingState, saveUser, clearSave }) => {
         }
     }, [savingState]);
 
+    const inputImageRef = React.createRef();
+
+    const onImageChange = (e) => {
+        const file = e.target.files[0];
+
+        if (!file) return;
+
+        let reader = new FileReader();
+
+        reader.onload = (event) => {
+            setImage(event.target.result);
+        }
+
+        setImageData(file);
+        reader.readAsDataURL(file);
+    }
+
+    const save = () => {
+        saveUser(fullName, phone);
+
+        if (!!imageData) {
+            const data = new FormData()
+            data.append('icon', imageData);
+
+            saveUserIcon(data);
+        }
+    }
+
     return (
         <div className="edit-profile-page">
             <Form className="edit-profile-page-form">
                 <h2 className="edit-profile-page-form-title">Edit profile</h2>
                 <div className="edit-profile-page-form-icon">
-                    <UserIcon fullName={data.fullName} src={data.iconName} />
+                    <UserIcon fullName={data.fullName} src={image} local={!!imageData} />
                     <Button.Outlined
                         type="outlined"
                         value="Upgrade Photo"
-                        onClick={() => setChangeIconDialogOpened(true)} />
+                        onClick={() => inputImageRef.current.click()} />
+                    <input type="file" ref={inputImageRef} style={{ display: "none" }} onChange={onImageChange} />
                 </div>
                 <Label className="edit-profile-page-form-full-name" value="Full name">
-                    <TextField value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                    <TextField value={fullName} onChange={value => setFullName(value)} />
                 </Label>
                 <Label className="edit-profile-page-form-phone" value="Phone number">
-                    <TextField value={phone} onChange={e => setPhone(e.target.value)} />
+                    <TextField value={phone} onChange={value => setPhone(value)} />
                 </Label>
-                <Button.Default className="edit-profile-page-form-save" onClick={() => saveUser(fullName, phone)} value="Save" />
+                <Button.Default className="edit-profile-page-form-save" onClick={save} value="Save" />
                 {savingState === SAVING && <ModalLoading style={{ top: 0, left: 0 }} />}
-
-                <ChangeIconDialog
-                    open={changeIconDialogOpened}
-                    setOpen={setChangeIconDialogOpened} />
             </Form>
         </div>
     )
@@ -60,5 +86,5 @@ const EditProfile = ({ data, savingState, saveUser, clearSave }) => {
 
 export default compose(
     withLoginedLock(),
-    connect(({ user: { savingState, data } }) => ({ data, savingState }), { saveUser, clearSave })
+    connect(({ user: { savingState, data } }) => ({ data, savingState }), { saveUser, clearSave, saveUserIcon })
 )(EditProfile);

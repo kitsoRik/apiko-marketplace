@@ -1,0 +1,19 @@
+.text-field-autocomplete-option {
+    padding: 4px;
+    margin: 1px 0;
+
+    display: flex;
+
+    &[active="true"] {
+        background-color: #0005;
+    }
+
+    &-icon {
+        margin-right: 10px;
+        height: 17px;
+        width: 17px;
+    }
+
+    &-text {
+    }
+}

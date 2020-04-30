@@ -3,6 +3,9 @@
 exports[`TextField should render with icon 1`] = `
 <div
   className="text-field undefined"
+  onBlur={[Function]}
+  onFocus={[Function]}
+  tabIndex="1"
   type="big"
 >
   <div
@@ -14,12 +17,15 @@ exports[`TextField should render with icon 1`] = `
     className="text-field-"
     error="false"
     onBlur={[Function]}
+    onChange={[Function]}
+    onKeyDown={[Function]}
     style={
       Object {
         "paddingLeft": "40px",
       }
     }
     type="text"
+    value=""
   />
 </div>
 `;
@@ -27,6 +33,9 @@ exports[`TextField should render with icon 1`] = `
 exports[`TextField should render with placeholder 1`] = `
 <div
   className="text-field undefined"
+  onBlur={[Function]}
+  onFocus={[Function]}
+  tabIndex="1"
   type="big"
 >
   <div
@@ -38,6 +47,8 @@ exports[`TextField should render with placeholder 1`] = `
     className="text-field-"
     error="false"
     onBlur={[Function]}
+    onChange={[Function]}
+    onKeyDown={[Function]}
     placeholder="My custom placeholder"
     style={
       Object {
@@ -45,6 +56,7 @@ exports[`TextField should render with placeholder 1`] = `
       }
     }
     type="text"
+    value=""
   />
 </div>
 `;
@@ -52,6 +64,9 @@ exports[`TextField should render with placeholder 1`] = `
 exports[`TextField should render with placeholder and icon 1`] = `
 <div
   className="text-field undefined"
+  onBlur={[Function]}
+  onFocus={[Function]}
+  tabIndex="1"
   type="big"
 >
   <div
@@ -63,6 +78,8 @@ exports[`TextField should render with placeholder and icon 1`] = `
     className="text-field-"
     error="false"
     onBlur={[Function]}
+    onChange={[Function]}
+    onKeyDown={[Function]}
     placeholder="My custom placeholder"
     style={
       Object {
@@ -70,6 +87,7 @@ exports[`TextField should render with placeholder and icon 1`] = `
       }
     }
     type="text"
+    value=""
   />
 </div>
 `;
@@ -77,12 +95,17 @@ exports[`TextField should render with placeholder and icon 1`] = `
 exports[`TextField should render with placeholder and text 1`] = `
 <div
   className="text-field undefined"
+  onBlur={[Function]}
+  onFocus={[Function]}
+  tabIndex="1"
   type="big"
 >
   <input
     className="text-field-"
     error="false"
     onBlur={[Function]}
+    onChange={[Function]}
+    onKeyDown={[Function]}
     placeholder="My custom placeholder"
     style={
       Object {
@@ -98,12 +121,17 @@ exports[`TextField should render with placeholder and text 1`] = `
 exports[`TextField should render with text 1`] = `
 <div
   className="text-field undefined"
+  onBlur={[Function]}
+  onFocus={[Function]}
+  tabIndex="1"
   type="big"
 >
   <input
     className="text-field-"
     error="false"
     onBlur={[Function]}
+    onChange={[Function]}
+    onKeyDown={[Function]}
     style={
       Object {
         "paddingLeft": "13px",
@@ -118,6 +146,9 @@ exports[`TextField should render with text 1`] = `
 exports[`TextField should render with text and icon 1`] = `
 <div
   className="text-field undefined"
+  onBlur={[Function]}
+  onFocus={[Function]}
+  tabIndex="1"
   type="big"
 >
   <div
@@ -129,6 +160,8 @@ exports[`TextField should render with text and icon 1`] = `
     className="text-field-"
     error="false"
     onBlur={[Function]}
+    onChange={[Function]}
+    onKeyDown={[Function]}
     style={
       Object {
         "paddingLeft": "40px",
@@ -143,18 +176,24 @@ exports[`TextField should render with text and icon 1`] = `
 exports[`TextField should render with type=password 1`] = `
 <div
   className="text-field undefined"
+  onBlur={[Function]}
+  onFocus={[Function]}
+  tabIndex="1"
   type="big"
 >
   <input
     className="text-field-"
     error="false"
     onBlur={[Function]}
+    onChange={[Function]}
+    onKeyDown={[Function]}
     style={
       Object {
         "paddingLeft": "13px",
       }
     }
     type="password"
+    value=""
   />
   <img
     alt="View password"
@@ -168,18 +207,24 @@ exports[`TextField should render with type=password 1`] = `
 exports[`TextField should render without text 1`] = `
 <div
   className="text-field undefined"
+  onBlur={[Function]}
+  onFocus={[Function]}
+  tabIndex="1"
   type="big"
 >
   <input
     className="text-field-"
     error="false"
     onBlur={[Function]}
+    onChange={[Function]}
+    onKeyDown={[Function]}
     style={
       Object {
         "paddingLeft": "13px",
       }
     }
     type="text"
+    value=""
   />
 </div>
 `;

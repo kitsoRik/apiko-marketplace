@@ -1,0 +1,22 @@
+.saved-items-page {
+    &-form {
+        padding: 25px;
+
+        &-title {
+            margin-bottom: 25px;
+        }
+
+        &-products-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+
+            grid-column-gap: 5px;
+            grid-row-gap: 10px;
+
+            & .product-card {
+                height: 212px;
+                width: 206.25px;
+            }
+        }
+    }
+}

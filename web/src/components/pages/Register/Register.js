@@ -14,85 +14,182 @@ import withLoginedLock from '../../hocs/withLoginedLock/withLoginedLock';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { register } from '../../../redux/actions/user-actions';
+import { Formik } from 'formik';
 
 const Register = ({ history, registerStatus, registerError, register }) => {
 
-    const [email, setEmail] = useState("");
-    const [fullName, setFullName] = useState("");
-    const [password, setPassword] = useState("");
-    const [passwordAgain, setPasswordAgain] = useState("");
+    const onSubmit = ({ email, fullName, password }, { setSubmitting, setErrors }) => {
+        setSubmitting(true);
+        register(email, fullName, password)
+            .then(console.log)
+            .catch(({ type }) => {
+                switch (type) {
+                    case "EMAIL_IS_BUSY": setSubmitting(false); setErrors({ email: "Email is busy" }); break;
+                    default: break;
+                }
+            });
+    }
 
-    const allowSubmit = () =>
-        !checkEmailValid(email)
-        && !checkFullNameValid(fullName)
-        && !checkPasswordValid(password)
-        && !checkPasswordAgainValid(password, passwordAgain);
+    const initialValues = { email: "", password: "", passwordAgain: "", fullName: "" };
+    const validate = ({ email, password, passwordAgain, fullName }) => {
+        const errors = {};
 
-    let registerErrorValue = "";
+        if (!email) errors.email = "Email is required"
+        else if (!/[a-zA-Z\d+]+@[a-zA-Z]+\.[a-zA-Z]{1,5}/.test(email)) errors.email = "Email is not valid";
 
-    switch (registerError?.type) {
-        case "EMAIL_IS_BUSY": registerErrorValue = "Email is busy"; break;
-        default: break;
+        if (password.length < 8) errors.password = "Length must be greater or equal eight";
+        if (passwordAgain.length < 8) errors.passwordAgain = "Length must be greater or equal eight"
+        else if (passwordAgain !== password) errors.passwordAgain = "Passwords is not equal";
+
+
+        if (fullName.length < 2) errors.fullName = "Length must be greater or equal two";
+
+
+        return errors;
     }
 
     const registerForm = (
-        <LoginForm loading={registerStatus === REGISTERING}>
-            <LoginUpperContainer>
-                <LoginUpperContainerTitle>Register</LoginUpperContainerTitle>
-                {registerStatus === REGISTERED_ERROR && <Label error={true} value={registerErrorValue} />}
-                <Label
-                    className="register-page-form-field"
-                    value="Email"
-                    errorValueIfTouched={checkEmailValid(email)}>
-                    <TextField
-                        value={email}
-                        placeholder={"Example@gmail.com"}
-                        errorIfTouched={checkEmailValid(email)}
-                        onChange={(e) => setEmail(e.target.value)} />
-                </Label>
-                <Label
-                    className="register-page-form-field"
-                    value="Full name"
-                    errorValueIfTouched={checkFullNameValid(fullName)}>
-                    <TextField
-                        value={fullName}
-                        errorIfTouched={checkFullNameValid(fullName)}
-                        onChange={(e) => setFullName(e.target.value)} />
-                </Label>
-                <Label
-                    className="register-page-form-field"
-                    value="Password"
-                    errorValueIfTouched={checkPasswordValid(password)}>
-                    <TextField
-                        value={password}
-                        errorIfTouched={checkPasswordValid(password)}
-                        password={true}
-                        onChange={(e) => setPassword(e.target.value)} />
-                </Label>
-                <Label
-                    className="register-page-form-field"
-                    value="Password again"
-                    errorValueIfTouched={checkPasswordAgainValid(password, passwordAgain)}>
-                    <TextField
-                        value={passwordAgain}
-                        errorIfTouched={checkPasswordAgainValid(password, passwordAgain)}
-                        password={true}
-                        onChange={(e) => setPasswordAgain(e.target.value)} />
-                </Label>
-
-                <Button.Default
-                    className="register-page-sumbit-button"
-                    disabled={!allowSubmit()}
-                    onClick={() => register(email, fullName, password)} value="Register" />
-            </LoginUpperContainer>
-            <LoginLowerContainer>
-                I already have account,&nbsp;
+        <Formik
+            initialValues={initialValues}
+            validate={validate}
+            onSubmit={onSubmit}
+        >
+            {
+                ({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting
+                }) => (
+                        <LoginForm loading={isSubmitting} onSubmit={handleSubmit}>
+                            <LoginUpperContainer>
+                                <LoginUpperContainerTitle>Register</LoginUpperContainerTitle>
+                                <Label
+                                    className="register-page-form-field"
+                                    value="Email"
+                                    error={!!touched.email && errors.email}>
+                                    <TextField
+                                        value={values.email}
+                                        placeholder={"Example@gmail.com"}
+                                        name="email"
+                                        error={!!touched.email && !!errors.email}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                </Label>
+                                <Label
+                                    className="register-page-form-field"
+                                    value="Full name"
+                                    error={!!touched.fullName && errors.fullName}>
+                                    <TextField
+                                        value={values.fullName}
+                                        error={!!touched.fullName && !!errors.fullName}
+                                        name="fullName"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                </Label>
+                                <Label
+                                    className="register-page-form-field"
+                                    value="Password"
+                                    error={!!touched.password && errors.password}>
+                                    <TextField
+                                        value={values.password}
+                                        error={!!touched.password && !!errors.password}
+                                        name="password"
+                                        password={true}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                </Label>
+                                <Label
+                                    className="register-page-form-field"
+                                    value="Password again"
+                                    error={!!touched.passwordAgain && errors.passwordAgain}>
+                                    <TextField
+                                        value={values.passwordAgain}
+                                        error={!!touched.passwordAgain && !!errors.passwordAgain}
+                                        password={true}
+                                        name="passwordAgain"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur} />
+                                </Label>
+                                <Button.Default
+                                    className="register-page-sumbit-button"
+                                    disabled={Object.keys(errors).length !== 0 || Object.keys(touched).length === 0}
+                                    type="submit"
+                                    onClick={handleSubmit} value="Register" />
+                            </LoginUpperContainer>
+                            <LoginLowerContainer>
+                                I already have account,&nbsp;
                     <span className="register-page-link">
-                    <Link to="/login">LOGIN IN</Link>
-                </span>
-            </LoginLowerContainer>
-        </LoginForm>
+                                    <Link to="/login">LOGIN IN</Link>
+                                </span>
+                            </LoginLowerContainer>
+                        </LoginForm>
+                    )
+            }
+        </Formik>
     );
+
+    // const registerForm = (
+    //     <LoginForm loading={registerStatus === REGISTERING}>
+    //         <LoginUpperContainer>
+    //             <LoginUpperContainerTitle>Register</LoginUpperContainerTitle>
+    //             {registerStatus === REGISTERED_ERROR && <Label error={true} value={registerErrorValue} />}
+    //             <Label
+    //                 className="register-page-form-field"
+    //                 value="Email"
+    //                 errorValueIfTouched={checkEmailValid(email)}>
+    //                 <TextField
+    //                     value={email}
+    //                     placeholder={"Example@gmail.com"}
+    //                     errorIfTouched={checkEmailValid(email)}
+    //                     onChange={(e) => setEmail(e.target.value)} />
+    //             </Label>
+    //             <Label
+    //                 className="register-page-form-field"
+    //                 value="Full name"
+    //                 errorValueIfTouched={checkFullNameValid(fullName)}>
+    //                 <TextField
+    //                     value={fullName}
+    //                     errorIfTouched={checkFullNameValid(fullName)}
+    //                     onChange={(e) => setFullName(e.target.value)} />
+    //             </Label>
+    //             <Label
+    //                 className="register-page-form-field"
+    //                 value="Password"
+    //                 errorValueIfTouched={checkPasswordValid(password)}>
+    //                 <TextField
+    //                     value={password}
+    //                     errorIfTouched={checkPasswordValid(password)}
+    //                     password={true}
+    //                     onChange={(e) => setPassword(e.target.value)} />
+    //             </Label>
+    //             <Label
+    //                 className="register-page-form-field"
+    //                 value="Password again"
+    //                 errorValueIfTouched={checkPasswordAgainValid(password, passwordAgain)}>
+    //                 <TextField
+    //                     value={passwordAgain}
+    //                     errorIfTouched={checkPasswordAgainValid(password, passwordAgain)}
+    //                     password={true}
+    //                     onChange={(e) => setPasswordAgain(e.target.value)} />
+    //             </Label>
+
+    //             <Button.Default
+    //                 className="register-page-sumbit-button"
+    //                 disabled={!allowSubmit()}
+    //                 onClick={() => register(email, fullName, password)} value="Register" />
+    //         </LoginUpperContainer>
+    //         <LoginLowerContainer>
+    //             I already have account,&nbsp;
+    //                 <span className="register-page-link">
+    //                 <Link to="/login">LOGIN IN</Link>
+    //             </span>
+    //         </LoginLowerContainer>
+    //     </LoginForm>
+    // );
 
     const registeredForm = (
         <LoginForm>
@@ -110,31 +207,6 @@ const Register = ({ history, registerStatus, registerError, register }) => {
             {registerStatus === REGISTERED && registeredForm}
         </div>
     );
-}
-
-function checkEmailValid(email) {
-    if (!email) return "Email is required";
-    if (!/[a-zA-Z\d+]+@[a-zA-Z]+\.[a-zA-Z]{1,5}/.test(email))
-        return "Email is not valid";
-}
-
-function checkFullNameValid(fullName) {
-    if (typeof fullName !== 'string') throw new Error("It is not a string");
-
-    if (fullName.length < 2) return "Length must be greater or equal two";
-
-    return null;
-}
-
-function checkPasswordValid(pass) {
-    if (typeof pass !== 'string') throw new Error("It is not a string");
-    if (pass.length < 8) return "Length must be greater or equal eight"
-
-    return null;
-}
-
-function checkPasswordAgainValid(pass, again) {
-    return checkPasswordValid(pass) || pass !== again ? "Password not equal password again" : null;
 }
 
 export default compose(

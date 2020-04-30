@@ -1,38 +1,168 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import ViewPassword from '../../../assets/icons/view-password.svg';
 import ViewPasswordChecked from '../../../assets/icons/view-password-checked.svg';
 
+import ModalLoading from '../ModalLoading/ModalLoading';
+
+import _ from 'lodash';
+
 import './TextField.scss';
 
-const TextField = ({ className, type = "big", icon, children, value, password, error, errorIfTouched, ...props }) => {
-
+const TextField = ({
+    className,
+    type = "big",
+    icon,
+    children,
+    loading = false,
+    multiline = false,
+    autoCompleteOptions,
+    autoCompleteOptionsWhenEmptyHeader = null,
+    autoCompleteOptionsWhenEmpty = null,
+    value = "", password, error, errorIfTouched, onChange = () => { }, ...props }) => {
+    const [inputValue, setInputValue] = useState(value);
     const [touched, setTouched] = useState(false);
     const [viewPassword, setViewPassword] = useState(false);
 
+    const [autocompleteIndex, setAutocompleteIndex] = useState(-1);
+
+    const [inFocus, setInFocus] = useState(false);
+
     const err = errorIfTouched && touched;
 
+    useEffect(() => {
+        onChange(inputValue);
+    }, [inputValue]);
+
+    useEffect(() => {
+        setInputValue(value);
+    }, [value]);
+
+    const onKeyDown = (e) => {
+        switch (e.key) {
+            case "ArrowDown": {
+                e.preventDefault();
+                if (autocompleteIndex === autoCompleteOptions.length - 1) {
+                    setAutocompleteIndex(0);
+                    break;
+                }
+                setAutocompleteIndex(autocompleteIndex + 1);
+                break;
+            }
+            case "ArrowUp": {
+                if (autocompleteIndex === -1) break;
+                e.preventDefault();
+                setAutocompleteIndex(autocompleteIndex - 1);
+                break;
+            }
+            case "Enter": {
+                e.preventDefault();
+                let value;
+                if (inputValue === "") {
+                    const el = autoCompleteOptionsWhenEmpty[autocompleteIndex];
+                    if (!el) return;
+                    const props = el.props;
+                    value = props.textValue;
+                    if (props.onSelect) props.onSelect();
+                }
+                else {
+                    const el = autoCompleteOptions[autocompleteIndex];
+                    if (!el) return;
+                    const props = el.props;
+                    value = props.textValue;
+                    console.log(props.onSelect);
+                    if (props.onSelect) props.onSelect();
+                }
+                setInputValue(value);
+
+                inputRef.current.value = value;
+
+                setAutocompleteIndex(-1);
+                break;
+            }
+        }
+    }
+
+    const inputRef = React.createRef();
+    const autoCompleteTruthOptions = (autoCompleteOptions ?? []).
+        filter(({ props: { textValue } }) => new RegExp(inputValue).test(textValue) && inputValue !== textValue);
+
+
+    let inputComponent = null;
+
+    if (multiline) {
+        inputComponent = <textarea
+            ref={inputRef}
+            style={{ paddingLeft: `${icon ? 40 : 13}px` }}
+            className="text-field-"
+            error={(err || error) ? "true" : "false"}
+            type={password && !viewPassword ? 'password' : 'text'}
+            onBlur={() => setTouched(true)}
+            value={inputValue}
+            onKeyDown={onKeyDown}
+            onChange={(e) => setInputValue(e.target.value)}
+            {...props} >
+
+        </textarea>
+    } else {
+        inputComponent = <input
+            ref={inputRef}
+            style={{ paddingLeft: `${icon ? 40 : 13}px` }}
+            className="text-field-"
+            error={(err || error) ? "true" : "false"}
+            type={password && !viewPassword ? 'password' : 'text'}
+            onBlur={() => setTouched(true)}
+            value={inputValue}
+            onKeyDown={onKeyDown}
+            onChange={(e) => setInputValue(e.target.value)}
+            {...props} />
+    }
+
     return (
-        <div className={`text-field ${className}`} type={type}>
+        <div className={`text-field ${className}`} type={type} onFocus={() => setInFocus(true)} onBlur={_.debounce(() => setInFocus(false), 100)} tabIndex="1">
             {icon &&
                 <div className="text-field-icon">
                     {icon}
                 </div>
             }
-            <input
-                style={{ paddingLeft: `${icon ? 40 : 13}px` }}
-                className="text-field-"
-                error={(err || error) ? "true" : "false"}
-                type={password && !viewPassword ? 'password' : 'text'}
-                onBlur={() => setTouched(true)}
-                value={value}
-                {...props} />
+            {inputComponent}
             {password && <img
                 className="text-field-view-password"
                 alt="View password"
                 src={!viewPassword ? ViewPassword : ViewPasswordChecked}
                 onClick={() => setViewPassword(!viewPassword)} />}
-        </div>
+            {autoCompleteTruthOptions.length !== 0 && inFocus && inputValue !== "" &&
+                <div className="text-field-auto-complete-container" tabIndex="1">
+                    {
+                        (() => {
+                            return autoCompleteTruthOptions.map((e, i) => {
+                                return React.cloneElement(e, {
+                                    active: autocompleteIndex === i,
+                                    compareValue: inputValue
+                                })
+                            });
+                        })()
+                    }
+                </div>
+            }
+            {autoCompleteOptionsWhenEmpty && autoCompleteOptionsWhenEmpty.length !== 0 && inFocus && inputValue === "" &&
+                <div className="text-field-auto-complete-container" tabIndex="1">
+                    {autoCompleteOptionsWhenEmptyHeader}
+                    {
+                        autoCompleteOptionsWhenEmpty.map((e, i) => {
+                            return React.cloneElement(e, {
+                                active: autocompleteIndex === i
+                            })
+                        })
+                    }
+                </div>
+            }
+            {loading &&
+                <div className="text-field-loading">
+                    <ModalLoading darken={false} />
+                </div>
+            }
+        </div >
     );
 }
 

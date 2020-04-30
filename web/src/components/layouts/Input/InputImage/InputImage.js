@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import "./InputImage.scss";
 
-const InputImage = ({ className, setFile, ...props }) => {
+const InputImage = ({
+    className,
+    onlyView = false,
+    multiple = false,
+    file = null,
+    setFile = () => { },
+    setFiles = () => { },
+    onClear = () => { },
+    ...props }) => {
 
     const [isDrag, setIsDrag] = useState(false);
     const [image, setImage] = useState(null);
 
-    const onChange = (e) => {
-        const file = e.target.files[0];
 
+    useEffect(() => {
         if (!file) return;
 
         let reader = new FileReader();
@@ -18,12 +25,25 @@ const InputImage = ({ className, setFile, ...props }) => {
             setImage(event.target.result);
         }
 
-        setFile(file);
         reader.readAsDataURL(file);
+    }, [file]);
+
+    const onChange = (e) => {
+
+        const files = e.target.files;
+
+        if (!files[0]) return;
+
+        if (multiple) {
+            setFiles([...files]);
+        } else {
+            setFile(files[0]);
+        }
     }
 
     const onClick = (e) => {
-        //ref.current.click();
+        if (onlyView) e.preventDefault();
+        else if (ref) ref.current.click();
     }
 
     const ref = React.createRef();
@@ -32,19 +52,23 @@ const InputImage = ({ className, setFile, ...props }) => {
         <div
             className={`input-image ${className ?? ""}`}
             onClick={onClick}
-            isDrag={isDrag ? "true" : null}
+            is-drag={isDrag ? "true" : null}
+            has-file={!!file ? "true" : "false"}
             {...props}
         >
+            {!!file && <button className="input-image-clear-button" onClick={onClear}></button>}
             <input
                 ref={ref}
                 type="file"
+                multiple={multiple}
                 onChange={onChange}
+                onClick={(e) => e.stopPropagation()}
                 onDragEnter={() => setIsDrag(true)}
                 onDragLeave={() => setIsDrag(false)}
             />
-            <div className="input-image-container">
+            {image && <div className="input-image-container">
                 <img src={image} alt="Unknown" />
-            </div>
+            </div>}
         </div>
     )
 };

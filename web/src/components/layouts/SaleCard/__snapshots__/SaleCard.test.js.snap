@@ -20,24 +20,3 @@ exports[`Label should be rendered 1`] = `
   </span>
 </div>
 `;
-
-exports[`Label should be rendered 2`] = `
-<div
-  className="sale-card"
->
-  <div
-    className="sale-card-icon"
-  >
-    <img
-      alt="Product"
-      src="https://image.shutterstock.com/image-vector/pagination-bars-web-buttons-vector-260nw-1111694900.jpg"
-    />
-  </div>
-  <span>
-    
-  </span>
-  <span>
-    Invalid Date
-  </span>
-</div>
-`;

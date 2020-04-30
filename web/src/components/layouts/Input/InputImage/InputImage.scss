@@ -1,12 +1,44 @@
 .input-image {
-    height: 100px;
-    width: 100px;
+    height: 92px;
+    width: 92px;
 
     position: relative;
 
-    background-color: green;
+    background-color: #e4e4e4;
 
-    &[isDrag] {
+    border-radius: 4px;
+
+    cursor: pointer;
+
+    &:hover {
+        background-color: #d3d3d3;
+    }
+
+    &[has-file="false"] {
+        &::before,
+        &::after {
+            content: "";
+
+            height: 4px;
+            width: 38px;
+
+            position: absolute;
+            right: calc(50% - (38px / 2));
+            top: calc(50% - (4px / 2));
+
+            background-color: #349a89;
+
+            border: none;
+            border-radius: 10px;
+            transition: all 0.1s;
+        }
+
+        &::after {
+            transform: rotate(90deg);
+        }
+    }
+
+    &[is-drag] {
         background-color: red;
     }
 
@@ -17,6 +49,8 @@
         position: absolute;
 
         opacity: 0;
+
+        cursor: inherit;
     }
 
     &-container {
@@ -27,6 +61,50 @@
 
         & > img {
             max-width: 100%;
+        }
+    }
+
+    &-clear-button {
+        height: 12px;
+        width: 12px;
+        position: absolute;
+
+        right: -6px;
+        top: -6px;
+
+        background-color: #f77;
+
+        border: 1px solid #f00;
+        border-radius: 50%;
+
+        transition: all 0.1s;
+
+        &:hover {
+            transform: scale(1.7);
+            &::before,
+            &::after {
+                background-color: #00f;
+            }
+        }
+
+        &::before,
+        &::after {
+            content: "";
+            height: 80%;
+            width: 1px;
+
+            position: absolute;
+
+            right: calc(50% - 7%);
+            top: calc(50% - 38%);
+
+            background-color: black;
+
+            transform: rotate(45deg);
+        }
+
+        &::after {
+            transform: rotate(-45deg);
         }
     }
 }

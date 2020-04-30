@@ -10,6 +10,9 @@ import RestorePassword from './components/pages/RestorePassword';
 import Profile from './components/pages/Profile/Profile';
 import EditProfile from './components/pages/EditProfile/EditProfile';
 import { Switch, Route } from 'react-router-dom';
+import SavedItems from './components/pages/SavedItems/SavedItems';
+import AddProduct from './components/pages/AddProduct/AddProduct';
+import Product from './components/pages/Product/Product';
 
 const Routes = () => {
     return (
@@ -19,9 +22,14 @@ const Routes = () => {
             <Route exact path="/register" component={Register} />
             <Route exact path="/forgot-password" component={ForgotPassword} />
             <Route exact path="/restore-password" component={RestorePassword} />
-            
+
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/edit-profile" component={EditProfile} />
+
+            <Route exact path="/saved-items" component={SavedItems} />
+            <Route exact path="/add-product" component={AddProduct} />
+
+            <Route exact path="/products/:id" component={Product} />
         </Switch>
     )
 };

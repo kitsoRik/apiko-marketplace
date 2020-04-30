@@ -36,7 +36,7 @@ const withLoginedLock = (needLogin = true) => (WrapperComponent) => {
             }
             setChecked(true);
         }, [loadingDataState]);
-        console.log(loadingDataState, registerStatus);
+
         const wrapper = (
             <div className="with-logined-lock" loading={loadingVisible ? "true" : null}>
                 {checked && <WrapperComponent {...props} />}

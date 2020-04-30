@@ -33,7 +33,6 @@ const Combobox = ({ value, children = [], onChange, ...props }) => {
         return React.cloneElement(c, { ...c.props, onClick: () => onClickOption(c.props.value) })
     });
 
-
     return (
         <div tabIndex={0} className="combobox" onBlur={() => setDropable(false)} {...props}>
             {select}

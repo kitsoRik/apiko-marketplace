@@ -4,12 +4,13 @@ import Black from '../../../assets/icons/black.png';
 import "./ProductCard.scss";
 import ModalLoading from '../ModalLoading/ModalLoading';
 import HeartIcon from '../../icons/HeartIcon';
+import api from '../../../services/api';
 
-const ProductCard = ({ className, id, title, price, iconName, changingSaveState, saved = false, onSavedChange = () => { }, ...props }) => {
+const ProductCard = ({ className, id, title, price, imageName, changingSaveState, saved = false, onSavedChange = () => { }, ...props }) => {
     return (
         <div className={`product-card ${className ?? ""}`} {...props}>
             <div className="product-card-icon">
-                <img src={Black} alt="Product icon" />
+                {imageName && <img src={`${api.productsImageBaseUrl}${imageName}`} alt="Product icon" />}
             </div>
             <div className="product-card-info">
                 <span className="product-card-info-name">{title}</span>

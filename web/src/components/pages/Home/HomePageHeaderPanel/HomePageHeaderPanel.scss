@@ -1,0 +1,49 @@
+.home-page-header-panel {
+    height: 50px;
+    display: grid;
+    grid-template-columns: auto 200px 175px;
+    grid-template-rows: 50px;
+    grid-column-gap: 7px;
+
+    &-text-field-autocomplete {
+        &-products {
+            height: 47px;
+
+            display: grid;
+            grid-template-columns: 47px auto;
+            grid-template-rows: 1fr 1fr;
+
+            cursor: pointer;
+
+            &[active="true"],
+            &:hover {
+                background-color: #aaaa;
+            }
+
+            &-icon {
+                margin-right: 8px;
+                grid-row: 1 / span 2;
+
+                & > img {
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+        }
+
+        &-recent-products {
+            &-header {
+                margin-bottom: 7px;
+
+                display: flex;
+                justify-content: space-between;
+
+                color: #cecece;
+            }
+
+            &-item {
+                padding: 7px;
+            }
+        }
+    }
+}

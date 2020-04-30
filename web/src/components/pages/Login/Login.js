@@ -45,7 +45,7 @@ const Login = ({ history, login, loginStatus }) => {
                             value={email}
                             errorIfTouched={!checkValidEmail(email)}
                             placeholder={"Example@gmail.com"}
-                            onChange={(e) => setEmail(e.target.value)} />
+                            onChange={value => setEmail(value)} />
                     </Label>
                     <Label
                         className="login-page-form-field"
@@ -55,7 +55,7 @@ const Login = ({ history, login, loginStatus }) => {
                             value={password}
                             password={true}
                             errorIfTouched={!password}
-                            onChange={(e) => setPassword(e.target.value)} />
+                            onChange={value => setPassword(value)} />
                     </Label>
                     <Link
                         className="login-page-forgot-label"

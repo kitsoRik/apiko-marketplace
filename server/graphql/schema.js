@@ -1,9 +1,10 @@
 const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLBoolean, GraphQLList, GraphQLSchema, GraphQLID, GraphQLFloat, GraphQLNonNull } = require("graphql");
-const { getAllUsers, getUserById, getUserByProductId, saveUserById } = require("../db/models/user");
+const { getAllUsers, getUserById, getUserByProductId, saveUserById, getProductsIdsByUserId, getSavedProductsIdsByUserId } = require("../db/models/user");
 const { getProductsByIds, getAllProducts, getProductById } = require("../db/models/product");
 const { getFeedbacksByProductId, getFeedbacksByUserId, getFeedbacksByUserIdCount } = require("../db/models/feedback");
 
 const { customError } = require("../helpers/errors");
+const { getLocationsByNamePattern, getLocationById } = require("../db/models/city");
 
 
 const UserType = new GraphQLObjectType({
@@ -76,7 +77,7 @@ const UserType = new GraphQLObjectType({
 })
 
 const ProductType = new GraphQLObjectType({
-    name: "Todo",
+    name: "Product",
     fields: () => ({
         id: { type: GraphQLID },
         owner: {
@@ -88,10 +89,23 @@ const ProductType = new GraphQLObjectType({
         title: { type: GraphQLString },
         description: { type: GraphQLString },
         price: { type: GraphQLFloat },
-        iconName: { type: GraphQLString },
+        category: { type: GraphQLString },
+        location: {
+            type: LocationType,
+            resolve: async ({ locationId }) => {
+                return await getLocationById(locationId);
+            }
+        },
+        imageName: { type: GraphQLString },
         createdAt: { type: GraphQLInt },
         updatedAt: { type: GraphQLInt },
-        saved: { type: GraphQLBoolean },
+        saved: {
+            type: GraphQLBoolean,
+            resolve: async ({ id }, args, { user }) => {
+                const userSavedProductsIds = await getSavedProductsIdsByUserId(user.id);
+                return userSavedProductsIds.indexOf(id) !== -1;
+            }
+        },
         feedbacks: {
             type: new GraphQLList(FeedbackType),
             resolve: ({ id }) => {
@@ -143,22 +157,67 @@ const SaleType = new GraphQLObjectType({
     })
 })
 
+const LocationType = new GraphQLObjectType({
+    name: "City",
+    fields: () => ({
+        id: { type: GraphQLID },
+        name: { type: GraphQLString },
+        longitude: { type: GraphQLFloat },
+        latitude: { type: GraphQLFloat }
+    })
+});
+
 const Query = new GraphQLObjectType({
     name: 'query',
     fields: () => ({
-        products: {
+        savedProducts: {
             type: new GraphQLList(ProductType),
             args: {
                 title: { type: GraphQLString },
                 location: { type: GraphQLString },
+                locationId: { type: GraphQLInt },
                 category: { type: GraphQLString },
                 priceFrom: { type: GraphQLFloat },
                 priceTo: { type: GraphQLFloat },
                 page: { type: GraphQLInt },
                 limit: { type: GraphQLInt },
             },
-            resolve: (source, { page, limit }, { req, user }, info) => {
-                return getAllProducts(page, limit);
+            resolve: async (source, { title = "", location, locationId, category = 'any', priceFrom = -1, priceTo = -1, page = 1, limit }, { req, user }, info) => {
+                const savedIds = await getSavedProductsIdsByUserId(user.id);
+                return getProductsByIds(savedIds).skip((page - 1) * limit).limit(limit);
+            }
+        },
+        products: {
+            type: new GraphQLList(ProductType),
+            args: {
+                title: { type: GraphQLString },
+                location: { type: GraphQLString },
+                locationId: { type: GraphQLInt },
+                category: { type: GraphQLString },
+                priceFrom: { type: GraphQLFloat },
+                priceTo: { type: GraphQLFloat },
+                page: { type: GraphQLInt },
+                limit: { type: GraphQLInt },
+            },
+            resolve: async (source, { title = "", location, locationId = -1, category = 'any', priceFrom = -1, priceTo = -1, page = 1, limit }, { req, user }, info) => {
+                console.log(await getAllProducts(title, category, +locationId, priceFrom, priceTo).skip((page - 1) * limit).limit(limit));
+                return getAllProducts(title, category, +locationId, priceFrom, priceTo).skip((page - 1) * limit).limit(limit);
+            }
+        },
+        productsCount: {
+            type: GraphQLInt,
+            args: {
+                title: { type: GraphQLString },
+                location: { type: GraphQLString },
+                locationId: { type: GraphQLInt },
+                category: { type: GraphQLString },
+                priceFrom: { type: GraphQLFloat },
+                priceTo: { type: GraphQLFloat },
+                page: { type: GraphQLInt },
+                limit: { type: GraphQLInt },
+            },
+            resolve: (source, { title = "", location, locationId = -1, category = 'any', priceFrom = -1, priceTo = -1, page = 1, limit }, { req, user }, info) => {
+                return getAllProducts(title, category, +locationId, priceFrom, priceTo).countDocuments();
             }
         },
         users: {
@@ -192,8 +251,19 @@ const Query = new GraphQLObjectType({
             resolve: (source, { id }, { req, user }) => {
                 return getUserById(id);
             }
+        },
+        locations: {
+            type: new GraphQLList(LocationType),
+            args: {
+                namePattern: { type: GraphQLString },
+                page: { type: GraphQLInt },
+                limit: { type: GraphQLInt }
+            },
+            resolve: async (source, { namePattern, page = 1, limit = 10 }) => {
+                return await getLocationsByNamePattern(namePattern).skip((page - 1) * limit).limit(limit);
+            }
         }
-    })
+    }),
 });
 
 const Mutation = new GraphQLObjectType({

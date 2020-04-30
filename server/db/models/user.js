@@ -51,6 +51,7 @@ exports.getUserByEmail = (email) => userModel.findOne({ email }, { productsIds: 
 exports.getUserByEmailAndPassword = (email, password) => userModel.findOne({ email, password });
 
 exports.getProductsIdsByUserId = (id) => userModel.findOne({ id }, { productsIds: true }).then(({ productsIds }) => productsIds)
+exports.getSavedProductsIdsByUserId = (id) => userModel.findOne({ id }, { savedProducts: true }).then(({ savedProducts }) => savedProducts)
 
 exports.getUserByProductId = (productId) => userModel.findOne({ productsIds: { $elemMatch: { $eq: productId } } });
 

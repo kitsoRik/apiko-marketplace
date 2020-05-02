@@ -19,8 +19,8 @@ const SearchPanel = ({ searchQuery: { category, priceFrom, priceTo }, changeProd
                 <ComboboxOption value="mebels">Mebels</ComboboxOption>
                 <ComboboxOption value="technology">Technology</ComboboxOption>
             </Combobox>
-            <TextField type="medium" placeholder="Price from (USD)" value={priceFrom} onChange={priceFrom => changeProductSearchQuery({ priceFrom })} />
-            <TextField type="medium" placeholder="Price to (USD)" value={priceTo} onChange={priceTo => changeProductSearchQuery({ priceTo })} />
+            <TextField type="medium" placeholder="Price from (USD)" value={priceFrom} onValueChange={priceFrom => changeProductSearchQuery({ priceFrom })} />
+            <TextField type="medium" placeholder="Price to (USD)" value={priceTo} onValueChange={priceTo => changeProductSearchQuery({ priceTo })} />
         </Form>
     )
 };

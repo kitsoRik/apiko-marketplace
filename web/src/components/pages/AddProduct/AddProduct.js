@@ -37,17 +37,17 @@ const AddProduct = ({ history }) => {
             <Form className="add-product-page-form">
                 <h1 className="add-product-page-form-title">Add product</h1>
                 <Label value="Title">
-                    <TextField value={title} onChange={setTitle} placeholder="For example: Iron man suite" />
+                    <TextField value={title} onValueChange={setTitle} placeholder="For example: Iron man suite" />
                 </Label>
                 <Label value="Location">
-                    <LocationTextField onChange={setLocationId} placeholder="For example: Los Angele, CA" />
+                    <LocationTextField onValueChange={setLocationId} placeholder="For example: Los Angele, CA" />
                 </Label>
                 <Label value="Description">
                     <TextField
                         multiline={true}
                         style={{ height: "180px" }}
                         value={description}
-                        onChange={setDescription}
+                        onValueChange={setDescription}
                         placeholder="For example: Iron man suite" />
                 </Label>
                 <Label value="Photos" className="add-product-page-form-photo">
@@ -59,7 +59,7 @@ const AddProduct = ({ history }) => {
                     </div>
                 </Label>
                 <Label value="Price">
-                    <TextField value={price} onChange={setPrice} placeholder="4.99$" className="add-product-page-form-price-field" />
+                    <TextField value={price} onValueChange={setPrice} placeholder="4.99$" className="add-product-page-form-price-field" />
                 </Label>
                 <Button.Default style={{ textTransform: 'uppercase' }} value="Submit" onClick={onSubmit} />
             </Form>

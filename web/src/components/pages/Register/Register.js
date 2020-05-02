@@ -41,6 +41,7 @@ const Register = ({ history, registerStatus, registerError, register }) => {
         if (passwordAgain.length < 8) errors.passwordAgain = "Length must be greater or equal eight"
         else if (passwordAgain !== password) errors.passwordAgain = "Passwords is not equal";
 
+        console.log(errors, email);
 
         if (fullName.length < 2) errors.fullName = "Length must be greater or equal two";
 

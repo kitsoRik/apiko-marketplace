@@ -60,3 +60,8 @@ exports.getAllUsers = (page, limit) => userModel.find().skip((page - 1) * limit)
 exports.saveUserById = (id, fullName, phone) => userModel.findOneAndUpdate({ id }, { fullName, phone }, { new: true });
 
 exports.updateUserIcon = (id, iconName) => userModel.findOneAndUpdate({ id }, { iconName }, { new: true });
+
+exports.addProductByUserId = async (userId, productId) => userModel.findOneAndUpdate({ id: userId }, {
+    productsIds:
+        [...(await this.getProductsIdsByUserId(userId)), productId]
+});

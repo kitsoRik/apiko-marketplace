@@ -69,13 +69,13 @@ const EditProfile = ({ data, savingState, saveUser, clearSave }) => {
                         type="outlined"
                         value="Upgrade Photo"
                         onClick={() => inputImageRef.current.click()} />
-                    <input type="file" ref={inputImageRef} style={{ display: "none" }} onChange={onImageChange} />
+                    <input type="file" ref={inputImageRef} style={{ display: "none" }} onValueChange={onImageChange} />
                 </div>
                 <Label className="edit-profile-page-form-full-name" value="Full name">
-                    <TextField value={fullName} onChange={value => setFullName(value)} />
+                    <TextField value={fullName} onValueChange={value => setFullName(value)} />
                 </Label>
                 <Label className="edit-profile-page-form-phone" value="Phone number">
-                    <TextField value={phone} onChange={value => setPhone(value)} />
+                    <TextField value={phone} onValueChange={value => setPhone(value)} />
                 </Label>
                 <Button.Default className="edit-profile-page-form-save" onClick={save} value="Save" />
                 {savingState === SAVING && <ModalLoading style={{ top: 0, left: 0 }} />}

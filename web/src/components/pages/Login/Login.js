@@ -23,9 +23,11 @@ const Login = ({ history, login, loginStatus }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const _login = () => login(email, password)
-        .then(() => history.push("/"))
-        .catch((error) => setError(textFromError(error)));
+    const _login = () =>
+        login(email, password)
+            .then(console.log)
+            .then(() => history.push("/"))
+            .catch((error) => setError(textFromError(error)));
 
     const allowSubmit = () => {
         return checkValidEmail(email) && password;
@@ -33,7 +35,7 @@ const Login = ({ history, login, loginStatus }) => {
 
     return (
         <div className="login-page">
-            <LoginForm loading={loginStatus === LOGINING}>
+            <LoginForm loading={loginStatus === LOGINING} onSubmit={(e) => e.preventDefault()}>
                 <LoginUpperContainer>
                     <LoginUpperContainerTitle>Login</LoginUpperContainerTitle>
                     {error && <Label error={true} value={error} />}
@@ -45,7 +47,7 @@ const Login = ({ history, login, loginStatus }) => {
                             value={email}
                             errorIfTouched={!checkValidEmail(email)}
                             placeholder={"Example@gmail.com"}
-                            onChange={value => setEmail(value)} />
+                            onValueChange={value => setEmail(value)} />
                     </Label>
                     <Label
                         className="login-page-form-field"
@@ -55,7 +57,7 @@ const Login = ({ history, login, loginStatus }) => {
                             value={password}
                             password={true}
                             errorIfTouched={!password}
-                            onChange={value => setPassword(value)} />
+                            onValueChange={value => setPassword(value)} />
                     </Label>
                     <Link
                         className="login-page-forgot-label"

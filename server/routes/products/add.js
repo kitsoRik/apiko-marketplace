@@ -5,7 +5,7 @@ const path = require("path");
 const { getSessionBySesid } = require("../../db/models/session");
 const { sendAsError, sendAsResult } = require("../../helpers/response");
 const { customError } = require("../../helpers/errors");
-const { getUserById, updateUserIcon } = require("../../db/models/user");
+const { getUserById, updateUserIcon, addProductByUserId } = require("../../db/models/user");
 const { createProduct } = require("../../db/models/product");
 
 const storage = multer.diskStorage({
@@ -43,7 +43,7 @@ router.put("/add", upload.array("photos", 16), async (req, res) => {
     if (!user) return sendAsError(res)(customError("ACCESS_BLOCKED"));
 
     const product = await createProduct(title, "qwe", +price, "mebels", +locationId, req.files ? req.files[0].filename : "", req.files.map(f => f.filename));
-    console.log(product);
+    await addProductByUserId(user.id, product.id);
 
     sendAsResult(res)(product);
 });

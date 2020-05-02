@@ -15,8 +15,9 @@ import _ from 'lodash';
 import Pagination from '../../layouts/Pagination/Pagination';
 import HomePageHeaderPanel from './HomePageHeaderPanel/HomePageHeaderPanel';
 import SearchPanel from './SearchPanel';
+import ModalLoading from '../../layouts/ModalLoading/ModalLoading';
 
-const Home = ({ loadingDataState, products, loadProducts, searchQuery: { page, pages }, searchProducts, changeSavedStateOfProduct, productsLoadingState, changeProductSearchQuery }) => {
+const Home = ({ loadingDataState, products, loadProducts, searchQuery: { page, pages }, searchProducts, changeSavedStateOfProduct, homeProductsLoadingState, changeProductSearchQuery }) => {
 
     useEffect(() => {
         if (products.length === 0)
@@ -39,10 +40,11 @@ const Home = ({ loadingDataState, products, loadProducts, searchQuery: { page, p
         <div className="home-page">
             <SearchPanel />
             <div className="home-page-products-container">
-                {productsLoadingState !== LOADING && products.map(product =>
+                {homeProductsLoadingState !== LOADING && products.map(product =>
                     <ProductCard key={product.id} {...product}
                         onSavedChange={(state) => changeSavedState(product.id, state)} />)}
-                {productsLoadingState === LOADING && <div>LOADING</div>}
+                {homeProductsLoadingState === LOADING && <ModalLoading darken={false} style={{ gridColumn: '1 / span 4', position: "static" }} />}
+                {homeProductsLoadingState === LOADED && products.length === 0 && <span>Products is empty</span>}
             </div>
             <Pagination onChangePage={p => { changeProductSearchQuery({ page: p }); searchProducts() }} page={page} pages={pages} />
         </div>
@@ -50,12 +52,12 @@ const Home = ({ loadingDataState, products, loadProducts, searchQuery: { page, p
 }
 
 const mapStateToProps = ({ user: { loadingDataState },
-    products: { products, changingSavedStateOfProductsIds, productsLoadingState, searchQuery }
+    products: { products, homeProductsIds, changingSavedStateOfProductsIds, homeProductsLoadingState, searchQuery }
 }) => ({
     loadingDataState,
-    productsLoadingState,
+    homeProductsLoadingState,
     searchQuery,
-    products: productsWithChangingSavedState(products, changingSavedStateOfProductsIds)
+    products: productsWithChangingSavedState(products.filter(p => homeProductsIds.indexOf(p.id) !== -1), changingSavedStateOfProductsIds)
 });
 
 export default compose(

@@ -145,7 +145,7 @@ const loadUserProductsQuery = (id, page, limit) =>
         id
         title
         price
-        iconName
+        imageName
         saved
      },
      productsCount

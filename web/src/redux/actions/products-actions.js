@@ -79,15 +79,18 @@ export const loadProducts = asyncActionFactoryWithGraphQLQuery(
     loadProductsFailed
 );
 
-const changeSavedStateOfProductQueryPending = (id) => ({
+const changeSavedStateOfProductQueryPending = (id, savedState) => ({
     type: CHANGE_SAVED_STATE_OF_PRODUCT_PENDING,
-    id
+    payload: {
+        id, savedState
+    }
 });
 
 const changeSavedStateOfProductQuerySuccess = (data, id, state) => ({
     type: CHANGE_SAVED_STATE_OF_PRODUCT_SUCCESS,
     data,
-    id
+    id,
+    state
 });
 
 const changeSavedStateOfProductQueryFailed = (errors) => ({
@@ -183,10 +186,11 @@ const loadSavedProductsPending = ({
     type: LOAD_SAVED_PRODUCTS_PENDING
 });
 
-const loadSavedProductsSuccess = ({ savedProducts }) => ({
+const loadSavedProductsSuccess = ({ savedProducts, savedProductsCount }) => ({
     type: LOAD_SAVED_PRODUCTS_SUCCESS,
     payload: {
-        savedProducts
+        savedProducts,
+        savedProductsCount
     }
 });
 
@@ -202,7 +206,9 @@ query {
         title
         price
         saved
+        imageName
     }
+    savedProductsCount
 }
 `;
 

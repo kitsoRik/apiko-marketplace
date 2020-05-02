@@ -50,7 +50,7 @@ const ForgotPassword = (props) => {
                                 value={email}
                                 placeholder={"Example@gmail.com"}
                                 error={error}
-                                onChange={(e) => setEmail(e.target.value)} />
+                                onValueChange={(e) => setEmail(e.target.value)} />
                         </Label>}
                     {restoreStatus !== RESTORED &&
                         <Button.Default

@@ -15,7 +15,7 @@ const withLoginedLock = (needLogin = true) => (WrapperComponent) => {
 
         const [checked, setChecked] = useState(true);
 
-        const loadingVisible = (loadingDataState === LOADING && registerStatus !== REGISTERING) || loginStatus === UNLOGINING;
+        const loadingVisible = (loadingDataState === LOADING && registerStatus !== REGISTERING && loginStatus !== LOGINING) || loginStatus === UNLOGINING;
         const loadedWithoutLogin = loadingDataState === LOADED && loginStatus !== LOGINED && registerStatus !== REGISTERED;
         const dataNotLoaded = loadingDataState === LOADED_ERROR || loadingDataState === UNLOADED;
 

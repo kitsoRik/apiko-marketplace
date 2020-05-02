@@ -4,11 +4,19 @@
 
         &-title {
             margin-bottom: 25px;
+
+            &-loading {
+                width: 17px;
+                height: 17px;
+
+                position: static;
+                display: inline-flex;
+            }
         }
 
         &-products-container {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-columns: 210px 210px 210px 210px;
 
             grid-column-gap: 5px;
             grid-row-gap: 10px;
@@ -16,6 +24,12 @@
             & .product-card {
                 height: 212px;
                 width: 206.25px;
+            }
+
+            &-loading {
+                grid-column: 1 / span 4;
+                position: static;
+                height: 210px;
             }
         }
     }

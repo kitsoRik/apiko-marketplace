@@ -63,7 +63,7 @@ const HomePageHeaderPanel = ({
                 autoCompleteOptionsWhenEmpty={
                     ["aaa", "bbb"].map(item => <TextFieldAutocompleteOption className="home-page-header-panel-text-field-autocomplete-recent-products-item" key={item} textValue={item} value={item} icon={<SearchIcon color="#CECECE" style={{ width: '17px', height: '18px' }} />} />)
                 }
-                onChange={onChangeTitleField}
+                onValueChange={onChangeTitleField}
                 placeholder="Search products by name" icon={<SearchIcon style={{ width: '17px', height: '18px' }} />} />
             <TextField placeholder="Location" value={searchQuery.location} icon={
                 <Icon>
@@ -72,7 +72,7 @@ const HomePageHeaderPanel = ({
                     </svg>
                 </Icon>
             } autoCompleteOptions={locationsHint.map(l => <TextFieldAutocompleteOption onSelect={() => changeProductSearchQuery({ locationId: l.id })} key={l.id} value={l.name} textValue={l.name} />)}
-                onChange={onChangeLocationField}
+            onValueChange={onChangeLocationField}
                 loading={locationsHintLoadingState === LOADING}
             />
             <Button.Martinique style={{ textTransform: "uppercase" }} value="Search" onClick={search} />

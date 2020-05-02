@@ -14,12 +14,13 @@ const TextField = ({
     type = "big",
     icon,
     children,
+    name,
     loading = false,
     multiline = false,
     autoCompleteOptions,
     autoCompleteOptionsWhenEmptyHeader = null,
     autoCompleteOptionsWhenEmpty = null,
-    value = "", password, error, errorIfTouched, onChange = () => { }, ...props }) => {
+    value = "", password, error, errorIfTouched, onChange = () => { }, onValueChange = () => { }, ...props }) => {
     const [inputValue, setInputValue] = useState(value);
     const [touched, setTouched] = useState(false);
     const [viewPassword, setViewPassword] = useState(false);
@@ -31,7 +32,7 @@ const TextField = ({
     const err = errorIfTouched && touched;
 
     useEffect(() => {
-        onChange(inputValue);
+        onValueChange(inputValue);
     }, [inputValue]);
 
     useEffect(() => {
@@ -99,8 +100,9 @@ const TextField = ({
             type={password && !viewPassword ? 'password' : 'text'}
             onBlur={() => setTouched(true)}
             value={inputValue}
+            name={name}
             onKeyDown={onKeyDown}
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={(e) => { setInputValue(e.target.value); onChange(e); onValueChange(e.target.value); }}
             {...props} >
 
         </textarea>
@@ -113,8 +115,9 @@ const TextField = ({
             type={password && !viewPassword ? 'password' : 'text'}
             onBlur={() => setTouched(true)}
             value={inputValue}
+            name={name}
             onKeyDown={onKeyDown}
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={(e) => { setInputValue(e.target.value); onChange(e); onValueChange(e.target.value); }}
             {...props} />
     }
 

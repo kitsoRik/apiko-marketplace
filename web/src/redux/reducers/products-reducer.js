@@ -4,7 +4,10 @@ const { LOAD_PRODUCTS_PENDING, LOAD_PRODUCTS_SUCCESS, LOAD_PRODUCTS_FAILED, CHAN
 
 const initState = {
     products: [],
-    productsLoadingState: NOT_LOADED,
+
+    homeProductsIds: [],
+    homeProductsLoadingState: NOT_LOADED,
+
     searchQuery: {
         title: "",
         locationId: -1,
@@ -22,9 +25,10 @@ const initState = {
         productsHint: [],
         productsHintLoadingState: NOT_LOADED
     },
-    changingSavedStateOfProductsIds: [],
+    //changingSavedStateOfProductsIds: [],
 
-    savedProducts: [],
+    savedProductsIds: [],
+    savedProductsCount: 0,
     savedProductsLoadingState: NOT_LOADED
 }
 
@@ -34,16 +38,19 @@ const productsReducer = (state = initState, action) => {
 
             return {
                 ...state,
-                productsLoadingState: LOADING
+                homeProductsLoadingState: LOADING
             }
         }
         case LOAD_PRODUCTS_SUCCESS: {
             const { products, productsCount } = action.payload;
 
+            const homeProductsIds = products.map(({ id }) => id);
+
             return {
                 ...state,
-                products,
-                productsLoadingState: LOADED,
+                products: state.products.filter(p => homeProductsIds.indexOf(p.id) === -1).concat(products),
+                homeProductsIds,
+                homeProductsLoadingState: LOADED,
                 searchQuery: {
                     ...state.searchQuery,
                     pages: Math.ceil(productsCount / state.searchQuery.limit)
@@ -54,17 +61,18 @@ const productsReducer = (state = initState, action) => {
 
             return {
                 ...state,
-                productsLoadingState: LOADED_ERROR
+                homeProductsLoadingState: LOADED_ERROR
             }
         }
 
         case CHANGE_SAVED_STATE_OF_PRODUCT_PENDING: {
-            const { id } = action;
-            const { changingSavedStateOfProductsIds } = state;
-
+            const { id, savedState } = action.payload;
+            const { products, savedProductsCount } = state;
             return {
                 ...state,
-                changingSavedStateOfProductsIds: changingSavedStateOfProductsIds.concat([id])
+                products: products.map(p => +p.id === +id ? ({ ...p, saved: savedState }) : p),
+                savedProductsCount: savedState ? savedProductsCount + 1 : savedProductsCount - 1
+                //changingSavedStateOfProductsIds: changingSavedStateOfProductsIds.concat([id])
             }
         }
 
@@ -74,8 +82,8 @@ const productsReducer = (state = initState, action) => {
 
             return {
                 ...state,
-                products: products.map(p => +p.id === +id ? ({ ...p, saved: changeSavedStateOfProduct }) : p),
-                changingSavedStateOfProductsIds: changingSavedStateOfProductsIds.filter(i => i !== id)
+                //products: state.products.map(p => +p.id === +id ? ({ ...p, saved: changeSavedStateOfProduct }) : p),
+                //changingSavedStateOfProductsIds: changingSavedStateOfProductsIds.filter(i => i !== id)
             }
         }
 
@@ -174,16 +182,23 @@ const productsReducer = (state = initState, action) => {
         }
 
         case LOAD_SAVED_PRODUCTS_SUCCESS: {
-            const { savedProducts } = action.payload;
+            const { savedProducts, savedProductsCount } = action.payload;
+
+            const savedProductsIds = savedProducts.map(({ id }) => id);
+
             return {
                 ...state,
-                savedProducts
+                products: state.products.filter(p => savedProductsIds.indexOf(p.id) === -1).concat(savedProducts),
+                savedProductsIds,
+                savedProductsCount,
+                savedProductsLoadingState: LOADED
             }
         }
 
         case LOAD_SAVED_PRODUCTS_FAILED: {
             return {
-                ...state
+                ...state,
+                savedProductsLoadingState: LOADED_ERROR
             }
         }
 

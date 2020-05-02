@@ -173,18 +173,19 @@ const Query = new GraphQLObjectType({
         savedProducts: {
             type: new GraphQLList(ProductType),
             args: {
-                title: { type: GraphQLString },
-                location: { type: GraphQLString },
-                locationId: { type: GraphQLInt },
-                category: { type: GraphQLString },
-                priceFrom: { type: GraphQLFloat },
-                priceTo: { type: GraphQLFloat },
                 page: { type: GraphQLInt },
                 limit: { type: GraphQLInt },
             },
             resolve: async (source, { title = "", location, locationId, category = 'any', priceFrom = -1, priceTo = -1, page = 1, limit }, { req, user }, info) => {
                 const savedIds = await getSavedProductsIdsByUserId(user.id);
                 return getProductsByIds(savedIds).skip((page - 1) * limit).limit(limit);
+            }
+        },
+        savedProductsCount: {
+            type: GraphQLInt,
+            resolve: async (source, { title = "", location, locationId, category = 'any', priceFrom = -1, priceTo = -1, page = 1, limit }, { req, user }, info) => {
+                const savedIds = await getSavedProductsIdsByUserId(user.id);
+                return getProductsByIds(savedIds).countDocuments();
             }
         },
         products: {

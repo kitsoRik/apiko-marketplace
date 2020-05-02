@@ -6,14 +6,16 @@ import TextFieldAutocompleteOption from '../../layouts/TextField/TextFieldAutoco
 import api from '../../../services/api';
 import _ from 'lodash';
 
-const LocationTextField = ({ onChange, ...props }) => {
+const LocationTextField = ({ onValueChange, ...props }) => {
 
     const [location, setLocation] = useState("");
     const [locationsHint, setLocationHint] = useState([]);
     const [locationsHintLoading, setLocationHintLoading] = useState(false);
 
     const _onChange = _.debounce((value) => {
+        console.log(value);
         if (!value) return;
+        console.log(value);
         setLocation(value);
         setLocationHintLoading(true);
         api.graphql(locationQuery(value))
@@ -24,7 +26,7 @@ const LocationTextField = ({ onChange, ...props }) => {
     }, 400);
 
     const onSelect = (id) => {
-        onChange(id);
+        onValueChange(id);
     }
 
     return (
@@ -32,7 +34,9 @@ const LocationTextField = ({ onChange, ...props }) => {
             placeholder="Location" value={location}
             autoCompleteOptions={locationsHint.map(l => <TextFieldAutocompleteOption onSelect={() => onSelect(l.id)} key={l.id} value={l.name} textValue={l.name} />)}
             loading={locationsHintLoading}
-            onChange={_onChange}  {...props}
+            onValueChange={_onChange}
+            onChange={() => { }}
+            {...props}
         />
     )
 };

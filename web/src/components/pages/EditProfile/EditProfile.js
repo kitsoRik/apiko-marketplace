@@ -14,22 +14,27 @@ import { saveUser, clearSave } from '../../../redux/actions/user-actions';
 import { SAVING, SAVED } from '../../../constants';
 import { notifyInfo } from '../../other/Snackbar/Snackbar';
 import { saveUserIcon } from '../../../services/api/api';
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
+import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
 
-const EditProfile = ({ data, savingState, saveUser, clearSave }) => {
+const EditProfile = () => {
+
+    const apolloClient = useApolloClient();
+    const { data, loading } = useQuery(CURRENT_USER_QUERY);
+    const [saveUser, saveUserMutation] = useMutation(SAVE_MUTATION);
 
     const [imageData, setImageData] = useState(null);
-    const [image, setImage] = useState(data.iconName);
+    const [image, setImage] = useState(null);
 
-    const [fullName, setFullName] = useState(data.fullName);
+    const [fullName, setFullName] = useState(data?.currentUser?.fullName);
     const [phone, setPhone] = useState("+38");
 
-    useEffect(() => () => clearSave(), []);
 
     useEffect(() => {
-        if (savingState === SAVED) {
-            notifyInfo("Saved!");
-        }
-    }, [savingState]);
+        setImage(data?.currentUser?.iconName);
+        setImageData(null);
+    }, [data]);
 
     const inputImageRef = React.createRef();
 
@@ -49,14 +54,25 @@ const EditProfile = ({ data, savingState, saveUser, clearSave }) => {
     }
 
     const save = () => {
-        saveUser(fullName, phone);
+        saveUser({
+            variables: {
+                fullName, phone, icon: imageData
+            }
+        }).then(({ data }) => {
+            apolloClient.writeQuery({
+                query: CURRENT_USER_QUERY,
+                data: {
+                    currentUser: data.saveUser
+                }
+            })
+        });
 
-        if (!!imageData) {
-            const data = new FormData()
-            data.append('icon', imageData);
+        // if (!!imageData) {
+        //     const data = new FormData()
+        //     data.append('icon', imageData);
 
-            saveUserIcon(data);
-        }
+        //     saveUserIcon(data);
+        // }
     }
 
     return (
@@ -64,12 +80,12 @@ const EditProfile = ({ data, savingState, saveUser, clearSave }) => {
             <Form className="edit-profile-page-form">
                 <h2 className="edit-profile-page-form-title">Edit profile</h2>
                 <div className="edit-profile-page-form-icon">
-                    <UserIcon fullName={data.fullName} src={image} local={!!imageData} />
+                    <UserIcon fullName={data?.currentUser?.fullName} src={image} local={!!imageData} />
                     <Button.Outlined
                         type="outlined"
                         value="Upgrade Photo"
                         onClick={() => inputImageRef.current.click()} />
-                    <input type="file" ref={inputImageRef} style={{ display: "none" }} onValueChange={onImageChange} />
+                    <input type="file" ref={inputImageRef} style={{ display: "none" }} onChange={onImageChange} />
                 </div>
                 <Label className="edit-profile-page-form-full-name" value="Full name">
                     <TextField value={fullName} onValueChange={value => setFullName(value)} />
@@ -78,13 +94,21 @@ const EditProfile = ({ data, savingState, saveUser, clearSave }) => {
                     <TextField value={phone} onValueChange={value => setPhone(value)} />
                 </Label>
                 <Button.Default className="edit-profile-page-form-save" onClick={save} value="Save" />
-                {savingState === SAVING && <ModalLoading style={{ top: 0, left: 0 }} />}
+                {(loading || saveUserMutation.loading) && <ModalLoading style={{ top: 0, left: 0 }} />}
             </Form>
         </div>
     )
 };
 
-export default compose(
-    withLoginedLock(),
-    connect(({ user: { savingState, data } }) => ({ data, savingState }), { saveUser, clearSave, saveUserIcon })
-)(EditProfile);
+export default withLoginedLock()(EditProfile);
+
+const SAVE_MUTATION = gql`
+    mutation saveUser($fullName: String!, $phone: String!, $icon: Upload) {
+        saveUser(fullName: $fullName, phone: $phone, icon: $icon) {
+            id
+            fullName,
+            iconName,
+            email
+        }
+    }
+`;

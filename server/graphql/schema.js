@@ -168,7 +168,6 @@ const LocationType = new GraphQLObjectType({
 });
 
 const Query = new GraphQLObjectType({
-    name: 'query',
     fields: () => ({
         savedProducts: {
             type: new GraphQLList(ProductType),

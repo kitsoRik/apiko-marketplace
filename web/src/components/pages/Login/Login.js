@@ -14,19 +14,47 @@ import { checkValidEmail } from '../../../services/checkers/checkers';
 import { LOGINING } from '../../../constants/login';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { login } from '../../../redux/actions/user-actions';
 import withLoginedLock from '../../hocs/withLoginedLock';
+import { gql } from 'apollo-boost';
+import { useMutation, useApolloClient } from '@apollo/react-hooks';
+import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
+import { PRODUCTS_QUERY } from '../../../apollo/queries/products-queries';
 
-const Login = ({ history, login, loginStatus }) => {
+const Login = ({ history }) => {
     const [error, setError] = useState(null);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const apolloClient = useApolloClient();
+    const [login, { data, loading }] = useMutation(LOGIN_MUTATION, {
+        refetchQueries: [{
+            query: PRODUCTS_QUERY, variables: {
+                title: "",
+                locationId: -1,
+                category: "any",
+                priceFrom: -1,
+                priceTo: -1
+            }
+        },]
+    });
+
     const _login = () =>
-        login(email, password)
-            .then(console.log)
-            .then(() => history.push("/"))
+        login({
+            variables: {
+                email, password
+            }
+        })
+            .then(({ data: { login } }) => {
+                apolloClient.writeQuery({
+                    query: CURRENT_USER_QUERY,
+                    data: {
+                        currentUser: login
+                    }
+                });
+
+                history.push("/");
+            })
             .catch((error) => setError(textFromError(error)));
 
     const allowSubmit = () => {
@@ -35,7 +63,7 @@ const Login = ({ history, login, loginStatus }) => {
 
     return (
         <div className="login-page">
-            <LoginForm loading={loginStatus === LOGINING} onSubmit={(e) => e.preventDefault()}>
+            <LoginForm loading={loading} onSubmit={(e) => e.preventDefault()}>
                 <LoginUpperContainer>
                     <LoginUpperContainerTitle>Login</LoginUpperContainerTitle>
                     {error && <Label error={true} value={error} />}
@@ -86,7 +114,15 @@ const textFromError = ({ type }) => {
     }
 }
 
-export default compose(
-    connect(({ user: { loginStatus } }) => ({ loginStatus }), { login }),
-    withLoginedLock(false)
-)(Login);
+export default withLoginedLock(false)(Login);
+
+const LOGIN_MUTATION = gql`
+    mutation login($email: String!, $password: String!) {
+        login(email: $email, password: $password) {
+            id
+            fullName
+            email
+            iconName
+        }
+    }
+`;

@@ -1,20 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './App.scss';
 import './index.scss';
 import { BrowserRouter } from 'react-router-dom';
 import Header from './components/other/Header/Header';
 import Footer from './components/other/Footer/Footer';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { loadData } from './redux/actions/user-actions';
 import Snackbar from './components/other/Snackbar/Snackbar';
 import Routes from './Routes';
 
-const App = ({ loadData }) => {
-
-	useEffect(() => {
-		loadData();
-	}, []);
+const App = () => {
 
 	return (
 		<BrowserRouter>
@@ -30,6 +23,4 @@ const App = ({ loadData }) => {
 	);
 }
 
-export default compose(
-	connect(null, { loadData })
-)(App);
+export default App;

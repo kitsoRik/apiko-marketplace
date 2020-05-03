@@ -57,7 +57,11 @@ exports.getUserByProductId = (productId) => userModel.findOne({ productsIds: { $
 
 exports.getAllUsers = (page, limit) => userModel.find().skip((page - 1) * limit).limit(limit);
 
-exports.saveUserById = (id, fullName, phone) => userModel.findOneAndUpdate({ id }, { fullName, phone }, { new: true });
+exports.saveUserById = (id, fullName, phone, iconName) => userModel.findOneAndUpdate({ id }, {
+    fullName,
+    phone,
+    ...(() => iconName ? ({ iconName }) : null)()
+}, { new: true });
 
 exports.updateUserIcon = (id, iconName) => userModel.findOneAndUpdate({ id }, { iconName }, { new: true });
 

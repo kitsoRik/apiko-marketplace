@@ -55,7 +55,7 @@ exports.getProductsByIds = (ids) => productModel.find({ id: { $in: ids } });
 
 exports.getAllProducts = (titlePattern, category, locationId, priceFrom, priceTo) => productModel.find({
     title: { $regex: titlePattern },
-    ...(() => locationId !== -1 && { locationId })(),
+    ...(() => +locationId !== -1 && { locationId })(),
     ...parsePrice(priceFrom, priceTo),
     ...(() => category && category !== 'any' && { category })()
 });

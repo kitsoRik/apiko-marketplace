@@ -1,29 +1,28 @@
 const express = require("express");
 const { connect } = require("./db/db");
 const multer = require("multer");
+const { getSessionBySesid } = require("./db/models/session");
+const { getUserById } = require("./db/models/user");
 const app = express();
 
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204,
+    credentials: true
+};
 
-app.use(/.*/, (req, res, next) => {
-    if (req.headers.origin)
-        res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
-    else res.setHeader('Access-Control-Allow-Origin', "*");
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-});
+app.use(require('cors')(corsOptions));
 
 app.use("/static", express.static("static"));
 
 app.use(require("body-parser").json());
 app.use(require("cookie-parser")());
 
-app.use(require("./graphql"));
+app.use("*", (req, res, next) => setTimeout(() => {
+    next();
+}, 1000));
 
-app.use("/api", require("./routes/auth"));
-app.use("/api", require("./routes/user"));
-app.use("/api", require("./routes/products"));
+require("./apollo/apollo")(app, corsOptions);
 
 const start = async () => {
     await connect();

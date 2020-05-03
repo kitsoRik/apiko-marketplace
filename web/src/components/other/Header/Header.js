@@ -13,24 +13,24 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import Button from '../../layouts/Button';
 import UserIcon from '../../icons/UserIcon';
+import { useQuery } from '@apollo/react-hooks';
+import { gql } from 'apollo-boost';
+import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
+import HomePageHeaderPanel from '../../pages/Home/HomePageHeaderPanel/HomePageHeaderPanel';
 
 
-const Header = ({ loginStatus, loadingDataState, fullName, iconName }) => {
+const Header = () => {
     const history = useHistory();
-    let darkMode = !['/login', '/register'].find((p) => p === history.location.pathname);
-
-    const [minorPanel, setMinorPanel] = useState();
+    const darkMode = !['/login', '/register'].find((p) => p === history.location.pathname);
+    const minorPanel = !!['/', '/profile', '/saved-items'].find(p => p.startsWith(history.location.pathname)) || history.location.pathname.startsWith("/products");
 
     const [userPanelOpen, setUserPanelOpen] = useState(false);
 
-    useEffect(() => {
-        setHeaderMinorPanel = setMinorPanel;
-        return () => setHeaderMinorPanel = null;
-    }, []);
-
-    const visibleLoginButton = loadingDataState === LOADED_ERROR || loadingDataState === UNLOADED;
-    const visibleUserIcon = loadingDataState === LOADED;
-    const visibleUserIconLoading = loadingDataState === LOADING || loginStatus === LOGINING || loginStatus === UNLOGINING;
+    const currentUserQuery = useQuery(CURRENT_USER_QUERY);
+    const loginStatus = NOT_LOGINED; //FIX IT
+    const visibleLoginButton = !currentUserQuery.loading && !currentUserQuery.data?.currentUser;
+    const visibleUserIcon = !currentUserQuery.loading && currentUserQuery.data.currentUser;
+    const visibleUserIconLoading = currentUserQuery.loading || loginStatus === LOGINING || loginStatus === UNLOGINING;
 
     return (
         <div className="header-wrapper" dark-mode={darkMode ? "true" : null}>
@@ -58,8 +58,8 @@ const Header = ({ loginStatus, loadingDataState, fullName, iconName }) => {
                         onBlur={() => setTimeout(() => setUserPanelOpen(false), 100)}>
                         {visibleUserIcon &&
                             <UserIcon
-                                src={iconName}
-                                fullName={fullName}
+                                src={currentUserQuery.data.currentUser.iconName}
+                                fullName={currentUserQuery.data.currentUser.fullName}
                                 onClick={() => setUserPanelOpen(!userPanelOpen)} />}
                         {userPanelOpen && <UserPanel />}
                         {visibleUserIconLoading && <ModalLoading style={{ height: `48px`, width: `48px`, borderRadius: `50%` }} />}
@@ -70,7 +70,7 @@ const Header = ({ loginStatus, loadingDataState, fullName, iconName }) => {
 
                 {minorPanel &&
                     <div className="header-minor-panel">
-                        {minorPanel}
+                        <HomePageHeaderPanel />
                     </div>
                 }
             </header>
@@ -78,8 +78,4 @@ const Header = ({ loginStatus, loadingDataState, fullName, iconName }) => {
     );
 }
 
-export let setHeaderMinorPanel = (panel) => { }
-
-export default compose(
-    connect(({ user: { loginStatus, loadingDataState, data: { fullName, iconName } } }) => ({ loginStatus, loadingDataState, fullName, iconName }))
-)(Header);
+export default (Header);

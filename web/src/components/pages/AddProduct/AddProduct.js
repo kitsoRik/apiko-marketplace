@@ -11,6 +11,8 @@ import Button from '../../layouts/Button';
 import InputImage from '../../layouts/Input/InputImage';
 import LocationTextField from '../../other/LocationTextField/LocationTextField';
 import api from '../../../services/api';
+import { gql } from 'apollo-boost';
+import { useMutation } from '@apollo/react-hooks';
 
 const AddProduct = ({ history }) => {
 
@@ -21,15 +23,21 @@ const AddProduct = ({ history }) => {
 
     const [photos, setPhotos] = useState([]);
 
-    const onSubmit = () => {
-        api.addProduct(title, locationId, description, photos, price)
-            .then(({ success, result, error }) => {
-                if (success) {
-                    history.push(`/products/${result.id}`);
-                } else {
+    const [addProduct] = useMutation(ADD_PRODUCT_MUTATION)
 
-                }
-            })
+    const onSubmit = () => {
+
+        addProduct({
+            variables: {
+                title,
+                locationId,
+                description,
+                price: +price,
+                category: "any",
+                photos: photos
+            }
+        }).then(({ data: { addProduct: { id } } }) => history.push(`/products/${id}`));
+
     }
 
     return (
@@ -40,7 +48,7 @@ const AddProduct = ({ history }) => {
                     <TextField value={title} onValueChange={setTitle} placeholder="For example: Iron man suite" />
                 </Label>
                 <Label value="Location">
-                    <LocationTextField onValueChange={setLocationId} placeholder="For example: Los Angele, CA" />
+                    <LocationTextField onLocationIdChange={setLocationId} placeholder="For example: Los Angele, CA" />
                 </Label>
                 <Label value="Description">
                     <TextField
@@ -67,7 +75,14 @@ const AddProduct = ({ history }) => {
     )
 };
 
-export default compose(
-    withLoginedLock(true),
-    connect()
-)(AddProduct);
+export default withLoginedLock(true)(AddProduct);
+
+
+
+const ADD_PRODUCT_MUTATION = gql`
+  mutation addProduct($title: String!, $description: String!, $locationId: ID!, $price: Float!, $category: String! $photos: [Upload!]){
+    addProduct(title: $title, locationId: $locationId, description: $description, price: $price, category: $category, photos: $photos) {
+            id
+        }
+    }
+`;

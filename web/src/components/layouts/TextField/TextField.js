@@ -21,7 +21,6 @@ const TextField = ({
     autoCompleteOptionsWhenEmptyHeader = null,
     autoCompleteOptionsWhenEmpty = null,
     value = "", password, error, errorIfTouched, onChange = () => { }, onValueChange = () => { }, ...props }) => {
-    const [inputValue, setInputValue] = useState(value);
     const [touched, setTouched] = useState(false);
     const [viewPassword, setViewPassword] = useState(false);
 
@@ -30,14 +29,6 @@ const TextField = ({
     const [inFocus, setInFocus] = useState(false);
 
     const err = errorIfTouched && touched;
-
-    useEffect(() => {
-        onValueChange(inputValue);
-    }, [inputValue]);
-
-    useEffect(() => {
-        setInputValue(value);
-    }, [value]);
 
     const onKeyDown = (e) => {
         switch (e.key) {
@@ -58,25 +49,24 @@ const TextField = ({
             }
             case "Enter": {
                 e.preventDefault();
-                let value;
-                if (inputValue === "") {
+                let _value;
+                if (value === "") {
                     const el = autoCompleteOptionsWhenEmpty[autocompleteIndex];
                     if (!el) return;
                     const props = el.props;
-                    value = props.textValue;
+                    _value = props.textValue;
                     if (props.onSelect) props.onSelect();
                 }
                 else {
                     const el = autoCompleteOptions[autocompleteIndex];
                     if (!el) return;
                     const props = el.props;
-                    value = props.textValue;
-                    console.log(props.onSelect);
+                    _value = props.textValue;
                     if (props.onSelect) props.onSelect();
                 }
-                setInputValue(value);
+                onValueChange(_value);
 
-                inputRef.current.value = value;
+                inputRef.current.value = _value;
 
                 setAutocompleteIndex(-1);
                 break;
@@ -86,7 +76,7 @@ const TextField = ({
 
     const inputRef = React.createRef();
     const autoCompleteTruthOptions = (autoCompleteOptions ?? []).
-        filter(({ props: { textValue } }) => new RegExp(inputValue).test(textValue) && inputValue !== textValue);
+        filter(({ props: { textValue } }) => new RegExp(value).test(textValue) && value !== textValue);
 
 
     let inputComponent = null;
@@ -99,10 +89,10 @@ const TextField = ({
             error={(err || error) ? "true" : "false"}
             type={password && !viewPassword ? 'password' : 'text'}
             onBlur={() => setTouched(true)}
-            value={inputValue}
+            value={value}
             name={name}
             onKeyDown={onKeyDown}
-            onChange={(e) => { setInputValue(e.target.value); onChange(e); onValueChange(e.target.value); }}
+            onChange={(e) => { onValueChange(e.target.value); onChange(e); onValueChange(e.target.value); }}
             {...props} >
 
         </textarea>
@@ -114,10 +104,10 @@ const TextField = ({
             error={(err || error) ? "true" : "false"}
             type={password && !viewPassword ? 'password' : 'text'}
             onBlur={() => setTouched(true)}
-            value={inputValue}
+            value={value}
             name={name}
             onKeyDown={onKeyDown}
-            onChange={(e) => { setInputValue(e.target.value); onChange(e); onValueChange(e.target.value); }}
+            onChange={(e) => { onValueChange(e.target.value); onChange(e); onValueChange(e.target.value); }}
             {...props} />
     }
 
@@ -134,21 +124,21 @@ const TextField = ({
                 alt="View password"
                 src={!viewPassword ? ViewPassword : ViewPasswordChecked}
                 onClick={() => setViewPassword(!viewPassword)} />}
-            {autoCompleteTruthOptions.length !== 0 && inFocus && inputValue !== "" &&
+            {autoCompleteTruthOptions.length !== 0 && inFocus && value !== "" &&
                 <div className="text-field-auto-complete-container" tabIndex="1">
                     {
                         (() => {
                             return autoCompleteTruthOptions.map((e, i) => {
                                 return React.cloneElement(e, {
                                     active: autocompleteIndex === i,
-                                    compareValue: inputValue
+                                    compareValue: value
                                 })
                             });
                         })()
                     }
                 </div>
             }
-            {autoCompleteOptionsWhenEmpty && autoCompleteOptionsWhenEmpty.length !== 0 && inFocus && inputValue === "" &&
+            {autoCompleteOptionsWhenEmpty && autoCompleteOptionsWhenEmpty.length !== 0 && inFocus && value === "" &&
                 <div className="text-field-auto-complete-container" tabIndex="1">
                     {autoCompleteOptionsWhenEmptyHeader}
                     {

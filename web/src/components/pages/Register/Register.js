@@ -15,13 +15,29 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { register } from '../../../redux/actions/user-actions';
 import { Formik } from 'formik';
+import { gql, defaultDataIdFromObject } from 'apollo-boost';
+import { useMutation, useApolloClient } from '@apollo/react-hooks';
+import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
 
-const Register = ({ history, registerStatus, registerError, register }) => {
+const Register = ({ history }) => {
+
+    const apolloClient = useApolloClient();
+    const [register, { data, loading }] = useMutation(REGISTER_MUTATION);
 
     const onSubmit = ({ email, fullName, password }, { setSubmitting, setErrors }) => {
         setSubmitting(true);
-        register(email, fullName, password)
-            .then(console.log)
+        register({
+            variables: { email, fullName, password },
+        })
+            .then((d) => {
+                console.log(d.data);
+                apolloClient.writeQuery({
+                    query: CURRENT_USER_QUERY,
+                    data: {
+                        currentUser: d.data.register
+                    }
+                })
+            })
             .catch(({ type }) => {
                 switch (type) {
                     case "EMAIL_IS_BUSY": setSubmitting(false); setErrors({ email: "Email is busy" }); break;
@@ -40,8 +56,6 @@ const Register = ({ history, registerStatus, registerError, register }) => {
         if (password.length < 8) errors.password = "Length must be greater or equal eight";
         if (passwordAgain.length < 8) errors.passwordAgain = "Length must be greater or equal eight"
         else if (passwordAgain !== password) errors.passwordAgain = "Passwords is not equal";
-
-        console.log(errors, email);
 
         if (fullName.length < 2) errors.fullName = "Length must be greater or equal two";
 
@@ -204,13 +218,21 @@ const Register = ({ history, registerStatus, registerError, register }) => {
 
     return (
         <div className="register-page">
-            {registerStatus !== REGISTERED && registerForm}
-            {registerStatus === REGISTERED && registeredForm}
+            {!data?.register && registerForm}
+            {data?.register && registeredForm}
         </div>
     );
 }
 
-export default compose(
-    withLoginedLock(false),
-    connect(({ user: { registerStatus, registerError } }) => ({ registerStatus, registerError }), { register })
-)(Register);
+export default withLoginedLock(false)(Register);
+
+const REGISTER_MUTATION = gql`
+    mutation register($fullName: String!, $email: String!, $password: String!) {
+        register(fullName: $fullName, email: $email, password: $password) {
+            id
+            fullName
+            email
+            iconName
+        }
+    }
+`;

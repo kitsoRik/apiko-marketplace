@@ -1,40 +1,74 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import "./SavedItems.scss";
 import Form from '../../layouts/Form';
 import ProductCard from '../../layouts/ProductCard/ProductCard';
-import { compose } from 'redux';
-import { loadSavedProducts, changeSavedStateOfProduct } from '../../../redux/actions/products-actions';
-import { connect } from 'react-redux';
 import ModalLoading from '../../layouts/ModalLoading/ModalLoading';
-import { LOADING } from '../../../constants';
+import { useQuery } from '@apollo/react-hooks';
+import { SAVED_PRODUCTS_QUERY } from '../../../apollo/queries/products-queries';
 
-const SavedItems = ({ loadSavedProducts, savedProducts, savedProductsCount, savedProductsLoadingState, changeSavedStateOfProduct }) => {
+const SavedItems = () => {
+    const { error, data, loading } = useQuery(SAVED_PRODUCTS_QUERY);
+
+    const [savedProducts, setSavedProducts] = useState([]);
+    const [unSavedProducts, setUnSavedProducts] = useState([]);
+
+    const onChangeSavedState = (product, saved) => {
+        if (!saved) {
+            setUnSavedProducts(unSavedProducts.concat([{ ...product, saved }]));
+            setSavedProducts(savedProducts.filter(p => p.id !== product.id));
+        }
+        else {
+            setSavedProducts(savedProducts.concat([{ ...product, saved }]));
+            setUnSavedProducts(unSavedProducts.filter(p => p.id !== product.id));
+        }
+    }
 
     useEffect(() => {
-        loadSavedProducts();
-    }, []);
+        if (data?.savedProducts) {
+            const newSavedProducts = data.savedProducts;
+            const savedProductsIds = savedProducts.map(p => p.id);
+            setSavedProducts(newSavedProducts.filter(p => savedProductsIds.indexOf(p.id) === -1).concat(savedProducts));
+        }
+    }, [data]);
 
-    const bracketsContent = savedProductsLoadingState === LOADING ? <ModalLoading darken={false} className="saved-items-page-form-title-loading" /> : savedProductsCount;
+    useEffect(() => {
+        const usSavedProductsIds = unSavedProducts.map(p => p.id);
+        if (savedProducts.filter(p => usSavedProductsIds.indexOf(p.id) !== -1).length !== 0) {
+            setSavedProducts(savedProducts.filter(p => usSavedProductsIds.indexOf(p.id) === -1));
+        }
+    }, [savedProducts]);
+
+    useEffect(() => {
+        const savedProductsIds = savedProducts.map(p => p.id);
+        if (unSavedProducts.filter(p => savedProductsIds.indexOf(p.id) !== -1).length !== 0) {
+            setUnSavedProducts(unSavedProducts.filter(p => savedProductsIds.indexOf(p.id) === -1));
+        }
+    }, [unSavedProducts]);
+
+
+    const bracketsContent = loading ? <ModalLoading darken={false} className="saved-items-page-form-title-loading" /> : savedProducts.length;
 
     return (
         <div className="saved-items-page">
             <Form className="saved-items-page-form">
-                <h1 className="saved-items-page-form-title"> Saved items ({bracketsContent})</h1>
-                <div className="saved-items-page-form-products-container">
-                    {savedProducts.map(product =>
-                        <ProductCard key={product.id} onSavedChange={state => changeSavedStateOfProduct(product.id, state)} {...product} />)}
-                    {/* {savedProductsLoadingState === LOADING && <ModalLoading darken={false} className="saved-items-page-form-products-container-loading" />} */}
+                <div>
+                    <h1 className="saved-items-page-form-title"> Saved items ({bracketsContent})</h1>
+                    <div className="saved-items-page-form-products-container">
+                        {savedProducts.map(product =>
+                            <ProductCard key={product.id} product={product} onChangeSavedState={state => onChangeSavedState(product, state)} />)}
+                    </div>
+                </div>
+                <div>
+                    <h1 className="saved-items-page-form-title"> Unsaved items ({unSavedProducts.length})</h1>
+                    <div className="saved-items-page-form-products-container">
+                        {unSavedProducts?.map(product =>
+                            <ProductCard key={"_" + product.id} product={product} onChangeSavedState={state => onChangeSavedState(product, state)} />)}
+                    </div>
                 </div>
             </Form>
         </div>
     )
 };
 
-export default compose(
-    connect(({ products: { products, savedProductsIds, savedProductsCount, savedProductsLoadingState } }) => ({
-        savedProducts: products.filter(p => savedProductsIds.indexOf(p.id) !== -1),
-        savedProductsCount,
-        savedProductsLoadingState
-    }), { loadSavedProducts, changeSavedStateOfProduct })
-)(SavedItems);
+export default SavedItems;

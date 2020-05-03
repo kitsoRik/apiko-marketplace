@@ -8,12 +8,19 @@ import "./withLoginedLock.scss";
 import { notifyError } from '../../other/Snackbar/Snackbar';
 import { LOADING, LOADED, LOADED_ERROR, NOT_LOADED, UNLOADED } from '../../../constants';
 import { REGISTERED, REGISTERING } from '../../../constants/register';
+import { useQuery } from '@apollo/react-hooks';
+import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
 
 const withLoginedLock = (needLogin = true) => (WrapperComponent) => {
     const HOC = (props) => {
-        const { history, loginStatus, registerStatus, loadingDataState } = props;
+        const { history, loginStatus, registerStatus } = props;
 
         const [checked, setChecked] = useState(true);
+
+        const { data, loading } = useQuery(CURRENT_USER_QUERY);
+
+
+        const loadingDataState = loading ? LOADING : (data?.currentUser !== null ? LOADED : LOADED_ERROR);
 
         const loadingVisible = (loadingDataState === LOADING && registerStatus !== REGISTERING && loginStatus !== LOGINING) || loginStatus === UNLOGINING;
         const loadedWithoutLogin = loadingDataState === LOADED && loginStatus !== LOGINED && registerStatus !== REGISTERED;
@@ -52,7 +59,7 @@ const withLoginedLock = (needLogin = true) => (WrapperComponent) => {
     }
 
     return compose(
-        connect(({ user: { loginStatus, registerStatus, loadingDataState } }) => ({ loginStatus, registerStatus, loadingDataState }))
+        connect(({ user: { loginStatus, registerStatus } }) => ({ loginStatus, registerStatus }))
     )(HOC);
 }
 

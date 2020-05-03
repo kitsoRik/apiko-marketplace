@@ -8,13 +8,33 @@ import './UserPanel.scss';
 import { Link, useHistory } from 'react-router-dom';
 import Button from '../../../layouts/Button';
 import { unlogin } from '../../../../redux/actions/user-actions';
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
+import { CURRENT_USER_QUERY } from '../../../../apollo/queries/user-queries';
+import { gql } from 'apollo-boost';
 
-const UserPanel = ({ email, fullName, unlogin, iconName, ...props }) => {
+const UserPanel = ({ ...props }) => {
 
     const history = useHistory();
 
+    const { data, loading } = useQuery(CURRENT_USER_QUERY);
+
+    const apolloClient = useApolloClient();
+    const [unlogin] = useMutation(UNLOGIN_MUTATION);
+
+    const onUnlogin = () => unlogin()
+        .then(() => {
+            apolloClient.writeQuery({
+                query: CURRENT_USER_QUERY,
+                data: { currentUser: null }
+            })
+        });
+
+    if (!data) return null;
+
+    const { fullName, email, iconName } = data.currentUser;
+
     return (
-        <div className="user-panel" {...props}>
+        <div className="user-panel" {...props} tabIndex="0">
             <div className="user-panel-upper">
                 <UserIcon fullName={fullName} src={iconName} />
                 <div className="user-panel-upper-info">
@@ -30,11 +50,15 @@ const UserPanel = ({ email, fullName, unlogin, iconName, ...props }) => {
                 onClick={() => history.push("/edit-profile")} value="Edit profile" />
             <Button.Transparent
                 className="user-panel-logout-button"
-                onClick={() => unlogin()} value="Logout" />
+                onClick={onUnlogin} value="Logout" />
         </div>
     );
 }
 
-export default compose(
-    connect(({ user: { data: { email, fullName, iconName } } }) => ({ email, fullName, iconName }), { unlogin })
-)(UserPanel);
+export default (UserPanel);
+
+const UNLOGIN_MUTATION = gql`
+    mutation {
+        unlogin
+    }
+`;

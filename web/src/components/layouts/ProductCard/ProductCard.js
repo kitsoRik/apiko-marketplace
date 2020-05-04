@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-
-import Black from '../../../assets/icons/black.png';
+import React from 'react';
 import "./ProductCard.scss";
 import ModalLoading from '../ModalLoading/ModalLoading';
 import HeartIcon from '../../icons/HeartIcon';
@@ -10,7 +8,7 @@ import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { notifyWarning } from '../../other/Snackbar/Snackbar';
 import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
 import { SAVED_PRODUCTS_QUERY } from '../../../apollo/queries/products-queries';
-import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ImageNoAvaiableIcon from '../../icons/ImageNoAvaliableIcon/ImageNoAvalaibleIcon';
 
 const ProductCard = ({ className, product, onChangeSavedState = () => { }, ...props }) => {

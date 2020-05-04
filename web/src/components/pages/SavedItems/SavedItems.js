@@ -8,7 +8,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { SAVED_PRODUCTS_QUERY } from '../../../apollo/queries/products-queries';
 
 const SavedItems = () => {
-    const { error, data, loading } = useQuery(SAVED_PRODUCTS_QUERY);
+    const { data, loading } = useQuery(SAVED_PRODUCTS_QUERY);
 
     const [savedProducts, setSavedProducts] = useState([]);
     const [unSavedProducts, setUnSavedProducts] = useState([]);
@@ -30,21 +30,21 @@ const SavedItems = () => {
             const savedProductsIds = savedProducts.map(p => p.id);
             setSavedProducts(newSavedProducts.filter(p => savedProductsIds.indexOf(p.id) === -1).concat(savedProducts));
         }
-    }, [data]);
+    }, [data]);// eslint-disable-line
 
     useEffect(() => {
         const usSavedProductsIds = unSavedProducts.map(p => p.id);
         if (savedProducts.filter(p => usSavedProductsIds.indexOf(p.id) !== -1).length !== 0) {
             setSavedProducts(savedProducts.filter(p => usSavedProductsIds.indexOf(p.id) === -1));
         }
-    }, [savedProducts]);
+    }, [savedProducts]);// eslint-disable-line
 
     useEffect(() => {
         const savedProductsIds = savedProducts.map(p => p.id);
         if (unSavedProducts.filter(p => savedProductsIds.indexOf(p.id) !== -1).length !== 0) {
             setUnSavedProducts(unSavedProducts.filter(p => savedProductsIds.indexOf(p.id) === -1));
         }
-    }, [unSavedProducts]);
+    }, [unSavedProducts]);// eslint-disable-line
 
 
     const bracketsContent = loading ? <ModalLoading darken={false} className="saved-items-page-form-title-loading" /> : savedProducts.length;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Label from '../../layouts/Label/Label';
 import TextField from '../../layouts/TextField/TextField';
 import Button from '../../layouts/Button';
@@ -9,20 +9,16 @@ import LoginUpperContainer from '../../layouts/LoginForm/LoginUpperContainer/Log
 import LoginUpperContainerTitle from '../../layouts/LoginForm/LoginUpperContainer/LoginUpperContainerTitle/LoginUpperContainerTitle';
 import LoginLowerContainer from '../../layouts/LoginForm/LoginLowerContainer/LoginLowerContainer';
 import LoginForm from '../../layouts/LoginForm/LoginForm';
-import { REGISTERING, REGISTERED, REGISTERED_ERROR } from '../../../constants/register';
 import withLoginedLock from '../../hocs/withLoginedLock/withLoginedLock';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
-import { register } from '../../../redux/actions/user-actions';
 import { Formik } from 'formik';
-import { gql, defaultDataIdFromObject } from 'apollo-boost';
+import { gql } from 'apollo-boost';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
 import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
 
 const Register = ({ history }) => {
 
     const apolloClient = useApolloClient();
-    const [register, { data, loading }] = useMutation(REGISTER_MUTATION);
+    const [register, { data }] = useMutation(REGISTER_MUTATION);
 
     const onSubmit = ({ email, fullName, password }, { setSubmitting, setErrors }) => {
         setSubmitting(true);

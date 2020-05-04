@@ -1,26 +1,22 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 import "./HeaderSearchPanel.scss";
 import TextField from '../../../layouts/TextField';
 import LocationTextField from '../../LocationTextField';
 import TextFieldAutocompleteOption from '../../../layouts/TextField/TextFieldAutocompleteOption';
 import Button from '../../../layouts/Button';
-import Icon from '../../../layouts/Icon';
 import SearchIcon from '../../../icons/SearchIcon/SearchIcon';
-import { compose } from 'redux';
 
 import _ from 'lodash';
-import { LOADING } from '../../../../constants';
 import api from '../../../../services/api';
 import { useHistory } from 'react-router-dom';
 import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
 import { connect } from 'react-redux';
 import { changeProductsSearchQuery, searchProducts, searchProductsHint } from '../../../../redux/actions/products-actions';
-import { PRODUCTS_QUERY } from '../../../../apollo/queries/products-queries';
 import { getLatestProductsTitleQuery, addProductsTitleQuery } from '../../../../services/localstorage/localstore';
 
-const HeaderSearchPanel = ({ title, locationId, reactionSearchQuery, searchProductsHintQuery, searchProductsHint, changeProductsSearchQuery, searchProducts }) => {
+const HeaderSearchPanel = ({ title, locationId, searchProductsHintQuery, searchProductsHint, changeProductsSearchQuery, searchProducts }) => {
 
     const { data, loading } = useQuery(SEARCH_PRODUCTS_QUERY, {
         variables: {
@@ -30,12 +26,7 @@ const HeaderSearchPanel = ({ title, locationId, reactionSearchQuery, searchProdu
         skip: searchProductsHintQuery.title === ""
     });
 
-    const history = useHistory();
-
-    const { refetch } = useQuery(PRODUCTS_QUERY, { variables: { ...reactionSearchQuery } });
-
     const onSearch = () => {
-        // refetch({ title, locationId, category, priceFrom, priceTo, page, limit })
         searchProducts();
         if (title !== "") {
             addProductsTitleQuery(title);
@@ -79,11 +70,11 @@ const HeaderSearchPanel = ({ title, locationId, reactionSearchQuery, searchProdu
 };
 
 export default connect(
-    (({ products: { searchQuery: { title, locationId }, reactionSearchQuery, searchProductsHintQuery } }) => ({ title, locationId, reactionSearchQuery, searchProductsHintQuery })),
+    (({ products: { searchQuery: { title, locationId }, searchProductsHintQuery } }) => ({ title, locationId, searchProductsHintQuery })),
     { changeProductsSearchQuery, searchProducts, searchProductsHint }
 )(HeaderSearchPanel);
 
-const AutocompleteProduct = ({ value, active, compareValue }) => {
+const AutocompleteProduct = ({ value, active }) => {
 
     const history = useHistory();
 

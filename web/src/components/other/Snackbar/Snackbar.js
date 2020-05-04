@@ -25,10 +25,10 @@ const Snackbar = () => {
                 case "info": return notifyInfo(value);
                 case "warning": return notifyWarning(value);
                 case "error": return notifyError(value);
-                default: throw "Unknown type for notify";
+                default: throw new Error("Unknown type for notify");
             }
         }
-    }, []);
+    }, []);// eslint-disable-line
 
     return (
         <div className="snackbar">

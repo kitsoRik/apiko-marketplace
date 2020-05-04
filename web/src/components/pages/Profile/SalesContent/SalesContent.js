@@ -1,12 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import "./SalesContent.scss";
 import Pagination from '../../../layouts/Pagination/Pagination';
 import SaleCard from '../../../layouts/SaleCard/SaleCard';
-import { LOADING } from '../../../../constants';
 import ModalLoading from '../../../layouts/ModalLoading/ModalLoading';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
 import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
 

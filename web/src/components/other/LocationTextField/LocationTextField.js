@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import "./LocationTextField.scss";
 import TextField from '../../layouts/TextField';
 import TextFieldAutocompleteOption from '../../layouts/TextField/TextFieldAutocompleteOption';
-import api from '../../../services/api';
-import _ from 'lodash';
 import Icon from '../../layouts/Icon';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';

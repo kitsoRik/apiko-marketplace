@@ -8,10 +8,10 @@ import { useQuery } from '@apollo/react-hooks';
 const Tabs = ({ tabIndex, setTabIndex }) => {
 
     const [productsCount, setProductsCount] = useState(0);
-    const [salesCount, setSalesCount] = useState(0);
-    const [feedbacksCount, setFeedbacksCount] = useState(0);
+    const [salesCount] = useState(0);
+    const [feedbacksCount] = useState(0);
 
-    const { data, loading, error } = useQuery(USER_PRODUCTS_COUNT_QUERY);
+    const { data, loading } = useQuery(USER_PRODUCTS_COUNT_QUERY);
 
     useEffect(() => {
         if (!data) return;

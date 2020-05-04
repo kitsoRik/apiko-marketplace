@@ -1,20 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import './Header.scss';
 import { Link, useHistory } from 'react-router-dom';
 import ApikoLogo from '../ApikoLogo/ApikoLogo';
 import PostboxIcon from '../../icons/PostboxIcon/PostboxIcon';
-import { NOT_LOGINED, UNLOGINED, LOGINED, LOGINING, UNLOGINING } from '../../../constants/login';
-import { LOADING, LOADED, NOT_LOADED, UNLOADED, LOADED_ERROR } from '../../../constants';
+import { NOT_LOGINED, LOGINED, LOGINING, UNLOGINING } from '../../../constants/login';
 import UserPanel from './UserPanel/UserPanel';
 import ModalLoading from '../../layouts/ModalLoading/ModalLoading';
 import HeartIcon from '../../icons/HeartIcon';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
 import Button from '../../layouts/Button';
 import UserIcon from '../../icons/UserIcon';
 import { useQuery } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
 import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
 import HeaderSearchPanel from './HeaderSearchPanel/';
 

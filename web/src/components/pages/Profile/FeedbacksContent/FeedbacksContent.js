@@ -1,9 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import "./FeedbacksContent.scss";
-import { compose } from 'redux';
-import { connect } from 'react-redux';
-import { LOADING } from '../../../../constants';
 import Pagination from '../../../layouts/Pagination/Pagination';
 import FeedbackCard from '../../../layouts/FeedbackCard/FeedbackCard';
 import ModalLoading from '../../../layouts/ModalLoading/ModalLoading';

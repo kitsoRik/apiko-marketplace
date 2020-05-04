@@ -28,7 +28,7 @@ const RestorePassword = ({ history: { location: { search = "?" } } }) => {
                     }
                 }
             });
-    }, []);
+    }, []);// eslint-disable-line
 
     return (
         <div className="restore-password-page">

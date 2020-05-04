@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import "./ProductsContent.scss";
-import { compose } from 'redux';
-import { connect } from 'react-redux';
-import { LOADING } from '../../../../constants';
 import ProductCard from '../../../layouts/ProductCard';
 import Pagination from '../../../layouts/Pagination/Pagination';
 import ModalLoading from '../../../layouts/ModalLoading/ModalLoading';
@@ -13,7 +10,7 @@ import { useQuery } from '@apollo/react-hooks';
 const ProductsContent = () => {
 
     const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(12);
+    const [limit] = useState(12);
 
     const { data, loading, refetch } = useQuery(USER_PRODUCTS_CONTENT, {
         variables: { page, limit }
@@ -21,7 +18,7 @@ const ProductsContent = () => {
 
     useEffect(() => {
         refetch({ page, limit })
-    }, [page]);
+    }, [page]);// eslint-disable-line
 
     return (
         <div className="products-content">

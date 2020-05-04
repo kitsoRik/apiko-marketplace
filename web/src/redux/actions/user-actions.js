@@ -1,6 +1,3 @@
-import api from '../../services/api';
-import { asyncActionFactory, asyncActionFactoryWithGraphQLQuery } from './factory';
-
 export const
     SET_REGISTER_STATUS = "SET_REGISTER_STATUS",
     SET_LOGIN_STATUS = "SET_LOGIN_STATUS";

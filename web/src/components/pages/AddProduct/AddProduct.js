@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 
 import "./AddProduct.scss";
-import { compose } from 'redux';
 import withLoginedLock from '../../hocs/withLoginedLock';
-import { connect } from 'react-redux';
+
 import Form from '../../layouts/Form';
 import Label from '../../layouts/Label';
 import TextField from '../../layouts/TextField';
 import Button from '../../layouts/Button';
 import InputImage from '../../layouts/Input/InputImage';
 import LocationTextField from '../../other/LocationTextField/LocationTextField';
-import api from '../../../services/api';
 import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/react-hooks';
 

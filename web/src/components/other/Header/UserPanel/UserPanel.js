@@ -1,13 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux'
-import { compose } from 'redux';
 
 import UserIcon from '../../../icons/UserIcon';
 
 import './UserPanel.scss';
 import { Link, useHistory } from 'react-router-dom';
 import Button from '../../../layouts/Button';
-import { unlogin } from '../../../../redux/actions/user-actions';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { CURRENT_USER_QUERY } from '../../../../apollo/queries/user-queries';
 import { gql } from 'apollo-boost';
@@ -16,7 +13,7 @@ const UserPanel = ({ ...props }) => {
 
     const history = useHistory();
 
-    const { data, loading } = useQuery(CURRENT_USER_QUERY);
+    const { data } = useQuery(CURRENT_USER_QUERY);
 
     const apolloClient = useApolloClient();
     const [unlogin] = useMutation(UNLOGIN_MUTATION);

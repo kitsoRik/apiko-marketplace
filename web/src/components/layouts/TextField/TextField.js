@@ -76,12 +76,13 @@ const TextField = ({
                 setAutocompleteIndex(-1);
                 break;
             }
+            default: break;
         }
     }
 
     const inputRef = React.createRef();
-    const autoCompleteTruthOptions = (autoCompleteOptions ?? []).
-        filter(({ props: { textValue } }) => new RegExp(value).test(textValue) && value !== textValue);
+    const autoCompleteTruthOptions = (autoCompleteOptions ?? [])
+        .filter(({ props: { textValue } }) => new RegExp(value).test(textValue) && value !== textValue);
 
 
     let inputComponent = null;

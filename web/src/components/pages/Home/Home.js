@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { setHeaderMinorPanel } from '../../other/Header/Header';
+import React from 'react';
 
 import './Home.scss';
 import ProductCard from '../../layouts/ProductCard/ProductCard';
 
-import _ from 'lodash';
 import Pagination from '../../layouts/Pagination/Pagination';
-import HomePageHeaderPanel from '../../other/Header/HeaderSearchPanel/HeaderSearchPanel';
 import SearchPanel from './SearchPanel';
 import ModalLoading from '../../layouts/ModalLoading/ModalLoading';
 import { useQuery } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
 import { PRODUCTS_QUERY } from '../../../apollo/queries/products-queries';
-import { useSelector, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { changeProductsSearchQuery, searchProducts } from '../../../redux/actions/products-actions';
 
 const Home = ({ category, priceFrom, priceTo, page, limit, reactionSearchQuery, changeProductsSearchQuery, searchProducts }) => {

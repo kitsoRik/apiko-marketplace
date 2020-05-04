@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { LOGINED, NOT_LOGINED, LOGINING, UNLOGINING, UNLOGINED } from '../../../constants/login';
+import { LOGINED, LOGINING, UNLOGINING } from '../../../constants/login';
 import ModalLoading from '../../layouts/ModalLoading/ModalLoading';
 
 import "./withLoginedLock.scss";
 import { notifyError } from '../../other/Snackbar/Snackbar';
-import { LOADING, LOADED, LOADED_ERROR, NOT_LOADED, UNLOADED } from '../../../constants';
+import { LOADING, LOADED, LOADED_ERROR, UNLOADED } from '../../../constants';
 import { REGISTERED, REGISTERING } from '../../../constants/register';
 import { useQuery } from '@apollo/react-hooks';
 import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
@@ -42,7 +42,7 @@ const withLoginedLock = (needLogin = true) => (WrapperComponent) => {
                 history.push("/");
             }
             setChecked(true);
-        }, [loadingDataState]);
+        }, [loadingDataState]);// eslint-disable-line
 
         const wrapper = (
             <div className="with-logined-lock" loading={loadingVisible ? "true" : null}>

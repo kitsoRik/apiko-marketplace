@@ -11,9 +11,6 @@ import LoginLowerContainer from '../../layouts/LoginForm/LoginLowerContainer';
 import LoginUpperContainerTitle from '../../layouts/LoginForm/LoginUpperContainer/LoginUpperContainerTitle';
 
 import { checkValidEmail } from '../../../services/checkers/checkers';
-import { LOGINING } from '../../../constants/login';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
 import withLoginedLock from '../../hocs/withLoginedLock';
 import { gql } from 'apollo-boost';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
@@ -27,7 +24,7 @@ const Login = ({ history }) => {
     const [password, setPassword] = useState("");
 
     const apolloClient = useApolloClient();
-    const [login, { data, loading }] = useMutation(LOGIN_MUTATION, {
+    const [login, { loading }] = useMutation(LOGIN_MUTATION, {
         refetchQueries: [{
             query: PRODUCTS_QUERY, variables: {
                 title: "",

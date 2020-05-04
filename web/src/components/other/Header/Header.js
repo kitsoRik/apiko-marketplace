@@ -16,7 +16,7 @@ import UserIcon from '../../icons/UserIcon';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
-import HomePageHeaderPanel from '../../pages/Home/HomePageHeaderPanel/HomePageHeaderPanel';
+import HeaderSearchPanel from './HeaderSearchPanel/';
 
 
 const Header = () => {
@@ -70,7 +70,7 @@ const Header = () => {
 
                 {minorPanel &&
                     <div className="header-minor-panel">
-                        <HomePageHeaderPanel />
+                        <HeaderSearchPanel />
                     </div>
                 }
             </header>

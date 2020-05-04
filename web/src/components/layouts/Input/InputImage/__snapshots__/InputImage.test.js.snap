@@ -3,45 +3,35 @@
 exports[`Label should be rendered 1`] = `
 <div
   className="input-image "
-  isDrag={null}
+  has-file="false"
+  is-drag={null}
   onClick={[Function]}
 >
   <input
+    multiple={false}
     onChange={[Function]}
+    onClick={[Function]}
     onDragEnter={[Function]}
     onDragLeave={[Function]}
     type="file"
   />
-  <div
-    className="input-image-container"
-  >
-    <img
-      alt="Unknown"
-      src={null}
-    />
-  </div>
 </div>
 `;
 
 exports[`Label should render with className 1`] = `
 <div
   className="input-image my-custom-class-name"
-  isDrag={null}
+  has-file="false"
+  is-drag={null}
   onClick={[Function]}
 >
   <input
+    multiple={false}
     onChange={[Function]}
+    onClick={[Function]}
     onDragEnter={[Function]}
     onDragLeave={[Function]}
     type="file"
   />
-  <div
-    className="input-image-container"
-  >
-    <img
-      alt="Unknown"
-      src={null}
-    />
-  </div>
 </div>
 `;

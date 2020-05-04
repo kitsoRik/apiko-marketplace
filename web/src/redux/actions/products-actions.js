@@ -1,6 +1,7 @@
 export const
     CHANGE_PRODUCTS_SEARCH_QUERY = "CHANGE_PRODUCTS_SEARCH_QUERY",
-    SEARCH_PRODUCTS = "SEARCH_PRODUCTS";
+    SEARCH_PRODUCTS = "SEARCH_PRODUCTS",
+    SEARCH_PRODUCTS_HINT = "SEARCH_PRODUCTS_HINT";
 
 export const changeProductsSearchQuery = (changes) => ({
     type: CHANGE_PRODUCTS_SEARCH_QUERY,
@@ -18,3 +19,14 @@ export const searchProducts = () => (dispatch, getState) => {
         }
     });
 }
+
+export const searchProductsHint = () => (dispatch, getState) => {
+    const { products: { searchQuery: { title } } } = getState();
+    dispatch({
+        type: SEARCH_PRODUCTS_HINT,
+        payload: {
+            title
+        }
+    });
+}
+

@@ -6,7 +6,7 @@ import ProductCard from '../../layouts/ProductCard/ProductCard';
 
 import _ from 'lodash';
 import Pagination from '../../layouts/Pagination/Pagination';
-import HomePageHeaderPanel from './HomePageHeaderPanel/HomePageHeaderPanel';
+import HomePageHeaderPanel from '../../other/Header/HeaderSearchPanel/HeaderSearchPanel';
 import SearchPanel from './SearchPanel';
 import ModalLoading from '../../layouts/ModalLoading/ModalLoading';
 import { useQuery } from '@apollo/react-hooks';

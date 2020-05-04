@@ -30,7 +30,7 @@ type User {
         description: String!
         price: Float!
         category: String!
-        imageName: String!
+        imageName: String
 
         location: Location!
 

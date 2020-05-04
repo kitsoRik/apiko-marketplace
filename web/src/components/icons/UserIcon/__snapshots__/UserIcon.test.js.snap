@@ -6,7 +6,7 @@ exports[`UserIcon should render with image 1`] = `
 >
   <img
     alt="User icon"
-    src="http://localhost:3500/api/static/icons/users/http://..."
+    src="http://localhost:3500/static/icons/users/http://..."
   />
 </div>
 `;

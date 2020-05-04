@@ -30,11 +30,16 @@ const TextField = ({
 
     const err = errorIfTouched && touched;
 
+
+    useEffect(() => {
+        setAutocompleteIndex(-1);
+    }, [value])
+
     const onKeyDown = (e) => {
         switch (e.key) {
             case "ArrowDown": {
                 e.preventDefault();
-                if (autocompleteIndex === autoCompleteOptions.length - 1) {
+                if (autocompleteIndex === autoCompleteOptions?.length - 1 || autocompleteIndex === autoCompleteOptionsWhenEmpty?.length - 1) {
                     setAutocompleteIndex(0);
                     break;
                 }

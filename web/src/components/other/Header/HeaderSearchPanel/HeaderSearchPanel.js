@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
-import "./HomePageHeaderPanel.scss";
+import "./HeaderSearchPanel.scss";
 import TextField from '../../../layouts/TextField';
-import LocationTextField from '../../../other/LocationTextField';
+import LocationTextField from '../../LocationTextField';
 import TextFieldAutocompleteOption from '../../../layouts/TextField/TextFieldAutocompleteOption';
 import Button from '../../../layouts/Button';
 import Icon from '../../../layouts/Icon';
@@ -16,17 +16,18 @@ import { useHistory } from 'react-router-dom';
 import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
 import { connect } from 'react-redux';
-import { changeProductsSearchQuery, searchProducts } from '../../../../redux/actions/products-actions';
+import { changeProductsSearchQuery, searchProducts, searchProductsHint } from '../../../../redux/actions/products-actions';
 import { PRODUCTS_QUERY } from '../../../../apollo/queries/products-queries';
 import { getLatestProductsTitleQuery, addProductsTitleQuery } from '../../../../services/localstorage/localstore';
 
-const HomePageHeaderPanel = ({ title, locationId, reactionSearchQuery, changeProductsSearchQuery, searchProducts }) => {
+const HeaderSearchPanel = ({ title, locationId, reactionSearchQuery, searchProductsHintQuery, searchProductsHint, changeProductsSearchQuery, searchProducts }) => {
 
     const { data, loading } = useQuery(SEARCH_PRODUCTS_QUERY, {
         variables: {
-            title,
+            title: searchProductsHintQuery.title,
             limit: 6
-        }
+        },
+        skip: searchProductsHintQuery.title === ""
     });
 
     const history = useHistory();
@@ -39,6 +40,13 @@ const HomePageHeaderPanel = ({ title, locationId, reactionSearchQuery, changePro
         if (title !== "") {
             addProductsTitleQuery(title);
         }
+    }
+
+    const onSearchProductsHint = useCallback(_.debounce(() => searchProductsHint(), 700), []);
+
+    const onTitleChange = (title) => {
+        changeProductsSearchQuery({ title });
+        onSearchProductsHint();
     }
 
     return (
@@ -62,7 +70,7 @@ const HomePageHeaderPanel = ({ title, locationId, reactionSearchQuery, changePro
                 autoCompleteOptionsWhenEmpty={
                     getLatestProductsTitleQuery().map(item => <TextFieldAutocompleteOption className="home-page-header-panel-text-field-autocomplete-recent-products-item" key={item} textValue={item} value={item} icon={<SearchIcon color="#CECECE" style={{ width: '17px', height: '18px' }} />} />)
                 }
-                onValueChange={title => changeProductsSearchQuery({ title })}
+                onValueChange={onTitleChange}
                 placeholder="Search products by name" icon={<SearchIcon style={{ width: '17px', height: '18px' }} />} />
             <LocationTextField onLocationIdChange={locationId => changeProductsSearchQuery({ locationId })} locationId={locationId} />
             <Button.Martinique style={{ textTransform: "uppercase" }} value="Search" onClick={onSearch} />
@@ -71,9 +79,9 @@ const HomePageHeaderPanel = ({ title, locationId, reactionSearchQuery, changePro
 };
 
 export default connect(
-    (({ products: { searchQuery: { title, locationId }, reactionSearchQuery } }) => ({ title, locationId, reactionSearchQuery })),
-    { changeProductsSearchQuery, searchProducts }
-)(HomePageHeaderPanel);
+    (({ products: { searchQuery: { title, locationId }, reactionSearchQuery, searchProductsHintQuery } }) => ({ title, locationId, reactionSearchQuery, searchProductsHintQuery })),
+    { changeProductsSearchQuery, searchProducts, searchProductsHint }
+)(HeaderSearchPanel);
 
 const AutocompleteProduct = ({ value, active, compareValue }) => {
 

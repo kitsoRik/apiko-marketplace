@@ -10,12 +10,11 @@ import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { notifyWarning } from '../../other/Snackbar/Snackbar';
 import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
 import { SAVED_PRODUCTS_QUERY } from '../../../apollo/queries/products-queries';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
+import ImageNoAvaiableIcon from '../../icons/ImageNoAvaliableIcon/ImageNoAvalaibleIcon';
 
 const ProductCard = ({ className, product, onChangeSavedState = () => { }, ...props }) => {
     const { id, title, price, imageName, changingSaveState, saved = false } = product;
-
-    const history = useHistory();
 
     const client = useApolloClient();
 
@@ -68,12 +67,13 @@ const ProductCard = ({ className, product, onChangeSavedState = () => { }, ...pr
     }
 
     return (
-        <div className={`product-card ${className ?? ""}`} onClick={() => history.push(`/products/${id}`)} {...props}>
+        <div className={`product-card ${className ?? ""}`}{...props}>
             <div className="product-card-icon">
                 {imageName && <img src={`${api.productsImageBaseUrl}${imageName}`} alt="Product icon" />}
+                {!imageName && <ImageNoAvaiableIcon style={{ height: "80%", width: '100%' }} />}
             </div>
             <div className="product-card-info">
-                <span className="product-card-info-name">{title}</span>
+                <Link className="product-card-info-title" to={`/products/${id}`} >{title}</Link>
                 <span className="product-card-info-price">{price}</span>
             </div>
             <div className="product-card-like">

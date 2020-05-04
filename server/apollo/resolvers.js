@@ -76,7 +76,6 @@ module.exports = {
 
     Query: {
         products: async (source, { title = "", category = "any", locationId = "-1", priceFrom = -1, priceTo = -1, page = 1, limit = 12 }) => {
-            console.log(title, category, locationId, priceFrom, priceTo, page, limit);
             return await getAllProducts(title, category, locationId, priceFrom, priceTo).skip((page - 1) * limit).limit(limit);
         },
 

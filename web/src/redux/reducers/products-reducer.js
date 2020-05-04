@@ -1,4 +1,4 @@
-import { CHANGE_PRODUCTS_SEARCH_QUERY, SEARCH_PRODUCTS } from "../actions/products-actions";
+import { CHANGE_PRODUCTS_SEARCH_QUERY, SEARCH_PRODUCTS, SEARCH_PRODUCTS_HINT } from "../actions/products-actions";
 
 const initState = {
     searchQuery: {
@@ -18,6 +18,9 @@ const initState = {
         priceTo: -1,
         page: 1,
         limit: 12
+    },
+    searchProductsHintQuery: {
+        title: ""
     }
 }
 
@@ -39,6 +42,16 @@ const productsReducer = (state = initState, action) => {
             return {
                 ...state,
                 reactionSearchQuery: action.payload.searchQuery
+            }
+        }
+
+        case SEARCH_PRODUCTS_HINT: {
+            return {
+                ...state,
+                searchProductsHintQuery: {
+                    ...state.searchProductsHintQuery,
+                    title: action.payload.title
+                }
             }
         }
 

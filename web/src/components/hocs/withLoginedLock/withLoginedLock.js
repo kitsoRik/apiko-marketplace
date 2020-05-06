@@ -15,7 +15,7 @@ const withLoginedLock = (needLogin = true) => (WrapperComponent) => {
     const HOC = (props) => {
         const { history, loginStatus, registerStatus } = props;
 
-        const [checked, setChecked] = useState(true);
+        const [checked, setChecked] = useState(false);
 
         const { data, loading } = useQuery(CURRENT_USER_QUERY);
 
@@ -40,8 +40,9 @@ const withLoginedLock = (needLogin = true) => (WrapperComponent) => {
                 setChecked(true);
                 notifyError("Access has blocked by login policy");
                 history.push("/");
+            } else if (loadedWithoutLogin || dataNotLoaded) {
+                setChecked(true);
             }
-            setChecked(true);
         }, [loadingDataState]);// eslint-disable-line
 
         const wrapper = (

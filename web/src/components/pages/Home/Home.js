@@ -10,6 +10,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { PRODUCTS_QUERY } from '../../../apollo/queries/products-queries';
 import { connect } from 'react-redux';
 import { changeProductsSearchQuery, searchProducts } from '../../../redux/actions/products-actions';
+import ProductsViewer from '../../other/ProductsViewer/ProductsViewer';
 
 const Home = ({ category, priceFrom, priceTo, page, limit, reactionSearchQuery, changeProductsSearchQuery, searchProducts }) => {
 
@@ -25,12 +26,7 @@ const Home = ({ category, priceFrom, priceTo, page, limit, reactionSearchQuery, 
                 priceTo: priceTo === -1 ? "" : priceTo,
                 setPriceTo: (priceTo) => changeProductsSearchQuery({ priceTo: priceTo === "" ? -1 : +priceTo }),
             }} />
-            <div className="home-page-products-container">
-                {!loading && data?.products.map(product =>
-                    <ProductCard key={product.id} product={product} />)}
-                {loading && <ModalLoading darken={false} style={{ gridColumn: '1 / span 4', position: "static" }} />}
-                {!loading && data?.products?.length === 0 && <span>Products is empty</span>}
-            </div>
+            <ProductsViewer products={data?.products} loading={loading} />
             <Pagination onChangePage={page => { changeProductsSearchQuery({ page }); searchProducts(); }} page={page} pages={data ? Math.ceil(data.productsCount / limit) : 1} />
         </div>
     );

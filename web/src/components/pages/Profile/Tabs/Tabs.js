@@ -19,7 +19,7 @@ const Tabs = ({ tabIndex, setTabIndex }) => {
     }, [data]);
 
     const tabsInfo = [
-        { main: feedbacksCount, minor: "Positive feedback", loading },
+        { main: feedbacksCount + "%", minor: "Positive feedbacks", loading },
         { main: salesCount, minor: "sales", loading, },
         { main: productsCount, minor: "Active listings", loading }
     ]

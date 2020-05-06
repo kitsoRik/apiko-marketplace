@@ -11,19 +11,6 @@
     grid-row-gap: 15px;
 
     box-sizing: border-box;
-
-    &-products-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-
-        grid-column-gap: 5px;
-        grid-row-gap: 10px;
-
-        & .product-card {
-            height: 212px;
-            width: 206.25px;
-        }
-    }
 }
 
 @media (min-width: 780px) {

@@ -11,6 +11,8 @@ import api from '../../../services/api';
 import { checkValidEmail } from '../../../services/checkers/checkers';
 import { NOT_RESTORED, RESTORED, RESTORED_ERROR, RESTORING } from '../../../constants/restore';
 import withLoginedLock from '../../hocs/withLoginedLock';
+import { gql } from 'apollo-boost';
+import { useMutation } from '@apollo/react-hooks';
 
 
 const ForgotPassword = (props) => {
@@ -18,30 +20,21 @@ const ForgotPassword = (props) => {
     const [restoreStatus, setRestoreStatus] = useState(NOT_RESTORED);
 
     const [email, setEmail] = useState("");
-    const [error, setError] = useState(null);
 
-    const sendRestoreLink = async () => {
-        setRestoreStatus(RESTORING);
-        const { success, error } = await api.restoreRequest(email)
-
-        if (success) {
-            setRestoreStatus(RESTORED);
-        } else {
-            setRestoreStatus(RESTORED_ERROR);
-            setError(textFromError(error));
-        }
-    }
+    const [requrestToRestorePassword, { data, loading, error }] = useMutation(RESTORE_PASSWORD_REQUEST_MUTATION, {
+        variables: { email }
+    });
 
     return (
         <div className="forgot-password-page">
-            <LoginForm loading={restoreStatus === RESTORING}>
+            <LoginForm loading={loading} onSubmit={(e) => e.preventDefault()}>
                 <LoginUpperContainer>
                     <LoginUpperContainerTitle>Restore Password</LoginUpperContainerTitle>
-                    {restoreStatus === RESTORED &&
+                    {data?.restorePasswordRequest &&
                         <Label className="forgot-password-page-sended">
                             If {email} is exists, message with restore link will have sent
                         </Label>}
-                    {restoreStatus !== RESTORED &&
+                    {!data?.restorePasswordRequest &&
                         <Label
                             className="login-page__container-upper-form-field"
                             value="Email"
@@ -50,15 +43,14 @@ const ForgotPassword = (props) => {
                                 value={email}
                                 placeholder={"Example@gmail.com"}
                                 error={error}
-                                onValueChange={(e) => setEmail(e.target.value)} />
+                                onValueChange={setEmail} />
                         </Label>}
-                    {restoreStatus !== RESTORED &&
+                    {!data?.restorePasswordRequest &&
                         <Button.Default
-                            disabled={!checkValidEmail(email)}
                             className="forgot-password-page-sumbit-button"
-                            onClick={sendRestoreLink}>
-                            Continue
-                        </Button.Default>}
+                            onClick={requrestToRestorePassword}
+                            value="Continue"
+                        />}
                 </LoginUpperContainer>
             </LoginForm>
         </div>
@@ -74,3 +66,9 @@ const textFromError = ({ type }) => {
 }
 
 export default withLoginedLock(false)(ForgotPassword);
+
+const RESTORE_PASSWORD_REQUEST_MUTATION = gql`
+    mutation restorePassword($email: String!) {
+        restorePasswordRequest(email: $email)
+    }
+`;

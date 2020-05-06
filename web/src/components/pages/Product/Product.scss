@@ -1,0 +1,134 @@
+.product-page {
+    padding: 25px 300px 0;
+    flex: 1;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1000px) 260px;
+    grid-template-rows: min-content;
+    grid-column-gap: 15px;
+
+    box-sizing: border-box;
+
+    @media screen and (max-width: 1440px) {
+        max-width: 1024px;
+        padding: 25px 100px 0;
+    }
+
+    &-product {
+        display: flex;
+        flex-direction: column;
+
+        &-image {
+            width: 100%;
+            height: 275px;
+
+            position: relative;
+
+            overflow: hidden;
+            & > img {
+                width: 100%;
+            }
+
+            &-price {
+                padding: 7px 20px 0;
+                position: absolute;
+
+                right: 0;
+                bottom: 0;
+
+                color: #101010;
+                background-color: white;
+
+                border-top-left-radius: 10px;
+
+                font-size: 20px;
+                font-weight: bold;
+            }
+        }
+
+        &-info {
+            padding: 10px 20px 20px;
+
+            &-upper {
+                &-title {
+                    margin-right: 10px;
+                    font-size: 18px;
+                }
+
+                &-time {
+                    color: #9d9d9d;
+                    font-size: 14px;
+                }
+
+                &-location {
+                    margin-top: 9px;
+                    &-icon {
+                        margin-right: 12px;
+                    }
+
+                    &-text {
+                        color: #777b;
+                        font-size: 14px;
+                    }
+                }
+            }
+
+            &-line {
+                margin: 14px;
+                margin-right: -22px;
+                height: 1px;
+                width: 100%;
+
+                background-color: #8884;
+            }
+        }
+    }
+
+    &-user {
+        display: flex;
+        flex-direction: column;
+
+        &-form {
+            margin-bottom: 20px;
+            padding: 14px 0;
+            position: relative;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            background-color: transparent;
+            &::after {
+                content: "";
+
+                width: 100%;
+                height: 50px;
+
+                top: 0;
+
+                position: absolute;
+
+                background-color: #349a89;
+
+                z-index: -1;
+            }
+
+            &-icon {
+                width: 72px;
+                height: 72px;
+            }
+        }
+
+        &-chat-with-seller-button {
+            height: 45px;
+            padding: 0;
+            margin-bottom: 10px;
+        }
+
+        &-add-to-favorite-button {
+            height: 45px;
+            font-size: 14px;
+            border: 1px solid #349a89;
+        }
+    }
+}

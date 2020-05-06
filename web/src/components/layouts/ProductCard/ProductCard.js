@@ -7,18 +7,17 @@ import { gql } from 'apollo-boost';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { notifyWarning } from '../../other/Snackbar/Snackbar';
 import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
-import { SAVED_PRODUCTS_QUERY } from '../../../apollo/queries/products-queries';
+import { CHANGE_SAVED_STATE_MUTATION } from '../../../apollo/mutation/products-mutation';
 import { Link } from 'react-router-dom';
 import ImageNoAvaiableIcon from '../../icons/ImageNoAvaliableIcon/ImageNoAvalaibleIcon';
+import { changeProductStateHandler } from '../../../apollo/handlers/products-handler';
 
 const ProductCard = ({ className, product, onChangeSavedState = () => { }, ...props }) => {
     const { id, title, price, imageName, changingSaveState, saved = false } = product;
 
-    const client = useApolloClient();
-
     const { data } = useQuery(CURRENT_USER_QUERY);
 
-    const [changeState, { loading }] = useMutation(CHANGE_STATE_MUTATION, {
+    const [changeState, { loading }] = useMutation(CHANGE_SAVED_STATE_MUTATION, {
         optimisticResponse: {
             changeSavedStateOfProduct: !saved
         }
@@ -28,40 +27,10 @@ const ProductCard = ({ className, product, onChangeSavedState = () => { }, ...pr
     const changeSavedState = () => {
         if (loading) return notifyWarning("Wait before next saved.");
         if (!data?.currentUser) return notifyWarning("Please, login before saving product.");
-        onChangeSavedState(!saved);
-        changeState({
-            variables: {
-                id, state: !saved
-            },
-        });
-
-
-        try {
-            const query = client.readQuery({ query: SAVED_PRODUCTS_QUERY });
-            let savedProducts;
-            if (saved) savedProducts = query.savedProducts.filter(p => p.id !== id);
-            else savedProducts = query.savedProducts.concat([{ ...product, saved: !saved }])
-            client.writeQuery({
-                query: SAVED_PRODUCTS_QUERY,
-                data: {
-                    savedProducts
-                }
-            });
-
-        } catch (e) {
-
-        }
-        client.writeFragment({
-            id,
-            fragment: gql`
-                fragment saveProduct on Product {
-                    saved
-                }
-            `,
-            data: {
-                saved: !saved
-            }
-        });
+        const state = !saved;
+        onChangeSavedState(state);
+        changeState({ variables: { id, state }, });
+        changeProductStateHandler(product, state);
     }
 
     return (
@@ -71,7 +40,9 @@ const ProductCard = ({ className, product, onChangeSavedState = () => { }, ...pr
                 {!imageName && <ImageNoAvaiableIcon style={{ height: "80%", width: '100%' }} />}
             </div>
             <div className="product-card-info">
-                <Link className="product-card-info-title" to={`/products/${id}`} >{title}</Link>
+                <div>
+                    <Link className="product-card-info-title" to={`/products/${id}`} >{title}</Link>
+                </div>
                 <span className="product-card-info-price">{price}</span>
             </div>
             <div className="product-card-like">
@@ -83,9 +54,3 @@ const ProductCard = ({ className, product, onChangeSavedState = () => { }, ...pr
 }
 
 export default ProductCard;
-
-const CHANGE_STATE_MUTATION = gql`
-    mutation changeProductState($id: ID!, $state: Boolean!) {
-        changeSavedStateOfProduct(id: $id, state: $state)
-    }
-`;

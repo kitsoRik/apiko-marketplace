@@ -6,6 +6,7 @@ import ProductCard from '../../layouts/ProductCard/ProductCard';
 import ModalLoading from '../../layouts/ModalLoading/ModalLoading';
 import { useQuery } from '@apollo/react-hooks';
 import { SAVED_PRODUCTS_QUERY } from '../../../apollo/queries/products-queries';
+import withLoginedLock from '../../hocs/withLoginedLock';
 
 const SavedItems = () => {
     const { data, loading } = useQuery(SAVED_PRODUCTS_QUERY);
@@ -59,16 +60,16 @@ const SavedItems = () => {
                             <ProductCard key={product.id} product={product} onChangeSavedState={state => onChangeSavedState(product, state)} />)}
                     </div>
                 </div>
-                <div>
+                {unSavedProducts?.length !== 0 && <div>
                     <h1 className="saved-items-page-form-title"> Unsaved items ({unSavedProducts.length})</h1>
                     <div className="saved-items-page-form-products-container">
                         {unSavedProducts?.map(product =>
                             <ProductCard key={"_" + product.id} product={product} onChangeSavedState={state => onChangeSavedState(product, state)} />)}
                     </div>
-                </div>
+                </div>}
             </Form>
         </div>
     )
 };
 
-export default SavedItems;
+export default withLoginedLock(true)(SavedItems);

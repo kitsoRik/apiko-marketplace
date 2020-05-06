@@ -7,36 +7,53 @@ import api from '../../../services/api';
 import NewPasswordPanel from './NewPasswordPanel';
 import ErrorKeyPanel from './ErrorKeyPanel/ErrorKeyPanel';
 import withLoginedLock from '../../hocs/withLoginedLock';
+import { gql } from 'apollo-boost';
+import { useQuery } from '@apollo/react-hooks';
 
 const RestorePassword = ({ history: { location: { search = "?" } } }) => {
-    const key = qs.parse(search.slice(1));
+    const { key } = qs.parse(search.slice(1));
 
     const [keyLoadingStatus, setKeyLoadingStatus] = useState(NOT_LOADED)
-    const [error, setError] = useState(null);
+    const { data, loading, error } = useQuery(CHECK_RESTORE_KEY, {
+        variables: { key },
+        errorPolicy: 'all'
+    });
 
-    useEffect(() => {
-        setKeyLoadingStatus(LOADING);
-        api.checkRestoreKey(key)
-            .then(({ success, error }) => {
-                if (success) {
-                    setKeyLoadingStatus(LOADED);
-                } else {
-                    setKeyLoadingStatus(LOADED_ERROR);
-                    switch (error.type) {
-                        case "UNKNOWN_KEY": setError("Unknown key"); break;
-                        default: setError("Unknown error"); break;
-                    }
-                }
-            });
-    }, []);// eslint-disable-line
+    const typeError = error?.graphQLErrors[0]?.message;
+    let stringError;
+    switch (typeError) {
+        case "KEY_IS_INVALID": stringError = "Key is not valid"; break;
+        default: stringError = ""; break;
+    }
 
+    // useEffect(() => {
+    //     setKeyLoadingStatus(LOADING);
+    //     api.checkRestoreKey(key)
+    //         .then(({ success, error }) => {
+    //             if (success) {
+    //                 setKeyLoadingStatus(LOADED);
+    //             } else {
+    //                 setKeyLoadingStatus(LOADED_ERROR);
+    //                 switch (error.type) {
+    //                     case "UNKNOWN_KEY": setError("Unknown key"); break;
+    //                     default: setError("Unknown error"); break;
+    //                 }
+    //             }
+    //         });
+    // }, []);// eslint-disable-line
     return (
         <div className="restore-password-page">
-            {keyLoadingStatus === LOADED && <NewPasswordPanel />}
-            {keyLoadingStatus === LOADING && <span>Checking key...</span>}
-            {keyLoadingStatus === LOADED_ERROR && <ErrorKeyPanel error={error} />}
+            {data?.restorePasswordCheckKey && <NewPasswordPanel restoreKey={key} />}
+            {loading && <span>Checking key...</span>}
+            {error && <ErrorKeyPanel error={stringError} />}
         </div>
     )
 }
 
 export default withLoginedLock(false)(RestorePassword);
+
+const CHECK_RESTORE_KEY = gql`
+    query checkRestoryKey($key: String!) {
+        restorePasswordCheckKey(key: $key) 
+    }
+`;

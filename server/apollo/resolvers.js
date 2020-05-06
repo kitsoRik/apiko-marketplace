@@ -1,11 +1,13 @@
 const { getProductById, getAllProducts, getProductsByIds, createProduct } = require("../db/models/product");
-const { getSavedProductsIdsByUserId, getUserById, addProductByUserId, saveUserById, createUser, getUserByEmail, getUserByEmailAndPassword, getProductsIdsByUserId } = require("../db/models/user");
+const { getSavedProductsIdsByUserId, getUserById, addProductByUserId, saveUserById, createUser, getUserByEmail, getUserByEmailAndPassword, getProductsIdsByUserId, getUserByProductId } = require("../db/models/user");
 const { getLocationById, getLocationsByNamePattern } = require("../db/models/city");
 const { storeUploadFile } = require("../helpers/files");
 const { hashPassword } = require("../helpers/hash");
 const { createSession, removeSession } = require("../db/models/session");
 const { createUnverifyedLink } = require("../db/models/unverifyed");
 const { customError } = require("../helpers/errors");
+const { getMessagesByIds, createMessage } = require("../db/models/message");
+const { getChatsByUserId, createChat } = require("../db/models/chat");
 
 module.exports = {
 
@@ -40,8 +42,9 @@ module.exports = {
 
 
     Product: {
-        owner: () => {
-            return getUserById(0);
+        owner: ({ ownerId }) => {
+            console.log(ownerId)
+            return getUserById(ownerId);
         },
         location: () => {
             return getLocationById(0);
@@ -71,6 +74,27 @@ module.exports = {
         },
         product: () => {
             return getProductById(0);
+        }
+    },
+
+    Chat: {
+        product: async ({ productId }) => {
+            return await getProductById(productId);
+        },
+        shopper: async ({ shopperId }) => {
+            return await getUserById(shopperId);
+        },
+        seller: async ({ sellerId }) => {
+            return await getUserById(sellerId);
+        },
+        messages: async ({ messagesIds }) => {
+            return await getMessagesByIds(messagesIds);
+        }
+    },
+
+    Message: {
+        owner: async ({ ownerId }) => {
+            return await getUserById(ownerId);
         }
     },
 
@@ -104,7 +128,24 @@ module.exports = {
 
         locations: async (source, { name }) => {
             return getLocationsByNamePattern(name);
+        },
+
+
+
+
+
+        restorePasswordCheckKey: async (source, { key }) => { // TODO
+            //throw new Error("KEY_IS_INVALID"); // WORK
+            return true;
+        },
+
+
+        chats: async (source, { page, title }, { user }) => {
+            if (!user) return null;
+
+            return await getChatsByUserId(user.id);
         }
+
     },
 
     Mutation: {
@@ -120,7 +161,6 @@ module.exports = {
             let user = await getUserByEmail(email);
 
             if (user) throw (customError("EMAIL_IS_BUSY"));
-            console.log(fullName, email);
             user = await createUser(
                 fullName,
                 email,
@@ -162,6 +202,13 @@ module.exports = {
             return true;
         },
 
+        restorePasswordRequest: async (source, { email }) => { // TODO
+            return true;
+        },
+        restorePassword: async (source, { key }) => { // TODO
+            return true;
+        },
+
         changeSavedStateOfProduct: async (source, { id, state }, { user }) => {
             if (!user) throw "WHAT";
             if (state && user.savedProducts.indexOf(+id) !== -1) return state;
@@ -189,11 +236,21 @@ module.exports = {
 
             const results = await Promise.all(photos.map((p, index) => storeUploadFile(p, "photos/products", () => `product_photo_${index}_` + Date.now())));
 
-            const product = await createProduct(title, description, price, category, locationId, results[0] && results[0].fileName, results.map(r => r.fileName));
+            const product = await createProduct(user.id, title, description, price, category, locationId, results[0] && results[0].fileName, results.map(r => r.fileName));
 
             addProductByUserId(user.id, product.id);
 
             return product;
+        },
+
+
+        createChat: async (source, { productId, initialMessage }, { user }) => {
+            const seller = await getUserByProductId(productId);
+
+            const message = await createMessage(user.id, initialMessage);
+            const chat = await createChat(productId, user.id, seller.id, message.id);
+
+            return chat;
         }
     }
 }

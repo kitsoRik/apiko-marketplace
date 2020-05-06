@@ -13,6 +13,7 @@ import { Switch, Route } from 'react-router-dom';
 import SavedItems from './components/pages/SavedItems/SavedItems';
 import AddProduct from './components/pages/AddProduct/AddProduct';
 import Product from './components/pages/Product/Product';
+import Chats from './components/pages/Chats/Chats';
 
 const Routes = () => {
     return (
@@ -30,6 +31,8 @@ const Routes = () => {
             <Route exact path="/add-product" component={AddProduct} />
 
             <Route exact path="/products/:id" component={Product} />
+
+            <Route exact path="/chats" component={Chats} />
         </Switch>
     )
 };

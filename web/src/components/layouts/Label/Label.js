@@ -17,7 +17,7 @@ const Label = ({ value, as = "span", error, errorValueIfTouched, className, chil
             <div className="label-values">
                 {
                     textToComponent(as, {
-                        className: `label-values-value ${className}`, error: error ? "true" : null, ...props
+                        className: `label-values-value`, error: error ? "true" : null, ...props
                     }, value)
                 }
                 {(touched || error) && <span className="label-values-error-value">{error || errorValueIfTouched}</span>}

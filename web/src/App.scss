@@ -6,6 +6,8 @@
 }
 
 main {
+	margin: 0 auto;
+	max-width: 1440px;
 	position: relative;
 
 	flex: 1;
@@ -13,7 +15,7 @@ main {
 	display: flex;
 	justify-content: center;
 
-	& > *:first-child {
-		max-width: 1440px;
-	}
+	// & > *:first-child {
+	// 	max-width: 1440px;
+	// }
 }

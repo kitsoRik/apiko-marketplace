@@ -53,6 +53,7 @@ const TextField = ({
                 break;
             }
             case "Enter": {
+                if (!autoCompleteOptions && !autoCompleteOptionsWhenEmpty) return;
                 e.preventDefault();
                 let _value;
                 if (value === "") {

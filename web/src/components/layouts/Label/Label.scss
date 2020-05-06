@@ -1,10 +1,9 @@
 .label {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: min-content auto;
 
     &-solo-value {
-
-        &[error=true] {
+        &[error="true"] {
             color: red;
         }
     }
@@ -17,7 +16,7 @@
         &-value {
             text-transform: uppercase;
         }
-        
+
         &-error-value {
             margin-left: 10px;
             color: red;

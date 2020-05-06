@@ -10,12 +10,10 @@ import Button from '../../../layouts/Button';
 import { NOT_RESTORED, RESTORED, RESTORED_ERROR, RESTORING } from '../../../../constants/restore';
 import api from '../../../../services/api';
 import Checkbox from '../../../layouts/Checkbox/Checkbox';
+import { gql } from 'apollo-boost';
+import { useMutation } from '@apollo/react-hooks';
 
-const NewPasswordPanel = (props) => {
-
-    const [restoreStatus, setRestoreStatus] = useState(NOT_RESTORED);
-    const [error, setError] = useState(null);
-
+const NewPasswordPanel = ({ restoreKey }) => {
     const [password, setPassword] = useState("");
     const [passwordAgain, setPasswordAgain] = useState("");
     const [leaveDevices, setLeaveDevices] = useState(true);
@@ -24,25 +22,29 @@ const NewPasswordPanel = (props) => {
         !checkPasswordValid(password) &&
         !checkPasswordAgainValid(password, passwordAgain)
 
-    const restorePassword = () => {
-        setRestoreStatus(RESTORING);
-        api.restorePassword(password, leaveDevices)
-            .then(({ success, error }) => {
-                if (success) {
-                    setRestoreStatus(RESTORED);
-                } else {
-                    setRestoreStatus(RESTORED_ERROR);
+    // const restorePassword = () => {
+    //     setRestoreStatus(RESTORING);
+    //     api.restorePassword(password, leaveDevices)
+    //         .then(({ success, error }) => {
+    //             if (success) {
+    //                 setRestoreStatus(RESTORED);
+    //             } else {
+    //                 setRestoreStatus(RESTORED_ERROR);
 
-                    switch (error.type) {
-                        case "PASSWORD_IS_REQUIRED": setError("Password is required"); break;
-                        case "PASSWORD_MIN_LENGTH": setError("Password length must be 8 or greater"); break;
-                        default: setError("Unknown error"); break;
-                    }
-                }
-            });
-    }
+    //                 switch (error.type) {
+    //                     case "PASSWORD_IS_REQUIRED": setError("Password is required"); break;
+    //                     case "PASSWORD_MIN_LENGTH": setError("Password length must be 8 or greater"); break;
+    //                     default: setError("Unknown error"); break;
+    //                 }
+    //             }
+    //         });
+    // }
 
-    const unrestoredPanel = (<LoginForm loading={restoreStatus === RESTORING}>
+    const [restorePassword, { data, loading, error }] = useMutation(RESTORE_PASSWORD_MUTATION, {
+        variables: { key: restoreKey, password }
+    });
+
+    const unrestoredPanel = (<LoginForm loading={loading} onSubmit={e => e.preventDefault()}>
         <LoginUpperContainer>
             <LoginUpperContainerTitle className="new-password-panel-title">
                 Restore password
@@ -78,7 +80,7 @@ const NewPasswordPanel = (props) => {
         </LoginUpperContainer>
     </LoginForm>);
     const restoredPanel = (
-        <LoginForm>
+        <LoginForm onSubmit={e => e.preventDefault()}>
             <LoginUpperContainer>
                 <LoginUpperContainerTitle>
                     Password has restored
@@ -90,8 +92,8 @@ const NewPasswordPanel = (props) => {
 
     return (
         <div className="new-password-panel">
-            {restoreStatus !== RESTORED && unrestoredPanel}
-            {restoreStatus === RESTORED && restoredPanel}
+            {!data?.restorePassword && unrestoredPanel}
+            {data?.restorePassword && restoredPanel}
         </div>
     );
 }
@@ -107,3 +109,9 @@ function checkPasswordAgainValid(pass, again) {
     return checkPasswordValid(pass) || pass !== again ? "Password not equal password again" : null;
 }
 export default NewPasswordPanel;
+
+const RESTORE_PASSWORD_MUTATION = gql`
+    mutation restorePassword($key: String!, $password: String!) {
+        restorePassword(key: $key, password: $password)
+    }
+`;

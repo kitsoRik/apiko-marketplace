@@ -18,9 +18,9 @@ app.use("/static", express.static("static"));
 app.use(require("body-parser").json());
 app.use(require("cookie-parser")());
 
-app.use("*", (req, res, next) => setTimeout(() => {
-    next();
-}, 1000));
+// app.use("*", (req, res, next) => setTimeout(() => {
+//     next();
+// }, 1000));
 
 require("./apollo/apollo")(app, corsOptions);
 

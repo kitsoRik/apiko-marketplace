@@ -1,0 +1,23 @@
+.products-viewer {
+    align-self: flex-start;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 210px;
+
+    grid-column-gap: 5px;
+    grid-row-gap: 10px;
+
+    & .product-card {
+        height: 212px;
+        width: 206.25px;
+    }
+
+    @media screen and (max-width: 768px) {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    @media screen and (max-width: 600px) {
+        grid-template-columns: 1fr 1fr;
+    }
+}

@@ -64,6 +64,21 @@ type User {
         latitude: Float!
     }
 
+    type Chat {
+        id: ID!
+        product: Product!
+        shopper: User!
+        seller: User!
+        messages(page: Int, limit: Int): [Message!]!
+    }
+
+    type Message {
+        id: ID!
+        owner: User!
+        text: String!
+        time: String!
+    }
+
     type Query {
         products(title: String, 
             location: String, 
@@ -74,7 +89,7 @@ type User {
             page: Int, 
             limit: Int): [Product]
 
-            product(id: Int!): Product!
+            product(id: ID!): Product
 
             productsCount(title: String, 
                 location: String, 
@@ -89,9 +104,10 @@ type User {
                 savedProductsCount(page: Int, limit: Int): Int
 
             currentUser: User
-
-
             locations(name: String!, limit: Int!): [Location!]
+            restorePasswordCheckKey(key: String!): Boolean
+
+            chats(page: Int, limit: Int): [Chat!]
     }
 
     type Mutation {
@@ -99,11 +115,18 @@ type User {
         login(email: String!, password: String!): User
         unlogin: Boolean
 
+        restorePasswordRequest(email: String!): Boolean
+        restorePassword(key: String!, password: String!): Boolean
+
         changeSavedStateOfProduct(id: ID!, state: Boolean!): Boolean,
         saveUser(fullName: String!, phone: String!, icon: Upload): User
 
 
         addProduct (title: String!, locationId: ID!, description: String!, price: Float!, category: String! photos: [Upload!]): Product
+
+
+
+        createChat(productId: ID!, initialMessage: String!): Chat!
     }
 
 `

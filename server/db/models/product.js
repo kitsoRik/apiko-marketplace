@@ -7,13 +7,18 @@ const productSchema = new Schema({
         type: Number,
         default: 0
     },
+    ownerId: {
+        type: Number,
+        default: 1,
+        required: true
+    },
     title: {
         type: String,
         required: true
     },
     description: {
         type: String,
-        required: true
+        default: ""
     },
     price: {
         type: Number,
@@ -47,10 +52,10 @@ productSchema.pre("save", async function (next) {
 
 const productModel = model("Products", productSchema);
 
-exports.createProduct = (title, description, price, category, locationId, imageName, photosNames) =>
-    productModel.create({ title, description, price, category, locationId, imageName, photosNames });
+exports.createProduct = (ownerId, title, description, price, category, locationId, imageName, photosNames) =>
+    productModel.create({ ownerId, title, description, price, category, locationId, imageName, photosNames });
 
-exports.getProductById = (id) => productModel.findOne({ id });
+exports.getProductById = (id) => productModel.findOne({ id: +id });
 exports.getProductsByIds = (ids) => productModel.find({ id: { $in: ids } });
 
 exports.getAllProducts = (titlePattern, category, locationId, priceFrom, priceTo) => productModel.find({

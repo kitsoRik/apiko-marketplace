@@ -23,7 +23,7 @@ const Header = () => {
     const [userPanelOpen, setUserPanelOpen] = useState(false);
 
     const currentUserQuery = useQuery(CURRENT_USER_QUERY);
-    const loginStatus = NOT_LOGINED; //FIX IT
+    const loginStatus = LOGINED; //FIX IT
     const visibleLoginButton = !currentUserQuery.loading && !currentUserQuery.data?.currentUser;
     const visibleUserIcon = !currentUserQuery.loading && currentUserQuery.data.currentUser;
     const visibleUserIconLoading = currentUserQuery.loading || loginStatus === LOGINING || loginStatus === UNLOGINING;
@@ -35,9 +35,12 @@ const Header = () => {
                     <ApikoLogo darkMode={darkMode} className="header__apiko-logo" />
                 </Link>
                 <div></div>
-                {loginStatus === LOGINED ? <PostboxIcon /> : <div></div>}
+                {loginStatus === LOGINED ? <PostboxIcon onClick={() => history.push("/chats")} /> : <div></div>}
 
-                <Button.Default className="header-sell-button" value="Sell" onClick={() => history.push("/add-product")} />
+                <Button.Default
+                    className="header-sell-button"
+                    value="Sell"
+                    onClick={() => history.push("/add-product")} />
 
                 {visibleLoginButton &&
                     <Button.Transparent

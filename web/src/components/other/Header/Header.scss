@@ -25,9 +25,9 @@
         }
     }
 
-    padding: 18px 160px 18px 144px;
+    padding: 18px 10px;
 
-    max-width: 1440px;
+    max-width: 1140px;
 
     flex: 1;
 
@@ -36,8 +36,6 @@
     grid-column-gap: 15px;
     grid-row-gap: 22px;
     align-items: center;
-
-    box-sizing: border-box;
 
     &__apiko-logo {
         cursor: pointer;

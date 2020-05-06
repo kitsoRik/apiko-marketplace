@@ -6,16 +6,13 @@ const { makeExecutableSchema } = require("graphql-tools");
 
 const { graphqlUploadExpress } = require("graphql-upload");
 
-const schema = makeExecutableSchema({
-    typeDefs: require("./typeDefs"),
-    resolvers: require("./resolvers")
-})
-
 const server = new ApolloServer({
     typeDefs: require("./typeDefs"),
     resolvers: require("./resolvers"),
-    schema,
     uploads: false,
+    validationRules: [
+        require("graphql-depth-limit")(5)
+    ],
     context: async ({ req, res }) => {
 
         const { sesid } = req.cookies;

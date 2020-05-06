@@ -45,3 +45,25 @@ query {
     }
     savedProductsCount
 }`;
+
+export const PRODUCT_QUERY = gql`
+    query getProduct($id: ID!){
+        product(id: $id) {
+            id
+            title
+            price
+            description
+            imageName
+            saved
+            owner {
+                id
+                fullName
+                iconName
+            }
+            location {
+                id
+                name
+            }
+        }
+    }
+`;

@@ -4,7 +4,7 @@ import Loading from "../../../assets/icons/loading.svg";
 
 import './ModalLoading.scss';
 
-const ModalLoading = ({ style, darken = true, className, ...props }) => {
+const ModalLoading = ({ style, darken = true, fillPercent = 100, className, ...props }) => {
     return (
         <div
             className={`modal-loading ${className}`}
@@ -12,7 +12,7 @@ const ModalLoading = ({ style, darken = true, className, ...props }) => {
             darken={darken ? "true" : null}
             onClick={e => e.preventDefault()}
             {...props}>
-            <img src={Loading} alt="Loading" />
+            <img style={{ maxWidth: `${fillPercent}%`, maxHeight: `${fillPercent}%` }} src={Loading} alt="Loading" />
         </div>
     );
 }

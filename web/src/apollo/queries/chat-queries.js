@@ -17,10 +17,58 @@ query {
       product {
         id
         title
+        price
         imageName
       }
+      messages {
+          id
+          text
+          createdAt
+      }
+    }
+  }
+`;
+
+export const CHAT_QUERY = gql`
+query getChat($id: ID!){
+    chat(id: $id) {
+      id
       product {
         id
+        title
+        price
+        imageName
+      }
+      seller {
+        id
+        fullName
+        iconName
+      }
+      shopper  {
+        id
+        fullName
+        iconName
+      }
+      messages {
+        id
+        text
+      }
+    }
+  }
+
+`;
+
+export const CHAT_MESSAGES_QUERY = gql`
+query chatMessages($id: ID!){
+    chat(id: $id) {
+        id
+      messages {
+        id
+        owner {
+          id
+        }
+        text
+        createdAt
       }
     }
   }

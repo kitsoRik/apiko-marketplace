@@ -7,7 +7,9 @@ const { createSession, removeSession } = require("../db/models/session");
 const { createUnverifyedLink } = require("../db/models/unverifyed");
 const { customError } = require("../helpers/errors");
 const { getMessagesByIds, createMessage } = require("../db/models/message");
-const { getChatsByUserId, createChat } = require("../db/models/chat");
+const { getChatsByUserId, createChat, getChatById, addMessageIdToChatById } = require("../db/models/chat");
+const { AuthenticationError } = require("apollo-server");
+const { callNewMessage } = require("../socketio");
 
 module.exports = {
 
@@ -144,8 +146,13 @@ module.exports = {
             if (!user) return null;
 
             return await getChatsByUserId(user.id);
-        }
+        },
 
+        chat: async (source, { id }, { user }) => {
+            if (!user) return;
+
+            return getChatById(id);
+        }
     },
 
     Mutation: {
@@ -251,6 +258,28 @@ module.exports = {
             const chat = await createChat(productId, user.id, seller.id, message.id);
 
             return chat;
+        },
+
+
+        sendMessage: async (source, { chatId, text }, { user }) => {
+            if (!user) throw new AuthenticationError("NOT_AUTHENTICATIONED");
+
+            const message = await createMessage(user.id, text);
+            const chat = await addMessageIdToChatById(chatId, message.id);
+
+            const receiverId = chat.sellerId === user.id ? chat.shopperId : chat.sellerId;
+
+            callNewMessage(receiverId, `${chat.id}`, {
+                id: `${message.id}`,
+                createdAt: message.createdAt,
+                owner: {
+                    id: `${user.id}`
+                },
+                text,
+                __typename: "Message"
+            });
+
+            return message;
         }
     }
 }

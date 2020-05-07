@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 import { ApolloProvider } from '@apollo/react-hooks';
 import client from './apollo';
+import socket from './services/socketio';
 
 ReactDOM.render(
   (<Provider store={store}>

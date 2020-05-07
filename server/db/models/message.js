@@ -14,7 +14,7 @@ const messageSchema = new Schema({
         required: true
     },
     createdAt: {
-        type: Date,
+        type: String,
     }
 });
 
@@ -24,6 +24,7 @@ messageSchema.pre("save", async function (n) {
     const obj = await messageModel.find().sort({ field: 'desc', id: -1 }).limit(1);
     this.id = obj[0] ? obj[0].id + 1 : 0;
     this.createdAt = new Date();
+    console.log(new Date());
     n();
 });
 

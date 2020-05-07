@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.scss';
 import './index.scss';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, useHistory } from 'react-router-dom';
 import Header from './components/other/Header/Header';
 import Footer from './components/other/Footer/Footer';
 import Snackbar from './components/other/Snackbar/Snackbar';

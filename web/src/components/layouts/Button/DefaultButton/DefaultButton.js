@@ -2,11 +2,14 @@ import React from 'react';
 
 import "./DefaultButton.scss";
 
-const DefaultButton = ({ className, style, value, disabled, ...props }) => {
+const DefaultButton = ({ className, style, value, disabled, uppercase, ...props }) => {
     return (
         <button
             className={`button-default ${className ?? ""}`}
-            style={style}
+            style={{
+                textTransform: uppercase ? "uppercase" : "none",
+                ...style,
+            }}
             disabled={disabled ? true : null}
             {...props}
         >

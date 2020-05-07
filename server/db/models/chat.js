@@ -45,4 +45,7 @@ exports.createChat = (productId, shopperId, sellerId, initialMessageId) => chatM
     messagesIds: (() => initialMessageId === undefined ? [] : [initialMessageId])()
 });
 
+exports.addMessageIdToChatById = (id, messagesId) => chatModel.findOneAndUpdate({ id }, { '$push': { messagesIds: messagesId } });
+
+exports.getChatById = (id) => chatModel.findOne({ id });
 exports.getChatsByUserId = (userId) => chatModel.find({ $or: [{ shopperId: userId }, { sellerId: userId }] });

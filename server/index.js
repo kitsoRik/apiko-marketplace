@@ -4,6 +4,7 @@ const multer = require("multer");
 const { getSessionBySesid } = require("./db/models/session");
 const { getUserById } = require("./db/models/user");
 const app = express();
+const http = require("http").createServer(app);
 
 const corsOptions = {
     origin: 'http://localhost:3000',
@@ -18,15 +19,12 @@ app.use("/static", express.static("static"));
 app.use(require("body-parser").json());
 app.use(require("cookie-parser")());
 
-// app.use("*", (req, res, next) => setTimeout(() => {
-//     next();
-// }, 1000));
-
 require("./apollo/apollo")(app, corsOptions);
+require("./socketio").connect(http);
 
 const start = async () => {
     await connect();
-    await app.listen(3500, () => console.log("Listening 3500 port"));
+    await http.listen(3500, () => console.log("Listening 3500 port"));
 }
 
 start();

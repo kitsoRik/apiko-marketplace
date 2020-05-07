@@ -1,0 +1,61 @@
+.chats-page-chat-header {
+    padding: 15px;
+
+    display: grid;
+    grid-template-columns: 3fr 3fr 4fr;
+
+    background-color: white;
+
+    border-bottom: 1px solid #e7e9ed;
+
+    &-user {
+        display: grid;
+        grid-template-columns: 45px min-content;
+    }
+
+    &-product {
+        display: grid;
+        grid-template-columns: 48px min-content min-content;
+        grid-template-rows: min-content;
+        grid-column-gap: 8px;
+
+        align-items: center;
+
+        background-color: #f8f8f8;
+        border-radius: 5px;
+
+        font-size: 15px;
+
+        &-image {
+            height: 42px;
+            width: 42px;
+
+            overflow: hidden;
+
+            & > img {
+                max-height: 100%;
+            }
+        }
+
+        &-info {
+            &-title {
+            }
+
+            &-price {
+                font-weight: bold;
+            }
+        }
+
+        &-view-button {
+            margin-left: 33px;
+            background-color: transparent;
+            border: none;
+
+            &:hover {
+                & > * > * {
+                    fill: black;
+                }
+            }
+        }
+    }
+}

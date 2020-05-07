@@ -1,7 +1,10 @@
 .chats-page {
-    width: 1440px;
+    height: calc(100vh - 82px);
+    max-width: 1440px;
+
+    display: grid;
+    grid-template-columns: min-content minmax(0, 1000px);
 
     &-list {
-
     }
 }

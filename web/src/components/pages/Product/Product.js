@@ -80,6 +80,7 @@ const Product = ({ match }) => {
                 <Button.Default
                     className="product-page-user-chat-with-seller-button"
                     value="Chat with seller"
+                    uppercase={true}
                     onClick={() => setOpened(true)}
                 />
                 <Button.Outlined

@@ -1,0 +1,40 @@
+.chats-page-chat-input-message {
+    display: flex;
+
+    position: relative;
+
+    &-field {
+        padding: 17px 20px;
+        flex: 1;
+
+        color: black;
+
+        border: 1px solid #e9ebf2;
+
+        font-size: 13px;
+        font-weight: bold;
+
+        &::placeholder {
+            color: #97a3b4;
+        }
+    }
+
+    &-buttons {
+        padding: 0 15px;
+        height: 100%;
+
+        position: absolute;
+
+        right: 0;
+
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 25px;
+
+        &-smile,
+        &-link {
+            border: none;
+            background-color: transparent;
+        }
+    }
+}

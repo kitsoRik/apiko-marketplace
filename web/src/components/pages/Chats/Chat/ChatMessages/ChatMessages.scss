@@ -1,0 +1,11 @@
+.chats-page-chat-messages {
+    padding-top: 45px;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: auto;
+
+    box-sizing: border-box;
+}

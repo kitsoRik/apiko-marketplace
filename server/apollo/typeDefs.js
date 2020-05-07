@@ -76,7 +76,7 @@ type User {
         id: ID!
         owner: User!
         text: String!
-        time: String!
+        createdAt: String!
     }
 
     type Query {
@@ -108,6 +108,7 @@ type User {
             restorePasswordCheckKey(key: String!): Boolean
 
             chats(page: Int, limit: Int): [Chat!]
+            chat(id: ID!): Chat
     }
 
     type Mutation {
@@ -127,6 +128,7 @@ type User {
 
 
         createChat(productId: ID!, initialMessage: String!): Chat!
+        sendMessage(chatId: ID!, text: String!): Message!
     }
 
 `

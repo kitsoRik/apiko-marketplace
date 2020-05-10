@@ -82,9 +82,26 @@
                 background-color: #8884;
             }
         }
+
+        &-photos {
+            margin-top: 20px;
+            padding: 10px;
+
+            display: grid;
+            grid-row-gap: 10px;
+
+            & > img {
+                width: 100%;
+            }
+        }
     }
 
     &-user {
+        position: sticky;
+        top: 30px;
+
+        align-self: flex-start;
+
         display: flex;
         flex-direction: column;
 
@@ -120,6 +137,12 @@
         }
 
         &-chat-with-seller-button {
+            height: 45px;
+            padding: 0;
+            margin-bottom: 10px;
+        }
+
+        &-chat-with-buy-button {
             height: 45px;
             padding: 0;
             margin-bottom: 10px;

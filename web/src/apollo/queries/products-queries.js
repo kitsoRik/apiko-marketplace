@@ -54,6 +54,7 @@ export const PRODUCT_QUERY = gql`
             price
             description
             imageName
+            photosNames
             saved
             owner {
                 id
@@ -63,6 +64,8 @@ export const PRODUCT_QUERY = gql`
             location {
                 id
                 name
+                latitude
+                longitude
             }
         }
     }

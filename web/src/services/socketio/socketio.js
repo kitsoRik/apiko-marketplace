@@ -2,10 +2,10 @@ import socketIOClient from "socket.io-client";
 import { HOST } from "../api/api";
 import client from "../../apollo";
 import { CHAT_MESSAGES_QUERY } from "../../apollo/queries/chat-queries";
+import store from '../../redux/store';
+import { unreadChat } from "../../redux/actions/chats-actions";
 
 const socket = socketIOClient(HOST);
-
-// socket.connect();
 
 socket.on('NEW_MESSAGE', (chatId, message) => {
     try {
@@ -14,7 +14,7 @@ socket.on('NEW_MESSAGE', (chatId, message) => {
             variables: { id: chatId }
         });
 
-        const { messages } = chat;
+        const { id, messages } = chat;
         client.writeQuery({
             query: CHAT_MESSAGES_QUERY,
             variables: { id: chatId },
@@ -29,10 +29,6 @@ socket.on('NEW_MESSAGE', (chatId, message) => {
             }
         });
     } catch (e) {
-        console.log(e);
     }
+    store.dispatch(unreadChat(chatId));
 });
-
-export const sh = () => {
-
-}

@@ -2,8 +2,10 @@ import React from 'react';
 
 import "./ChatsListItem.scss";
 import api from '../../../../../services/api';
+import ProductIcon from '../../../../icons/ProductIcon';
 
 const ChatsListItem = ({ fullName, lastMessage, product, selected, onSelect }) => {
+    const lastMessageTime = parseLastMessageTime(lastMessage.createdAt);
     return (
         <div className={`chats-list-item ${selected ? "chats-list-item-selected" : ""}`}
             onClick={onSelect}
@@ -17,17 +19,47 @@ const ChatsListItem = ({ fullName, lastMessage, product, selected, onSelect }) =
             <div className="chats-list-item-divider"></div>
             <div className="chats-list-item-product">
                 <div className="chats-list-item-product-image">
-                    <img src={`${api.productsImageBaseUrl}/${product.imageName}`} alt={product.title} />
+                    <ProductIcon imageName={product.imageName} />
                 </div>
                 <span className="chats-list-item-product-title">{product.title}</span>
                 <span className="chats-list-item-product-price">${product.price}</span>
             </div>
             <div className="chats-list-item-divider"></div>
             <div className="chats-list-item-time">
-                <span className="chats-list-item-time-text">05:05</span>
+                <span className="chats-list-item-time-text">{lastMessageTime}</span>
             </div>
         </div>
     )
 };
 
 export default ChatsListItem;
+
+const parseLastMessageTime = (str) => {
+    let temp = new Date();
+
+    const time = new Date(str);
+
+    temp.setDate(new Date().getDate() - 1);
+    const yesterday = temp;
+    if (time > yesterday) {
+        let minutes = time.getMinutes();
+        if (minutes < 10) minutes = "0" + minutes;
+
+
+        let hours = time.getHours();
+        if (hours < 10) hours = "0" + hours;
+
+        return `${hours}:${minutes}`;
+    }
+
+    temp.setDate(new Date().getDate() - 2);
+    const beforeYeasterday = temp;
+    if (time > beforeYeasterday) {
+        return "Yesterday";
+    }
+
+    const day = time.getDay();
+    const month = time.getMonth();
+
+    return `${day}/${month}`;
+}

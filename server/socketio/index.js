@@ -27,8 +27,10 @@ exports.connect = (http) => {
             return socket.disconnect();
         }
 
-        const user = getUserById(session.userId);
-        addUserSocket((await user).id, socket);
+        const user = await getUserById(session.userId);
+        if (!user)
+            return socket.disconnect();
+        addUserSocket(user.id, socket);
     });
 }
 

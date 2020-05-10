@@ -24,6 +24,14 @@ const chatSchema = new Schema({
     createdAt: {
         type: Date,
         default: "",
+    },
+    shopperRead: {
+        type: Boolean,
+        required: true
+    },
+    sellerRead: {
+        type: Boolean,
+        required: true
     }
 });
 
@@ -38,11 +46,13 @@ chatSchema.pre("save", async function (n) {
 
 const chatModel = model("Chats", chatSchema);
 
-exports.createChat = (productId, shopperId, sellerId, initialMessageId) => chatModel.create({
+exports.createChat = (productId, shopperId, sellerId, initialMessageId, shopperRead = false, sellerRead = false) => chatModel.create({
     productId,
     shopperId,
     sellerId,
-    messagesIds: (() => initialMessageId === undefined ? [] : [initialMessageId])()
+    messagesIds: (() => initialMessageId === undefined ? [] : [initialMessageId])(),
+    shopperRead,
+    sellerRead
 });
 
 exports.addMessageIdToChatById = (id, messagesId) => chatModel.findOneAndUpdate({ id }, { '$push': { messagesIds: messagesId } });

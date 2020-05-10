@@ -29,8 +29,9 @@ const productSchema = new Schema({
         required: true
     },
     locationId: {
-        type: Number,
-        required: true
+        type: String,
+        required: true,
+        default: "-1"
     },
     imageName: {
         type: String,
@@ -60,7 +61,7 @@ exports.getProductsByIds = (ids) => productModel.find({ id: { $in: ids } });
 
 exports.getAllProducts = (titlePattern, category, locationId, priceFrom, priceTo) => productModel.find({
     title: { $regex: titlePattern },
-    ...(() => +locationId !== -1 && { locationId })(),
+    ...(() => locationId !== "-1" && { locationId })(),
     ...parsePrice(priceFrom, priceTo),
     ...(() => category && category !== 'any' && { category })()
 });

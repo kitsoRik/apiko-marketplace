@@ -60,6 +60,13 @@
         }
     }
 
+    &-time {
+        display: flex;
+        align-items: center;
+        &-text {
+        }
+    }
+
     &-divider {
         margin-right: 22px;
         width: 1px;

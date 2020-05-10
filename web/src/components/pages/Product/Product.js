@@ -14,16 +14,21 @@ import { notifyWarning } from '../../other/Snackbar/Snackbar';
 import { CHANGE_SAVED_STATE_MUTATION } from '../../../apollo/mutation/products-mutation';
 import { changeProductStateHandler } from '../../../apollo/handlers/products-handler';
 import ContactSellerDialog from './ContactSellerDialog/ContactSellerDialog';
+import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
+import ProductIcon from '../../icons/ProductIcon';
+import ProductLocation from './ProductLocation/ProductLocation';
+import BuyDialog from './BuyDialog/BuyDialog';
 
-const Product = ({ match }) => {
-
-    const [opened, setOpened] = useState(false);
-
+const Product = ({ match, history }) => {
     const { id } = match.params;
+
+    const [buyDialogVisible, setBuyDialogVisible] = useState(false);
 
     const { data, loading, error } = useQuery(PRODUCT_QUERY, {
         variables: { id }
     });
+
+    const currentUserQuery = useQuery(CURRENT_USER_QUERY);
 
 
     const [changeState, changeStateRecord] = useMutation(CHANGE_SAVED_STATE_MUTATION, {
@@ -39,35 +44,42 @@ const Product = ({ match }) => {
         changeProductStateHandler(data?.product, state);
     }
 
+    const onOpenContactSellerDialog = () => {
+        history.push(`/products/${data?.product?.id}?chat=true`)
+    }
+
     return (
         <div className="product-page">
-            <Form className="product-page-product">
-                <div className="product-page-product-image">
-                    <img src={`${api.productsImageBaseUrl}/${data?.product?.imageName}`} />
-                    <span className="product-page-product-image-price">{'\u00A0'}{data && '$' + data?.product?.price}</span>
-                </div>
-                <div className="product-page-product-info">
-                    <div className="product-page-product-info-upper">
-                        <span className="product-page-product-info-upper-title">
-                            {data?.product?.title}
-                        </span>
-                        <span className="product-page-product-info-upper-time">
-                            {data?.product?.title}
-                        </span>
-                        <div className="product-page-product-info-upper-location">
-                            <LocationIcon className="product-page-product-info-upper-location-icon" />
-                            <span className="product-page-product-info-upper-location-text">
-                                {data?.product?.location.name}
+            <div>
+                <Form className="product-page-product">
+                    <div className="product-page-product-image">
+                        <img src={`${api.productsImageBaseUrl}/${data?.product?.imageName}`} />
+                        <span className="product-page-product-image-price">{'\u00A0'}{data && '$' + data?.product?.price}</span>
+                    </div>
+                    <div className="product-page-product-info">
+                        <div className="product-page-product-info-upper">
+                            <span className="product-page-product-info-upper-title">
+                                {data?.product?.title}
                             </span>
+                            <span className="product-page-product-info-upper-time">
+                                {data?.product?.title}
+                            </span>
+                            <ProductLocation location={data?.product?.location} />
+                        </div>
+                        <div className="product-page-product-info-line"></div>
+                        <div className="product-page-product-info-description">
+                            {data?.product?.description}
                         </div>
                     </div>
-                    <div className="product-page-product-info-line"></div>
-                    <div className="product-page-product-info-description">
-                        {data?.product?.description}
-                    </div>
-                </div>
-                {loading && <ModalLoading />}
-            </Form>
+                    {loading && <ModalLoading />}
+                </Form>
+
+                {!loading && data?.product?.photosNames.length !== 0 &&
+                    <Form className="product-page-product-photos">
+                        {data?.product?.photosNames.map(p => <ProductIcon imageName={p} />)}
+                    </Form>
+                }
+            </div>
             <div className="product-page-user">
                 <Form className="product-page-user-form">
                     <UserIcon src={data?.product?.owner.iconName}
@@ -77,11 +89,19 @@ const Product = ({ match }) => {
                     <span>{data?.product?.owner.fullName}{'\u00A0'}</span>
                     {loading && <ModalLoading fillPercent={70} style={{ marginTop: '-14px' }} />}
                 </Form>
-                <Button.Default
+                {console.log(data)}
+                {data?.product && currentUserQuery.data?.currentUser?.id !== data?.product?.owner.id && <Button.Default
                     className="product-page-user-chat-with-seller-button"
                     value="Chat with seller"
                     uppercase={true}
-                    onClick={() => setOpened(true)}
+                    onClick={onOpenContactSellerDialog}
+                />}
+
+                <Button.Default
+                    className="product-page-user-chat-with-buy-button"
+                    value="Buy"
+                    uppercase="true"
+                    onClick={() => setBuyDialogVisible(true)}
                 />
                 <Button.Outlined
                     uppercase={true}
@@ -91,13 +111,13 @@ const Product = ({ match }) => {
                     value={data?.product?.saved ? "Remove from favorites" : "Add to favorites"} />
             </div>
             <ContactSellerDialog
-                opened={opened}
-                setOpened={setOpened}
+                productId={data?.product?.id}
                 productTitle={data?.product?.title}
                 fullName={data?.product?.owner.fullName}
                 location={data?.product?.location.name}
                 iconName={data?.product?.owner.iconName}
             />
+            {data?.product && <BuyDialog product={data?.product} opened={buyDialogVisible} onClosed={() => setBuyDialogVisible(false)} />}
         </div>
     )
 };

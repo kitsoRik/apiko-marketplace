@@ -1,4 +1,6 @@
 .contact-selleer-dialog {
+    height: 90%;
+    max-height: 700px;
     max-width: 820px;
     flex: 1;
     display: flex;
@@ -51,5 +53,8 @@
     &-submit {
         width: 370px;
         align-self: center;
+    }
+
+    &-chat {
     }
 }

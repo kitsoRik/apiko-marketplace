@@ -1,0 +1,23 @@
+.product-page-buy-dialog {
+    &-products {
+        margin: 10px 0;
+    }
+
+    &-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr 5fr;
+        grid-column-gap: 10px;
+
+        &-buy-instant,
+        &-add-to-cart,
+        &-cancel {
+            padding: 0;
+            height: 45px;
+        }
+
+        &-buy-instant {
+            width: 200px;
+            justify-self: flex-end;
+        }
+    }
+}

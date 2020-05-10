@@ -52,6 +52,9 @@ query getChat($id: ID!){
       messages {
         id
         text
+        writter {
+          id
+        }
       }
     }
   }
@@ -64,11 +67,22 @@ query chatMessages($id: ID!){
         id
       messages {
         id
-        owner {
+        writter {
           id
         }
         text
         createdAt
+      }
+    }
+  }
+`;
+
+export const CHATS_LIST_QUERY = gql`
+  query  {
+    chats {
+      id
+      product {
+        id
       }
     }
   }

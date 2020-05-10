@@ -1,0 +1,41 @@
+.cart-products-list-item {
+    flex: 1;
+
+    display: grid;
+    grid-template-columns: min-content auto;
+
+    &-image {
+        width: 280px;
+    }
+
+    &-info {
+        display: flex;
+        flex-direction: column;
+
+        &-headers {
+            display: flex;
+            justify-content: space-between;
+
+            &-price {
+                flex: 2;
+            }
+
+            &-count {
+                flex: 1;
+            }
+        }
+
+        &-price-container {
+            display: flex;
+            justify-content: space-between;
+
+            &-price {
+                flex: 2;
+            }
+
+            &-counter {
+                flex: 1;
+            }
+        }
+    }
+}

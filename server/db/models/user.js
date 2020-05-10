@@ -1,13 +1,9 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, Types } = require("mongoose");
 
 const userSchema = new Schema({
     id: {
         type: Number,
         default: 0
-    },
-    verifyed: {
-        type: Boolean,
-        default: false
     },
     fullName: {
         type: String,
@@ -16,6 +12,14 @@ const userSchema = new Schema({
     email: {
         type: String,
         required: true
+    },
+    locationId: {
+        type: String,
+        default: "-1"
+    },
+    phone: {
+        type: String,
+        default: ""
     },
     password: {
         type: String,
@@ -32,11 +36,15 @@ const userSchema = new Schema({
     productsIds: {
         type: [Number],
         default: []
+    },
+    cartProducts: {
+        type: [Object],
+        default: []
     }
 });
 
 userSchema.pre("save", async function (n) {
-    if (this.id !== 0) return;
+    if (this.id !== 0) return n();
 
     const obj = await userModel.find().sort({ field: 'desc', id: -1 }).limit(1);
     this.id = obj[0] ? obj[0].id + 1 : 0;
@@ -57,9 +65,10 @@ exports.getUserByProductId = (productId) => userModel.findOne({ productsIds: { $
 
 exports.getAllUsers = (page, limit) => userModel.find().skip((page - 1) * limit).limit(limit);
 
-exports.saveUserById = (id, fullName, phone, iconName) => userModel.findOneAndUpdate({ id }, {
+exports.saveUserById = (id, fullName, locationId, phone, iconName) => userModel.findOneAndUpdate({ id }, {
     fullName,
     phone,
+    locationId,
     ...(() => iconName ? ({ iconName }) : null)()
 }, { new: true });
 
@@ -69,3 +78,21 @@ exports.addProductByUserId = async (userId, productId) => userModel.findOneAndUp
     productsIds:
         [...(await this.getProductsIdsByUserId(userId)), productId]
 });
+
+
+exports.changeCartItemCountByUserId = async (id, productId, count) => {
+    const user = await userModel.findOne({ id });
+    user.cartProducts.find(cp => cp.productId === +productId).count = count;
+    user.markModified("cartProducts");
+    return await user.save();
+}
+
+exports.addProductToCardByUserId = async (id, productId, count) => {
+    const userCartProducts = (await this.getUserById(id)).cartProducts;
+    const cp = userCartProducts.find(cp => cp.productId === +productId);
+    if (cp) {
+        this.changeCartItemCountByUserId(id, productId, cp.count + count);
+    } else {
+        userModel.findOneAndUpdate({ id }, { $push: { cartProducts: { productId, count } } });
+    }
+}

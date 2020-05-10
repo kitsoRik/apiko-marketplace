@@ -11,8 +11,8 @@ const UserInformation = ({ user: { iconName, fullName, location } }) => {
                 fullName={fullName} />
 
             <span className="user-information-fullname">{fullName}</span>
-            <span className="user-information-location">{location}</span>
-    </div>
+            <span className="user-information-location">{location?.name}</span>
+        </div>
     )
 };
 

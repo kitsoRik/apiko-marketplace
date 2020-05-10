@@ -24,7 +24,7 @@ const ChatMessages = ({ chatId }) => {
                 messages.map(m => <ChatMessagesItem
                     key={m.id}
                     text={m.text}
-                    fromMe={m.owner.id === user.data.currentUser.id}
+                    fromMe={m.writter.id === user.data.currentUser.id}
                     createdAt={m.createdAt} />)
             }
         </div>

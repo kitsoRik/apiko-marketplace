@@ -2,6 +2,7 @@ import React from 'react';
 
 import "./ChatHeader.scss";
 import UserIcon from '../../../../icons/UserIcon';
+import ProductIcon from '../../../../icons/ProductIcon';
 import api from '../../../../../services/api';
 import TREdgeArrow from '../../../../icons/TREdgeArrow';
 import { useHistory } from 'react-router-dom';
@@ -17,7 +18,7 @@ const ChatHeader = ({ user, product }) => {
             </div>
             <div className="chats-page-chat-header-product">
                 <div className="chats-page-chat-header-product-image">
-                    <img src={`${api.productsImageBaseUrl}/${product.imageName}`} alt={product.title} />
+                    <ProductIcon imageName={product.imageName} />
                 </div>
                 <div className="chats-page-chat-header-product-info">
                     <span className="chats-page-chat-header-product-info-title">{product.title}</span>

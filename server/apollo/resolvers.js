@@ -1,5 +1,5 @@
 const { getProductById, getAllProducts, getProductsByIds, createProduct } = require("../db/models/product");
-const { getSavedProductsIdsByUserId, getUserById, addProductByUserId, saveUserById, createUser, getUserByEmail, getUserByEmailAndPassword, getProductsIdsByUserId, getUserByProductId } = require("../db/models/user");
+const { getSavedProductsIdsByUserId, getUserById, addProductByUserId, saveUserById, createUser, getUserByEmail, getUserByEmailAndPassword, getProductsIdsByUserId, getUserByProductId, changeCartItemCountByUserId, addProductToCardByUserId } = require("../db/models/user");
 const { getLocationById, getLocationsByNamePattern } = require("../db/models/city");
 const { storeUploadFile } = require("../helpers/files");
 const { hashPassword } = require("../helpers/hash");
@@ -15,7 +15,10 @@ module.exports = {
 
     User: {
 
-        products: async ({ id }, { page, limit }) => {
+        location: async ({ locationId }) => {
+            return await getLocationById(locationId);
+        },
+        products: async ({ id }, { page = 1, limit = 12 }) => {
             const productsIds = await getProductsIdsByUserId(id);
             const products = await (getProductsByIds(productsIds).skip((page - 1) * limit).limit(limit));
             return products;
@@ -39,17 +42,17 @@ module.exports = {
 
         salesCount: () => {
             return 0;
-        }
+        },
     },
 
 
     Product: {
         owner: ({ ownerId }) => {
-            console.log(ownerId)
+            console.log(ownerId);
             return getUserById(ownerId);
         },
-        location: () => {
-            return getLocationById(0);
+        location: ({ locationId }) => {
+            return getLocationById(locationId);
         },
         saved: async ({ id }, args, { user }) => {
             if (!user) return false;
@@ -58,6 +61,12 @@ module.exports = {
         },
         feedbacks: () => {
             return [];
+        }
+    },
+
+    CartProduct: {
+        product: async ({ productId }) => {
+            return await getProductById(productId);
         }
     },
 
@@ -95,8 +104,8 @@ module.exports = {
     },
 
     Message: {
-        owner: async ({ ownerId }) => {
-            return await getUserById(ownerId);
+        writter: async ({ writterId }) => {
+            return await getUserById(writterId);
         }
     },
 
@@ -230,19 +239,19 @@ module.exports = {
             return state;
         },
 
-        saveUser: async (source, { fullName, phone, icon }, { user }) => {
+        saveUser: async (source, { fullName, locationId, phone, icon }, { user }) => {
             if (icon) {
                 const { fileName } = await storeUploadFile(icon, "icons/users", () => `user_${user.id}_icon_` + Date.now());
-                return await saveUserById(user.id, fullName, phone, fileName);
+                return await saveUserById(user.id, fullName, locationId, phone, fileName);
             } else {
-                return await saveUserById(user.id, fullName, phone);
+                return await saveUserById(user.id, fullName, locationId, phone);
             }
         },
 
         addProduct: async (source, { title, description, price, category, locationId, photos }, { user }) => {
 
             const results = await Promise.all(photos.map((p, index) => storeUploadFile(p, "photos/products", () => `product_photo_${index}_` + Date.now())));
-
+            console.log(locationId);
             const product = await createProduct(user.id, title, description, price, category, locationId, results[0] && results[0].fileName, results.map(r => r.fileName));
 
             addProductByUserId(user.id, product.id);
@@ -250,6 +259,19 @@ module.exports = {
             return product;
         },
 
+        changeCartItemCount: async (source, { productId, count }, { user }) => {
+            if (!user) throw new AuthenticationError();
+
+            await changeCartItemCountByUserId(user.id, productId, count);
+            return count;
+        },
+
+        addProductToCart: async (source, { productId, count }, { user }) => {
+            if (!user) throw new AuthenticationError();
+
+            await addProductToCardByUserId(user.id, productId, count);
+            return true;
+        },
 
         createChat: async (source, { productId, initialMessage }, { user }) => {
             const seller = await getUserByProductId(productId);
@@ -272,7 +294,7 @@ module.exports = {
             callNewMessage(receiverId, `${chat.id}`, {
                 id: `${message.id}`,
                 createdAt: message.createdAt,
-                owner: {
+                writter: {
                     id: `${user.id}`
                 },
                 text,

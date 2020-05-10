@@ -10,12 +10,13 @@ import SalesContent from './SalesContent/SalesContent';
 import withLoginedLock from '../../hocs/withLoginedLock';
 import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
+import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
 
 const Profile = () => {
 
 	const [tabIndex, setTabIndex] = useState(1);
 
-	const { data, loading } = useQuery(LOAD_USER_QUERY)
+	const { data, loading } = useQuery(CURRENT_USER_QUERY)
 
 	return (
 		<div className="profile-page">
@@ -38,7 +39,10 @@ const LOAD_USER_QUERY = gql`
 query {
 	currentUser {
 		id
-	 fullName
-	 iconName
+		fullName
+		iconName
+		location{
+			id
+		}
    }
  }`;

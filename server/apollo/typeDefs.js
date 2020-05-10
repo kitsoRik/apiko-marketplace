@@ -9,7 +9,9 @@ type User {
     verifyed: Boolean!
     fullName: String!
     email: String!
+    phone: String!
     iconName: String
+    location: Location
 
     products(page: Int, limit: Int): [Product!]
     productsCount: Int!
@@ -20,6 +22,7 @@ type User {
     sales(page: Int, limit: Int): [Sale!]
     salesCount(page: Int, limit: Int): Int!
 
+    cartProducts: [CartProduct!]!
 
 }
 
@@ -31,11 +34,17 @@ type User {
         price: Float!
         category: String!
         imageName: String
+        photosNames: [String!]!
 
         location: Location!
 
         saved: Boolean!
         feedbacks: [Feedback!]
+    }
+    
+    type CartProduct {
+        product: Product!
+        count: Int!
     }
 
     type Feedback {
@@ -70,11 +79,13 @@ type User {
         shopper: User!
         seller: User!
         messages(page: Int, limit: Int): [Message!]!
+        shopperRead: Boolean!
+        sellerRead: Boolean!
     }
 
     type Message {
         id: ID!
-        owner: User!
+        writter: User!
         text: String!
         createdAt: String!
     }
@@ -120,11 +131,14 @@ type User {
         restorePassword(key: String!, password: String!): Boolean
 
         changeSavedStateOfProduct(id: ID!, state: Boolean!): Boolean,
-        saveUser(fullName: String!, phone: String!, icon: Upload): User
+        saveUser(fullName: String!, locationId: ID!, phone: String!, icon: Upload): User
 
 
         addProduct (title: String!, locationId: ID!, description: String!, price: Float!, category: String! photos: [Upload!]): Product
 
+
+        changeCartItemCount(productId: ID!, count: Int!): Int!
+        addProductToCart(productId: ID!, count: Int!): Boolean
 
 
         createChat(productId: ID!, initialMessage: String!): Chat!

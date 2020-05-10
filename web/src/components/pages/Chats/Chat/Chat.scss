@@ -1,7 +1,7 @@
 .chats-page-chat {
     height: 100%;
-    display: grid;
-    grid-template-rows: min-content auto min-content;
+    display: flex;
+    flex-direction: column;
 
     overflow: hidden;
 }

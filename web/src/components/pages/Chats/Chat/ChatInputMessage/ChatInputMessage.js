@@ -6,6 +6,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { CHAT_MESSAGES_QUERY } from '../../../../../apollo/queries/chat-queries';
 import ChatInputMessageSmileButton from './ChatInputMessageSmileButton';
 import ChatInputMessageLinkButton from './ChatInputMessageLinkButton';
+import ChatInputMessageSendButton from './ChatInputMessageSendButton';
 
 const ChatInputMessage = ({ chatId }) => {
 
@@ -42,18 +43,41 @@ const ChatInputMessage = ({ chatId }) => {
         })
     }
 
+    const onSubmit = (e) => {
+        e.preventDefault();
+
+        onSendMessage();
+
+        setText("");
+    }
+
+    const onClickSmileButton = e => {
+        e.preventDefault();
+    }
+
+    const onClickLinkButton = e => {
+        e.preventDefault();
+    }
+
     return (
-        <div className="chats-page-chat-input-message">
+        <form className="chats-page-chat-input-message" onSubmit={onSubmit}>
             <input className="chats-page-chat-input-message-field"
                 placeholder="Type your message here..."
                 value={text} onChange={e => setText(e.target.value)} />
             <div className="chats-page-chat-input-message-buttons">
-                <ChatInputMessageSmileButton className="chats-page-chat-input-message-buttons-smile"
-                    onClick={onSendMessage} />
-                <ChatInputMessageLinkButton className="chats-page-chat-input-message-buttons-smile"
-                    onClick={onSendMessage} />
+                <ChatInputMessageSendButton
+                    className="chats-page-chat-input-message-buttons-send"
+                    disabled={text === ""}
+                    type="submit"
+                    onClick={onSubmit} />
+                <ChatInputMessageSmileButton
+                    className="chats-page-chat-input-message-buttons-smile"
+                    onClick={onClickSmileButton} />
+                <ChatInputMessageLinkButton
+                    className="chats-page-chat-input-message-buttons-smile"
+                    onClick={onClickLinkButton} />
             </div>
-        </div>
+        </form>
     )
 };
 
@@ -63,7 +87,7 @@ const SEND_MESSAGE_MUTATION = gql`
 mutation sendMessage($chatId: ID!, $text: String!) {
     sendMessage(chatId: $chatId, text: $text) {
         id
-        owner {
+        writter {
             id
         }
         text

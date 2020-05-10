@@ -11,6 +11,7 @@ import { CHANGE_SAVED_STATE_MUTATION } from '../../../apollo/mutation/products-m
 import { Link } from 'react-router-dom';
 import ImageNoAvaiableIcon from '../../icons/ImageNoAvaliableIcon/ImageNoAvalaibleIcon';
 import { changeProductStateHandler } from '../../../apollo/handlers/products-handler';
+import ProductIcon from '../../icons/ProductIcon/ProductIcon';
 
 const ProductCard = ({ className, product, onChangeSavedState = () => { }, ...props }) => {
     const { id, title, price, imageName, changingSaveState, saved = false } = product;
@@ -36,8 +37,7 @@ const ProductCard = ({ className, product, onChangeSavedState = () => { }, ...pr
     return (
         <div className={`product-card ${className ?? ""}`}{...props}>
             <div className="product-card-icon">
-                {imageName && <img src={`${api.productsImageBaseUrl}${imageName}`} alt="Product icon" />}
-                {!imageName && <ImageNoAvaiableIcon style={{ height: "80%", width: '100%' }} />}
+                <ProductIcon imageName={imageName} />
             </div>
             <div className="product-card-info">
                 <div>

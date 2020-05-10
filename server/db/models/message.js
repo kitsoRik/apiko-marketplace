@@ -5,7 +5,7 @@ const messageSchema = new Schema({
         type: Number,
         default: 0
     },
-    ownerId: {
+    writterId: {
         type: Number,
         required: true
     },
@@ -30,6 +30,6 @@ messageSchema.pre("save", async function (n) {
 
 const messageModel = model("Messages", messageSchema);
 
-exports.createMessage = (ownerId, text) => messageModel.create({ ownerId, text });
+exports.createMessage = (writterId, text) => messageModel.create({ writterId, text });
 
 exports.getMessagesByIds = (ids = []) => messageModel.find({ id: { $in: ids } });

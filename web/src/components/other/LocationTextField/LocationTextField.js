@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import "./LocationTextField.scss";
 import TextField from '../../layouts/TextField';
@@ -8,10 +8,10 @@ import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import LocationIcon from '../../icons/LocationIcon';
 
-const LocationTextField = ({ onLocationIdChange = () => { }, locationId = -1, withIcon, ...props }) => {
+const LocationTextField = ({ onLocationIdChange = () => { }, initialLocationName = "", locationId = -1, withIcon, ...props }) => {
 
-    const [location, setLocation] = useState("");
-    const [lastSelectedLocation, setLastSelectedLocation] = useState("");
+    const [location, setLocation] = useState(initialLocationName);
+    const [lastSelectedLocation, setLastSelectedLocation] = useState(initialLocationName);
 
     const { data, loading } = useQuery(LOCATION_QUERY, {
         variables: {
@@ -19,6 +19,8 @@ const LocationTextField = ({ onLocationIdChange = () => { }, locationId = -1, wi
         },
         skip: lastSelectedLocation === location
     });
+
+    useEffect(() => { }, []);
 
     // const _onChange = _.debounce((value) => {
     //     console.log(value);

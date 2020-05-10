@@ -14,6 +14,8 @@ import SavedItems from './components/pages/SavedItems/SavedItems';
 import AddProduct from './components/pages/AddProduct/AddProduct';
 import Product from './components/pages/Product/Product';
 import Chats from './components/pages/Chats/Chats';
+import Cart from './components/pages/Cart/Cart';
+import Purchase from './components/pages/Purchase/Purchase';
 
 const Routes = () => {
     return (
@@ -34,6 +36,10 @@ const Routes = () => {
 
             <Route exact path="/chats/" component={Chats} />
             <Route path="/chats/:id" component={Chats} />
+
+            <Route exact path="/cart" component={Cart} />
+            <Route exact path="/purchase" component={Purchase} />
+
         </Switch>
     )
 };

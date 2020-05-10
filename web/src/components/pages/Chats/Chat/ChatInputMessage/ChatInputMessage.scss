@@ -28,11 +28,12 @@
         right: 0;
 
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         grid-column-gap: 25px;
 
         &-smile,
-        &-link {
+        &-link,
+        &-send {
             border: none;
             background-color: transparent;
         }

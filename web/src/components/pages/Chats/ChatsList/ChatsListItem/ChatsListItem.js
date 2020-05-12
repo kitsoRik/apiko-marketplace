@@ -3,17 +3,20 @@ import React from 'react';
 import "./ChatsListItem.scss";
 import api from '../../../../../services/api';
 import ProductIcon from '../../../../icons/ProductIcon';
+import withScreenSize from '../../../../hocs/withScreenSize/withScreenSize';
 
-const ChatsListItem = ({ fullName, lastMessage, product, selected, onSelect }) => {
+const ChatsListItem = ({ screenSize, fullName, lastMessage, product, selected, onSelect }) => {
     const lastMessageTime = parseLastMessageTime(lastMessage.createdAt);
+
+    const isMinItem = screenSize.width > 1024;
+
     return (
         <div className={`chats-list-item ${selected ? "chats-list-item-selected" : ""}`}
-            onClick={onSelect}
-        >
+            onClick={onSelect}>
             <div className="chats-list-item-user">
                 <span className="chats-list-item-user-fullname">{fullName}</span>
                 <div className="chats-list-item-user-last-message">
-                    <span className="chats-list-item-user-last-message-text">{lastMessage.text}</span>
+                    <p className="chats-list-item-user-last-message-text">{lastMessage.text}</p>
                 </div>
             </div>
             <div className="chats-list-item-divider"></div>
@@ -23,16 +26,17 @@ const ChatsListItem = ({ fullName, lastMessage, product, selected, onSelect }) =
                 </div>
                 <span className="chats-list-item-product-title">{product.title}</span>
                 <span className="chats-list-item-product-price">${product.price}</span>
-            </div>
-            <div className="chats-list-item-divider"></div>
+            </div >
+
+            {isMinItem && <div className="chats-list-item-divider"></div>}
             <div className="chats-list-item-time">
                 <span className="chats-list-item-time-text">{lastMessageTime}</span>
             </div>
-        </div>
+        </div >
     )
 };
 
-export default ChatsListItem;
+export default withScreenSize(ChatsListItem);
 
 const parseLastMessageTime = (str) => {
     let temp = new Date();

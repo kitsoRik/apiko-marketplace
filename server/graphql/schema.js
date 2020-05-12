@@ -200,7 +200,6 @@ const Query = new GraphQLObjectType({
                 limit: { type: GraphQLInt },
             },
             resolve: async (source, { title = "", location, locationId = -1, category = 'any', priceFrom = -1, priceTo = -1, page = 1, limit }, { req, user }, info) => {
-                console.log(await getAllProducts(title, category, +locationId, priceFrom, priceTo).skip((page - 1) * limit).limit(limit));
                 return getAllProducts(title, category, +locationId, priceFrom, priceTo).skip((page - 1) * limit).limit(limit);
             }
         },

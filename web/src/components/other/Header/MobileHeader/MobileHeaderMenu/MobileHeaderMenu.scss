@@ -1,0 +1,15 @@
+.mobile-header-menu {
+    width: 100%;
+    height: calc(100% - 82px);
+
+    position: fixed;
+    top: 82px;
+    left: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: #000e;
+
+    z-index: 100;
+}

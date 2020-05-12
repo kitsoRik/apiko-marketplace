@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import "./ChatsList.scss";
 import { useQuery } from '@apollo/react-hooks';
-import { CHATS_QUERY } from '../../../../apollo/queries/chat-queries';
+import { CHATS_QUERY, CHATS_LIST_QUERY } from '../../../../apollo/queries/chat-queries';
 import ChatsListItem from './ChatsListItem/ChatsListItem';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
@@ -15,11 +15,10 @@ const ChatsList = ({ selectedChatId }) => {
     const history = useHistory();
 
     const currentUserQuery = useQuery(CURRENT_USER_QUERY);
-    const { data, loading } = useQuery(CHATS_QUERY);
+    const { data, loading } = useQuery(CHATS_LIST_QUERY);
 
-    if (!data?.chats) return null;
 
-    const { chats } = data;
+    const { chats } = data ?? { chats: [] };
 
     const user = currentUserQuery.data.currentUser
     return (

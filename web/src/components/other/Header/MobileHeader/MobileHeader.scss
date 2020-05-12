@@ -1,0 +1,13 @@
+.mobile-header {
+    padding: 18px 25px;
+    flex: 1;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &-burger {
+        background-color: transparent;
+        border: none;
+    }
+}

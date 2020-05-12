@@ -42,6 +42,7 @@ query {
         price
         saved
         imageName
+        createdAt
     }
     savedProductsCount
 }`;
@@ -55,6 +56,7 @@ export const PRODUCT_QUERY = gql`
             description
             imageName
             photosNames
+            createdAt
             saved
             owner {
                 id

@@ -14,7 +14,6 @@ const Chat = ({ setViewingChat, chatId, className }) => {
     const { data, loading } = useQuery(CHAT_QUERY, {
         variables: { id: chatId }
     });
-
     useEffect(() => {
         if (!chatId) return;
         setViewingChat(chatId);
@@ -24,15 +23,13 @@ const Chat = ({ setViewingChat, chatId, className }) => {
         }
     }, [chatId]);
 
-    if (!data?.chat) return null;
-
-    const { chat: { product, seller, shopper } } = data;
+    const { chat: { product, seller, shopper } } = data ?? { chat: {} };
 
     return (
         <div className={`chats-page-chat ${className ?? ""}`}>
-            <ChatHeader product={product} user={seller} />
-            <ChatMessages chatId={chatId} />
-            <ChatInputMessage chatId={chatId} />
+            <ChatHeader product={loading ? null : product} user={loading ? null : seller} loading={loading} />
+            <ChatMessages chatId={chatId} loading={loading} />
+            <ChatInputMessage chatId={chatId} loading={loading} />
         </div>
     )
 };

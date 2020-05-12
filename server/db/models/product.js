@@ -40,6 +40,11 @@ const productSchema = new Schema({
     photosNames: {
         type: [String],
         required: true
+    },
+    createdAt: {
+        type: String,
+        required: true,
+        default: new Date(2000, 08, 16, 0, 0, 0)
     }
 });
 
@@ -48,6 +53,7 @@ productSchema.pre("save", async function (next) {
 
     const obj = await productModel.find().sort({ field: 'desc', id: -1 }).limit(1);
     this.id = obj[0] ? obj[0].id + 1 : 0;
+    this.createdAt = new Date();
     next();
 });
 

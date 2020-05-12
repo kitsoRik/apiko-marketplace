@@ -36,6 +36,8 @@ type User {
         imageName: String
         photosNames: [String!]!
 
+        createdAt: String!
+
         location: Location!
 
         saved: Boolean!
@@ -79,6 +81,7 @@ type User {
         shopper: User!
         seller: User!
         messages(page: Int, limit: Int): [Message!]!
+        messagesCount: Int!
         shopperRead: Boolean!
         sellerRead: Boolean!
     }

@@ -7,19 +7,24 @@ import { CHAT_MESSAGES_QUERY } from '../../../../../apollo/queries/chat-queries'
 import ChatInputMessageSmileButton from './ChatInputMessageSmileButton';
 import ChatInputMessageLinkButton from './ChatInputMessageLinkButton';
 import ChatInputMessageSendButton from './ChatInputMessageSendButton';
+import ModalLoading from '../../../../layouts/ModalLoading/ModalLoading';
 
-const ChatInputMessage = ({ chatId }) => {
+const ChatInputMessage = ({ chatId, loading }) => {
 
     const [text, setText] = useState("");
 
-    const [sendMessage, { client }] = useMutation(SEND_MESSAGE_MUTATION, {
+    const [sendMessage, sendMessageMutationOption] = useMutation(SEND_MESSAGE_MUTATION, {
         variables: { chatId, text },
     });
+
+    const { client } = sendMessageMutationOption;
 
     const onSendMessage = async () => {
         const result = await sendMessage({
             variables: { chatId, text }
         });
+
+        setText("");
 
         const data = client.readQuery({
             query: CHAT_MESSAGES_QUERY,
@@ -47,8 +52,6 @@ const ChatInputMessage = ({ chatId }) => {
         e.preventDefault();
 
         onSendMessage();
-
-        setText("");
     }
 
     const onClickSmileButton = e => {
@@ -63,8 +66,12 @@ const ChatInputMessage = ({ chatId }) => {
         <form className="chats-page-chat-input-message" onSubmit={onSubmit}>
             <input className="chats-page-chat-input-message-field"
                 placeholder="Type your message here..."
+                disabled={loading || sendMessageMutationOption.loading}
                 value={text} onChange={e => setText(e.target.value)} />
             <div className="chats-page-chat-input-message-buttons">
+                <div className="chats-page-chat-input-message-loading">
+                    {sendMessageMutationOption.loading && <ModalLoading darken={false} />}
+                </div>
                 <ChatInputMessageSendButton
                     className="chats-page-chat-input-message-buttons-send"
                     disabled={text === ""}

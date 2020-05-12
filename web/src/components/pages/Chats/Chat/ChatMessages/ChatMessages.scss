@@ -1,5 +1,4 @@
 .chats-page-chat-messages {
-    padding-top: 45px;
     height: 100%;
 
     display: flex;
@@ -8,4 +7,9 @@
     overflow: auto;
 
     box-sizing: border-box;
+
+    &-item-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
 }

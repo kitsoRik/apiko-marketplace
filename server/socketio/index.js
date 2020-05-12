@@ -16,21 +16,26 @@ exports.connect = (http) => {
 
     io.on('connection', async (socket) => {
         socket.emit("Hello", 228, 1337);
-        const { sesid } = cookie.parse(socket.request.headers.cookie);
-        if (!sesid) {
-            return socket.disconnect();
+
+        try {
+            const { sesid } = cookie.parse(socket.request.headers.cookie);
+            if (!sesid) {
+                return socket.disconnect();
+            }
+
+            const session = await getSessionBySesid(sesid);
+
+            if (!session) {
+                return socket.disconnect();
+            }
+
+            const user = await getUserById(session.userId);
+            if (!user)
+                return socket.disconnect();
+            addUserSocket(user.id, socket);
+        } catch (e) {
+            socket.disconnect();
         }
-
-        const session = await getSessionBySesid(sesid);
-
-        if (!session) {
-            return socket.disconnect();
-        }
-
-        const user = await getUserById(session.userId);
-        if (!user)
-            return socket.disconnect();
-        addUserSocket(user.id, socket);
     });
 }
 

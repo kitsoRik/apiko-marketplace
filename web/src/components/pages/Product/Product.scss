@@ -136,22 +136,27 @@
             }
         }
 
-        &-chat-with-seller-button {
-            height: 45px;
-            padding: 0;
-            margin-bottom: 10px;
-        }
+        &-buttons {
+            display: flex;
+            flex-direction: column;
 
-        &-chat-with-buy-button {
-            height: 45px;
-            padding: 0;
-            margin-bottom: 10px;
-        }
+            &-chat-with-seller-button {
+                height: 45px;
+                padding: 0;
+                margin-bottom: 10px;
+            }
 
-        &-add-to-favorite-button {
-            height: 45px;
-            font-size: 14px;
-            border: 1px solid #349a89;
+            &-chat-with-buy-button {
+                height: 45px;
+                padding: 0;
+                margin-bottom: 10px;
+            }
+
+            &-add-to-favorite-button {
+                height: 45px;
+                font-size: 14px;
+                border: 1px solid #349a89;
+            }
         }
     }
 }

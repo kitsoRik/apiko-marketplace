@@ -11,6 +11,10 @@
     grid-row-gap: 15px;
 
     box-sizing: border-box;
+
+    &-products-container {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
 @media (min-width: 780px) {

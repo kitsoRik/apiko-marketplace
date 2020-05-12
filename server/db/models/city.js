@@ -20,7 +20,6 @@ const locationSchema = new Schema({
 });
 
 locationSchema.pre("save", async function (next) {
-    console.log(this);
     if (this.id !== -2) return next();
 
     this.id = await locationModel.countDocuments();

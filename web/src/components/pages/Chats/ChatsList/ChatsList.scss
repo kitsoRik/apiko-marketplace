@@ -1,6 +1,6 @@
 .chats-list {
     padding-right: 10px;
-    width: 565px;
+    width: 100%;
 
     background-color: white;
 
@@ -8,4 +8,6 @@
 
     display: flex;
     flex-direction: column;
+
+    box-sizing: border-box;
 }

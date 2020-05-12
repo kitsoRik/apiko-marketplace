@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 
 import "./ChatMessagesItem.scss";
 import ChatMessageItemEdge from './ChatMessageItemEdge';
+import moment from 'moment';
 
-const ChatMessagesItem = ({ text, fromMe = false, createdAt }) => {
+const ChatMessagesItem = ({ style, text, fromMe = false, createdAt }) => {
 
     const [time, setTime] = useState(parseTime(createdAt));
 
@@ -14,7 +15,7 @@ const ChatMessagesItem = ({ text, fromMe = false, createdAt }) => {
     });
 
     return (
-        <div className="chats-page-chat-messages-item" fromme={fromMe ? "" : null}>
+        <div className="chats-page-chat-messages-item" fromme={fromMe ? "" : null} style={style}>
             <div className="chats-page-chat-messages-item-bg">
                 <span>{text}</span>
             </div>
@@ -33,6 +34,7 @@ const parseTime = (str) => {
     const time = new Date(str);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+
     const now = new Date();
 
     if (time > today) {
@@ -43,13 +45,12 @@ const parseTime = (str) => {
         const minutes = Math.floor(sub / 60 % 60);
         const hours = Math.floor(sub / 3600);
 
-
         if (hours >= 1) {
             if (hours === 1) return `1 hour ago`;
             return `${hours} hours ago`;
         } else if (minutes >= 1) {
             if (minutes === 1) return `1 minute ago`;
-            return `${minutes} minuts ago`;
+            return `${minutes} minutes ago`;
         } else if (secs >= 1) {
             if (secs === 1) return `1 second ago`;
             return `${secs} seconds ago`;
@@ -57,4 +58,6 @@ const parseTime = (str) => {
             return 'just now';
         }
     }
+
+    return moment(time).calendar();
 }

@@ -3,8 +3,24 @@
     max-width: 1440px;
 
     display: grid;
-    grid-template-columns: min-content minmax(0, 1000px);
+    grid-template-columns: 350px minmax(0, 1000px);
 
     &-list {
+    }
+
+    @media screen and (max-width: 1440px) {
+        grid-template-columns: 350px minmax(0, 1000px);
+    }
+
+    @media screen and (max-width: 1024px) {
+        grid-template-columns: 275px minmax(0, 1000px);
+    }
+
+    @media screen and (max-width: 640px) {
+        grid-template-columns: minmax(0, 1000px);
+    }
+
+    @media screen and (max-width: 480px) {
+        grid-template-columns: minmax(0, 1000px);
     }
 }

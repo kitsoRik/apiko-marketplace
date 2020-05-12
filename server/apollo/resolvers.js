@@ -48,7 +48,6 @@ module.exports = {
 
     Product: {
         owner: ({ ownerId }) => {
-            console.log(ownerId);
             return getUserById(ownerId);
         },
         location: ({ locationId }) => {
@@ -98,8 +97,11 @@ module.exports = {
         seller: async ({ sellerId }) => {
             return await getUserById(sellerId);
         },
-        messages: async ({ messagesIds }) => {
-            return await getMessagesByIds(messagesIds);
+        messages: async ({ messagesIds }, { page = 1, limit = 20 }) => {
+            return await getMessagesByIds(messagesIds).skip((page - 1) * limit).limit(limit);
+        },
+        messagesCount: async ({ messagesIds }) => {
+            return await getMessagesByIds(messagesIds).countDocuments();
         }
     },
 
@@ -251,7 +253,6 @@ module.exports = {
         addProduct: async (source, { title, description, price, category, locationId, photos }, { user }) => {
 
             const results = await Promise.all(photos.map((p, index) => storeUploadFile(p, "photos/products", () => `product_photo_${index}_` + Date.now())));
-            console.log(locationId);
             const product = await createProduct(user.id, title, description, price, category, locationId, results[0] && results[0].fileName, results.map(r => r.fileName));
 
             addProductByUserId(user.id, product.id);
@@ -278,6 +279,16 @@ module.exports = {
 
             const message = await createMessage(user.id, initialMessage);
             const chat = await createChat(productId, user.id, seller.id, message.id);
+
+            callNewMessage(seller.id, `${chat.id}`, {
+                id: `${message.id}`,
+                createdAt: message.createdAt,
+                writter: {
+                    id: `${user.id}`
+                },
+                text: message.text,
+                __typename: "Message"
+            });
 
             return chat;
         },

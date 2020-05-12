@@ -6,18 +6,27 @@ import Chat from './Chat';
 import { connect } from 'react-redux';
 import UnknownChat from './UnknownChat/UnknownChat';
 import { setViewingChat } from '../../../redux/actions/chats-actions';
+import withScreenSize from '../../hocs/withScreenSize/withScreenSize';
+import { compose } from 'redux';
+import withLoginedLock from '../../hocs/withLoginedLock/withLoginedLock';
 
-const Chats = ({ match }) => {
+const Chats = ({ match, screenSize }) => {
     const chatId = match.params.id;
+
+    const visibleChatsList = screenSize.width > 640 || chatId === undefined;
+    const visibleChats = chatId !== undefined;
 
     return (
         <div className="chats-page">
-            <ChatsList selectedChatId={chatId} />
-            {chatId !== undefined && <Chat chatId={chatId} />}
-            {chatId === undefined && <UnknownChat />}
+            {visibleChatsList && <ChatsList selectedChatId={chatId} />}
+            {visibleChats && <Chat chatId={chatId} />}
+            {!visibleChats && screenSize.width > 640 && <UnknownChat />}
         </div>
     )
 };
 
-export default Chats;
+export default compose(
+    withLoginedLock(true),
+    withScreenSize
+)(Chats)
 

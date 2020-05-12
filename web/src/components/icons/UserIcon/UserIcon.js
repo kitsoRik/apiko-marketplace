@@ -2,8 +2,9 @@ import React from 'react';
 
 import './UserIcon.scss';
 import { userIconBaseUrl } from '../../../services/api/api';
+import ModalLoading from '../../layouts/ModalLoading/ModalLoading';
 
-const UserIcon = ({ src, fullName = "", className, local = false, ...props }) => {
+const UserIcon = ({ src, fullName = "", className, local = false, loading, ...props }) => {
 
     const initials = fullName.split(" ").map(s => s[0]);
 
@@ -13,6 +14,7 @@ const UserIcon = ({ src, fullName = "", className, local = false, ...props }) =>
                 <span style={{ background: "orange", color: "black" }}>
                     {initials}
                 </span>
+                {loading && <ModalLoading darken={false} />}
             </div>
         )
     }

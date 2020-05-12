@@ -62,10 +62,10 @@ query getChat($id: ID!){
 `;
 
 export const CHAT_MESSAGES_QUERY = gql`
-query chatMessages($id: ID!){
+query chatMessages($id: ID!, $page: Int, $limit: Int){
     chat(id: $id) {
         id
-      messages {
+      messages(page: $page, limit: $limit) {
         id
         writter {
           id
@@ -73,16 +73,35 @@ query chatMessages($id: ID!){
         text
         createdAt
       }
+      messagesCount
     }
   }
 `;
 
 export const CHATS_LIST_QUERY = gql`
-  query  {
+  query {
     chats {
       id
+      shopper {
+        id
+        fullName
+        iconName
+      }
+      seller {
+        id
+        fullName
+        iconName
+      }
       product {
         id
+        title
+        price
+        imageName
+      }
+      messages {
+          id
+          text
+          createdAt
       }
     }
   }

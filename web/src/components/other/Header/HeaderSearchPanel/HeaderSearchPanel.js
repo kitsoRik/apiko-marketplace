@@ -18,6 +18,8 @@ import { getLatestProductsTitleQuery, addProductsTitleQuery } from '../../../../
 
 const HeaderSearchPanel = ({ title, locationId, searchProductsHintQuery, searchProductsHint, changeProductsSearchQuery, searchProducts }) => {
 
+    const history = useHistory();
+
     const { data, loading } = useQuery(SEARCH_PRODUCTS_QUERY, {
         variables: {
             title: searchProductsHintQuery.title,
@@ -28,6 +30,7 @@ const HeaderSearchPanel = ({ title, locationId, searchProductsHintQuery, searchP
 
     const onSearch = () => {
         searchProducts();
+        history.push("/");
         if (title !== "") {
             addProductsTitleQuery(title);
         }
@@ -43,6 +46,7 @@ const HeaderSearchPanel = ({ title, locationId, searchProductsHintQuery, searchP
     return (
         <div className="home-page-header-panel">
             <TextField
+                className="home-page-header-panel-title-field"
                 value={title}
                 loading={loading}
                 autoCompleteOptions={

@@ -5,12 +5,12 @@ import './ComboboxOption.scss';
 const ComboboxOption = ({ value, icon, children, ...props }) => {
     return (
         <div className="combobox-option" {...props}>
-            {icon && <div className="combobox-option-icon">
+            <div className="combobox-option-icon">
                 {icon}
-            </div>}
-            <div>
-                {children}
             </div>
+            <p className="combobox-option-text">
+                {children}
+            </p>
         </div>
     );
 }

@@ -9,8 +9,10 @@ import { useHistory, Link } from 'react-router-dom';
 import ModalLoading from '../../../../layouts/ModalLoading/ModalLoading';
 import UserPanel from '../../UserPanel/UserPanel';
 import UserIcon from '../../../../icons/UserIcon';
+import PostboxIcon from '../../../../icons/PostboxIcon/PostboxIcon';
+import HeartIcon from '../../../../icons/HeartIcon';
 
-const MobileHeaderMenu = () => {
+const MobileHeaderMenu = ({ onClose }) => {
     const history = useHistory();
     const darkMode = !['/login', '/register'].find((p) => p === history.location.pathname);
     const currentUserQuery = useQuery(CURRENT_USER_QUERY);
@@ -19,48 +21,68 @@ const MobileHeaderMenu = () => {
     const visibleUserIcon = !currentUserQuery.loading && currentUserQuery.data.currentUser;
     const visibleUserIconLoading = currentUserQuery.loading || loginStatus === LOGINING || loginStatus === UNLOGINING;
 
+    const onSomeClick = fn => () => {
+        onClose();
+        if (fn) fn();
+    }
+
     return (
         <div className="mobile-header-menu">
 
-            <Button.Default
-                className="desktop-header-sell-button"
-                value="Sell"
-                onClick={() => history.push("/add-product")} />
+            <div className="mobile-header-menu-buttons">
+                <Button.Outlined
+                    className="mobile-header-menu-buttons-sell"
+                    value="Sell"
+                    onClick={onSomeClick(() => history.push("/add-product"))} />
+
+                <Button.Outlined
+                    className="mobile-header-menu-buttons-inbox"
+                    value="Inbox"
+                    icon={<PostboxIcon darken={true} />}
+                    onClick={onSomeClick(() => history.push("/chats"))} />
+
+                <Button.Outlined
+                    className="mobile-header-menu-buttons-saved-items"
+                    value="Saved items"
+                    icon={<HeartIcon filed={history.location.pathname === "/saved-items"} color="#000" className="desktop-header-heart" dark-mode={true} width="24" height="24" />}
+                    onClick={onSomeClick(() => history.push("/saved-items"))} />
+            </div>
 
             {visibleLoginButton &&
                 <Button.Transparent
-                    className="desktop-header-login-button"
+                    className="mobile-header-menu-login-button"
                     darkMode={darkMode ? "true" : null}
                     value="Login"
-                    onClick={() => history.push("/login")} />
+                    onClick={onSomeClick(() => history.push("/login"))} />
             }
             <div>
                 {visibleUserIconLoading &&
                     <div
-                        className="desktop-header-profile"
+                        className="mobile-header-menu-profile"
                         tabIndex={1}>
 
                         {visibleUserIconLoading && <ModalLoading style={{ height: `48px`, width: `48px`, borderRadius: `50%` }} />}
                     </div>
                 }
                 {visibleUserIcon &&
-                    <div>
-                        <div className="user-panel-upper">
-                            <UserIcon fullName={currentUserQuery.data?.currentUser?.fullName} src={currentUserQuery.data?.currentUser?.iconName} />
-                            <div className="user-panel-upper-info">
-                                <span className="user-panel-upper-info-name">{currentUserQuery.data?.currentUser?.fullName}</span>
-                                <span className="user-panel-upper-info-email">{currentUserQuery.data?.currentUser?.email}</span>
-                                <Link className="user-panel-upper-info-profile-button" to="/profile">
-                                    Profile
-                        </Link>
-                            </div>
+                    <div className="mobile-header-menu-profile">
+                        <UserIcon fullName={currentUserQuery.data?.currentUser?.fullName} src={currentUserQuery.data?.currentUser?.iconName} />
+                        <div className="mobile-header-menu-profile-info">
+                            <span className="mmobile-header-menu-profile-info-name">{currentUserQuery.data?.currentUser?.fullName}</span>
+                            <span className="mobile-header-menu-profile-info-email">{currentUserQuery.data?.currentUser?.email}</span>
+
                         </div>
-                        <Button.Default
-                            className="user-panel-edit-profile-button"
-                            onClick={() => history.push("/edit-profile")} value="Edit profile" />
-                        <Button.Default
-                            className="user-panel-logout-button"
-                            onClick={() => { }} value="Logout" />
+                        <Link className="mobile-header-menu-profile-link" onClick={onSomeClick()} to="/profile">
+                            Profile
+                        </Link>
+                        <div className="mobile-header-menu-profile-buttons">
+                            <Button.Default
+                                className="user-panel-edit-profile-button"
+                                onClick={onSomeClick(() => history.push("/edit-profile"))} value="Edit profile" />
+                            <Button.Default
+                                className="user-panel-logout-button"
+                                onClick={() => { }} value="Logout" />
+                        </div>
                     </div>
                 }
             </div>

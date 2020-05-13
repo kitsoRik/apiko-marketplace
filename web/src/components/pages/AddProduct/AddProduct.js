@@ -21,12 +21,6 @@ import CategoryIcon from '../../icons/CategoryIcon/CategoryIcon';
 
 const AddProduct = ({ history }) => {
 
-    const [title, setTitle] = useState("");
-    const [locationId, setLocationId] = useState(-1);
-    const [description, setDescription] = useState("");
-    const [price, setPrice] = useState("");
-
-    const [photos, setPhotos] = useState([]);
 
     const [addProduct] = useMutation(ADD_PRODUCT_MUTATION)
 
@@ -107,8 +101,8 @@ const AddProduct = ({ history }) => {
                                     <TextField
                                         multiline={true}
                                         style={{ height: "180px" }}
-                                        value={description}
-                                        onValueChange={setDescription}
+                                        value={values.description}
+                                        onValueChange={value => setFieldValue("description", value)}
                                         placeholder="For example: Iron man suite" />
                                 </Label>
                                 <Label value="Photos" className="add-product-page-form-photo">
@@ -116,7 +110,7 @@ const AddProduct = ({ history }) => {
                                         {values.photos.map((photo, i) =>
                                             <InputImage key={i} file={photo}
                                                 onlyView={true}
-                                                onClear={() => setFieldValue('photos', photos.filter(p => p !== photo))} />)}
+                                                onClear={() => setFieldValue('photos', values.photos.filter(p => p !== photo))} />)}
                                         <InputImage multiple={true}
                                             setFiles={phs => setFieldValue('photos', values.photos.concat(phs))} />
                                     </div>

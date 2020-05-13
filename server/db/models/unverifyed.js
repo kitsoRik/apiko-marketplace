@@ -3,7 +3,7 @@ const crypto = require("crypto");
 
 const unverifyedSchema = new Schema({
     userId: {
-        type: Number,
+        type: String,
         required: true
     },
     type: {
@@ -20,7 +20,7 @@ const unverifyedSchema = new Schema({
     }
 });
 
-unverifyedSchema.pre("save", async function(next) {
+unverifyedSchema.pre("save", async function (next) {
     this.created = new Date();
     next();
 });

@@ -2,11 +2,11 @@
     padding: 18px 25px;
     flex: 1;
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 
     &-burger {
+        justify-self: flex-end;
         background-color: transparent;
         border: none;
     }

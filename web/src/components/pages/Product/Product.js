@@ -67,16 +67,16 @@ const Product = ({ match, history }) => {
                             <ProductLocation location={data?.product?.location} />
                         </div>
                         <div className="product-page-product-info-line"></div>
-                        <div className="product-page-product-info-description">
+                        <span className="product-page-product-info-description">
                             {data?.product?.description}
-                        </div>
+                        </span>
                     </div>
                     {loading && <ModalLoading />}
                 </Form>
 
                 {!loading && data?.product?.photosNames.length !== 0 &&
                     <Form className="product-page-product-photos">
-                        {data?.product?.photosNames.map(p => <ProductIcon imageName={p} />)}
+                        {data?.product?.photosNames.map(p => <ProductIcon key={p} imageName={p} />)}
                     </Form>
                 }
             </div>
@@ -90,19 +90,21 @@ const Product = ({ match, history }) => {
                     {loading && <ModalLoading fillPercent={70} style={{ marginTop: '-14px' }} />}
                 </Form>
                 {!loading && <div className="product-page-user-buttons">
-                    {data?.product && currentUserQuery.data?.currentUser?.id !== data?.product?.owner.id && <Button.Default
-                        className="product-page-user-buttons-chat-with-seller-button"
-                        value="Chat with seller"
-                        uppercase={true}
-                        onClick={onOpenContactSellerDialog}
-                    />}
+                    {data?.product && currentUserQuery.data?.currentUser?.id !== data?.product?.owner.id &&
+                        <Button.Default
+                            className="product-page-user-buttons-chat-with-seller-button"
+                            value="Chat with seller"
+                            uppercase={true}
+                            onClick={onOpenContactSellerDialog}
+                        />}
 
-                    {data?.product && currentUserQuery.data?.currentUser?.id !== data?.product?.owner.id && <Button.Default
-                        className="product-page-user-buttons-chat-with-buy-button"
-                        value="Buy"
-                        uppercase="true"
-                        onClick={() => setBuyDialogVisible(true)}
-                    />}
+                    {data?.product && currentUserQuery.data?.currentUser?.id !== data?.product?.owner.id &&
+                        <Button.Default
+                            className="product-page-user-buttons-chat-with-buy-button"
+                            value="Buy"
+                            uppercase="true"
+                            onClick={() => setBuyDialogVisible(true)}
+                        />}
                     <Button.Outlined
                         uppercase={true}
                         onClick={onChangeSavedState}

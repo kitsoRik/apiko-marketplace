@@ -16,10 +16,18 @@
 
         &-products-container {
             display: grid;
-            grid-template-columns: 210px 210px 210px 210px;
+            grid-template-columns: repeat(4, 210px);
 
             grid-column-gap: 5px;
             grid-row-gap: 10px;
+
+            @media screen and (max-width: 900px) {
+                grid-template-columns: repeat(3, 210px);
+            }
+
+            @media screen and (max-width: 692px) {
+                grid-template-columns: repeat(2, 210px);
+            }
 
             & .product-card {
                 height: 212px;

@@ -93,7 +93,7 @@ const EditProfile = () => {
                                     <Button.Outlined
                                         type="outlined"
                                         value="Upgrade Photo"
-                                        onClick={() => inputImageRef.current.click()} />
+                                        onClick={(e) => { e.preventDefault(); inputImageRef.current.click() }} />
                                     <input type="file" ref={inputImageRef} style={{ display: "none" }} onChange={onImageChange} />
                                 </div>
                                 <div className="edit-profile-page-form-fields">
@@ -118,7 +118,7 @@ const EditProfile = () => {
                                     className="edit-profile-page-form-save"
                                     type="submit"
                                     value="Save"
-                                    disabled={Object.keys(errors).length !== 0 || Object.keys(touched).length === 0 || JSON.stringify(values) === JSON.stringify(initialValues)}
+                                    disabled={(Object.keys(errors).length !== 0 || Object.keys(touched).length === 0 || JSON.stringify(values) === JSON.stringify(initialValues)) && !imageData}
                                 />
                                 {(loading || saveUserMutation.loading) && <ModalLoading style={{ top: 0, left: 0 }} />}
                             </Form>

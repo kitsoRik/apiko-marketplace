@@ -1,10 +1,11 @@
 const { Schema, model } = require("mongoose");
 
+const uuid = require("uuid");
 
 const saleSchema = new Schema({
     id: {
-        type: Number,
-        default: -1
+        type: String,
+        default: ""
     },
     userId: {
         type: Number,
@@ -19,11 +20,10 @@ const saleSchema = new Schema({
     }
 });
 
-saleSchema.pre("save", function(next) {
-    if(this.id !== -1) return next();
+saleSchema.pre("save", function (next) {
+    if (this.id !== "") return;
 
-    this.id = saleModel.countDocuments();
-
+    this.id = uuid.v4();
     next();
 });
 

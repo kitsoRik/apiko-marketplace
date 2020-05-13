@@ -199,8 +199,8 @@ const Query = new GraphQLObjectType({
                 page: { type: GraphQLInt },
                 limit: { type: GraphQLInt },
             },
-            resolve: async (source, { title = "", location, locationId = -1, category = 'any', priceFrom = -1, priceTo = -1, page = 1, limit }, { req, user }, info) => {
-                return getAllProducts(title, category, +locationId, priceFrom, priceTo).skip((page - 1) * limit).limit(limit);
+            resolve: async (source, { title = "", location, locationId = "", category = 'any', priceFrom = -1, priceTo = -1, page = 1, limit }, { req, user }, info) => {
+                return getAllProducts(title, category, locationId, priceFrom, priceTo).skip((page - 1) * limit).limit(limit);
             }
         },
         productsCount: {
@@ -215,8 +215,8 @@ const Query = new GraphQLObjectType({
                 page: { type: GraphQLInt },
                 limit: { type: GraphQLInt },
             },
-            resolve: (source, { title = "", location, locationId = -1, category = 'any', priceFrom = -1, priceTo = -1, page = 1, limit }, { req, user }, info) => {
-                return getAllProducts(title, category, +locationId, priceFrom, priceTo).countDocuments();
+            resolve: (source, { title = "", location, locationId = "", category = 'any', priceFrom = -1, priceTo = -1, page = 1, limit }, { req, user }, info) => {
+                return getAllProducts(title, category, locationId, priceFrom, priceTo).countDocuments();
             }
         },
         users: {
@@ -280,13 +280,13 @@ const Mutation = new GraphQLObjectType({
             },
             resolve: (source, { id, state }, { user }) => {
                 if (!user) throw "WHAT";
-                if (state && user.savedProducts.find(p => p === +id)) throw "WHAT1";
+                if (state && user.savedProducts.find(p => p === id)) throw "WHAT1";
 
-                if (!state && user.savedProducts.indexOf(+id) === -1) throw "WHAT2";
+                if (!state && user.savedProducts.indexOf(id) === -1) throw "WHAT2";
 
 
-                if (state) user.savedProducts.push(+id);
-                else user.savedProducts = user.savedProducts.filter(p => p !== +id);
+                if (state) user.savedProducts.push(id);
+                else user.savedProducts = user.savedProducts.filter(p => p !== id);
                 user.save();
 
                 return state;

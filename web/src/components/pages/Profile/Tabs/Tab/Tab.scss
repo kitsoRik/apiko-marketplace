@@ -8,15 +8,19 @@
     color: black;
 
     &[active] {
-        fill: #349A89;
+        fill: #349a89;
         color: white;
     }
 
     &:hover {
         fill: #238978;
     }
-        
+
     cursor: pointer;
+
+    @media screen and (max-width: 480px) {
+        width: 30%;
+    }
 
     &-container {
         padding: 15px 0;
@@ -28,14 +32,14 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-        
+
             background-color: transparent;
         }
-    
+
         &-main-text {
             font-size: 22px;
         }
-    
+
         &-minor-text {
             font-size: 13px;
         }

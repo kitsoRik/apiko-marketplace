@@ -1,19 +1,14 @@
 import Axios from 'axios';
 
-export const HOST = "http://localhost:3500";
+export const HOST = "http://5.45.118.116:3500";
 
 const axios = Axios.create({
-    baseURL: `${HOST}/api`, //`https://apiko-marketplace-api-2019.herokuapp.com`;
+    baseURL: `${HOST}/api`,
     withCredentials: true
 });
 
 export const userIconBaseUrl = `${HOST}/static/icons/users/`;
 export const productsImageBaseUrl = `${HOST}/static/photos/products/`;
-
-const put = (path, params) =>
-    axios.put(path, params)
-        .then(({ data }) => data)
-        .catch(console.log);
 
 const post = (path, params = {}) =>
     new Promise((r) => setTimeout(() => r(), 1000))

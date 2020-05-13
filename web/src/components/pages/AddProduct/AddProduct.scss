@@ -18,6 +18,14 @@
 
         box-sizing: border-box;
 
+        @media screen and (max-width: 1140px) {
+            padding: 32px calc((100% - 738px) / 2);
+        }
+
+        @media screen and (max-width: 785px) {
+            padding: 32px 15px;
+        }
+
         &-title {
             text-align: center;
         }

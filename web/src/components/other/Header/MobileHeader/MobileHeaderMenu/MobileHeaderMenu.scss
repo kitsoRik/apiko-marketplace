@@ -1,9 +1,9 @@
 .mobile-header-menu {
     width: 100%;
-    height: calc(100% - 82px);
+    height: calc(100vh - 100%);
 
-    position: fixed;
-    top: 82px;
+    position: absolute;
+    top: 100%;
     left: 0;
 
     display: flex;
@@ -12,4 +12,41 @@
     background-color: #000e;
 
     z-index: 100;
+
+    &-buttons {
+        padding: 10px;
+        display: grid;
+        grid-row-gap: 10px;
+
+        &-sell,
+        &-inbox,
+        &-saved-items {
+            padding: 10px;
+        }
+    }
+
+    &-profile {
+        padding: 10px;
+        display: grid;
+        grid-template-columns: 47px auto min-content;
+
+        color: white;
+
+        &-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        &-link {
+            color: white;
+        }
+
+        &-buttons {
+            margin: 10px 0;
+            grid-column: 1 / span 3;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-row-gap: 10px;
+        }
+    }
 }

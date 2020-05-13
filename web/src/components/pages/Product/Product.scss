@@ -73,6 +73,10 @@
                 }
             }
 
+            &-description {
+                word-break: break-all;
+            }
+
             &-line {
                 margin: 14px;
                 margin-right: -22px;

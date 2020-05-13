@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import "./ChatInputMessage.scss";
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
-import { CHAT_MESSAGES_QUERY } from '../../../../../apollo/queries/chat-queries';
+import { CHAT_MESSAGES_QUERY, CHATS_LIST_QUERY } from '../../../../../apollo/queries/chat-queries';
 import ChatInputMessageSmileButton from './ChatInputMessageSmileButton';
 import ChatInputMessageLinkButton from './ChatInputMessageLinkButton';
 import ChatInputMessageSendButton from './ChatInputMessageSendButton';
@@ -29,21 +29,36 @@ const ChatInputMessage = ({ chatId, loading }) => {
         const data = client.readQuery({
             query: CHAT_MESSAGES_QUERY,
             variables: {
-                id: chatId
+                id: chatId,
+                page: 1,
+                limit: 30
             }
         });
         client.writeQuery({
             query: CHAT_MESSAGES_QUERY,
-            variables: { id: chatId },
+            variables: { id: chatId, page: 1, limit: 30 },
             data: {
                 ...data,
                 chat: {
                     ...data.chat,
                     messages: [
+                        { ...result.data.sendMessage },
                         ...data.chat.messages,
-                        { ...result.data.sendMessage }
                     ]
                 }
+            }
+        });
+
+        const { chats } = client.readQuery({
+            query: CHATS_LIST_QUERY,
+        });
+        const newChats = JSON.parse(JSON.stringify(chats));
+        newChats.find(c => c.id === chatId).messages = [result.data.sendMessage];
+
+        client.writeQuery({
+            query: CHATS_LIST_QUERY,
+            data: {
+                chats: newChats
             }
         })
     }

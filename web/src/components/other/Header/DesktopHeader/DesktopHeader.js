@@ -27,9 +27,6 @@ const DesktopHeader = () => {
     const visibleUserIcon = !currentUserQuery.loading && currentUserQuery.data.currentUser;
     const visibleUserIconLoading = currentUserQuery.loading || loginStatus === LOGINING || loginStatus === UNLOGINING;
 
-
-    
-
     return (
         <header className="desktop-header">
             <Link to="/">

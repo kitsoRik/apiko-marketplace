@@ -1,9 +1,10 @@
 const { Schema, model } = require("mongoose");
+const uuid = require("uuid");
 
 const locationSchema = new Schema({
     id: {
-        type: Number,
-        default: -2
+        type: String,
+        default: ""
     },
     name: {
         type: String,
@@ -20,9 +21,9 @@ const locationSchema = new Schema({
 });
 
 locationSchema.pre("save", async function (next) {
-    if (this.id !== -2) return next();
+    if (this.id !== "") return;
 
-    this.id = await locationModel.countDocuments();
+    this.id = uuid.v4();
     next();
 });
 

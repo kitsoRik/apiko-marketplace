@@ -23,6 +23,7 @@
     "graphql-upload": "^10.0.0",
     "mongoose": "^5.9.9",
     "multer": "^1.4.2",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "uuid": "^8.0.0"
   }
 }

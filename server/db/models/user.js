@@ -1,9 +1,10 @@
 const { Schema, model, Types } = require("mongoose");
+const uuid = require("uuid");
 
 const userSchema = new Schema({
     id: {
-        type: Number,
-        default: 0
+        type: String,
+        default: ""
     },
     fullName: {
         type: String,
@@ -26,7 +27,7 @@ const userSchema = new Schema({
         required: true
     },
     savedProducts: {
-        type: [Number], // products ids
+        type: [String], // products ids
         default: []
     },
     iconName: {
@@ -34,7 +35,7 @@ const userSchema = new Schema({
         default: ""
     },
     productsIds: {
-        type: [Number],
+        type: [String],
         default: []
     },
     cartProducts: {
@@ -43,12 +44,11 @@ const userSchema = new Schema({
     }
 });
 
-userSchema.pre("save", async function (n) {
-    if (this.id !== 0) return n();
+userSchema.pre("save", async function (next) {
+    if (this.id !== "") return;
 
-    const obj = await userModel.find().sort({ field: 'desc', id: -1 }).limit(1);
-    this.id = obj[0] ? obj[0].id + 1 : 0;
-    n();
+    this.id = uuid.v4();
+    next();
 });
 
 const userModel = model("Users", userSchema);
@@ -82,14 +82,14 @@ exports.addProductByUserId = async (userId, productId) => userModel.findOneAndUp
 
 exports.changeCartItemCountByUserId = async (id, productId, count) => {
     const user = await userModel.findOne({ id });
-    user.cartProducts.find(cp => cp.productId === +productId).count = count;
+    user.cartProducts.find(cp => cp.productId === productId).count = count;
     user.markModified("cartProducts");
     return await user.save();
 }
 
 exports.addProductToCardByUserId = async (id, productId, count) => {
     const userCartProducts = (await this.getUserById(id)).cartProducts;
-    const cp = userCartProducts.find(cp => cp.productId === +productId);
+    const cp = userCartProducts.find(cp => cp.productId === productId);
     if (cp) {
         this.changeCartItemCountByUserId(id, productId, cp.count + count);
     } else {

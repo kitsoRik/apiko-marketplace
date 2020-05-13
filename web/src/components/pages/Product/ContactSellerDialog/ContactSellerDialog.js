@@ -53,7 +53,6 @@ const ContactSellerDialog = ({ productId, productTitle, fullName, location, icon
 
         history.push(`/chats/${chat.data.createChat.id}`);
     }
-
     const onClosed = () => {
         history.push(`/products/${productId}`)
     }

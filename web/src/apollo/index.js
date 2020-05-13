@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache } from "apollo-boost";
+import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { HOST } from "../services/api/api";
 import { createUploadLink } from "apollo-upload-client";
 
@@ -10,7 +10,9 @@ const client = new ApolloClient({
         credentials: 'include'
     }),
     cache: new InMemoryCache({
-        dataIdFromObject: o => o.id
+        dataIdFromObject: o => {
+            return o.id;
+        }
     }),
     credentials: 'include'
 });

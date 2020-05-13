@@ -34,6 +34,11 @@ const MobileHeader = () => {
             <button className="mobile-header-burger" onClick={() => setVisibleMenu(!visibleMenu)}>
                 <BurgerIcon />
             </button>
+            {minorPanel &&
+                <div className="desktop-header-minor-panel">
+                    <HeaderSearchPanel />
+                </div>
+            }
 
             {visibleMenu && <MobileHeaderMenu onClose={() => setVisibleMenu(false)} />}
         </header>

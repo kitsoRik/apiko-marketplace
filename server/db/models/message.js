@@ -1,12 +1,13 @@
 const { Schema, model } = require("mongoose");
+const uuid = require("uuid");
 
 const messageSchema = new Schema({
     id: {
-        type: Number,
-        default: 0
+        type: String,
+        default: ""
     },
     writterId: {
-        type: Number,
+        type: String,
         required: true
     },
     text: {
@@ -18,15 +19,13 @@ const messageSchema = new Schema({
     }
 });
 
-messageSchema.pre("save", async function (n) {
-    if (this.id !== 0) return;
+messageSchema.pre("save", async function (next) {
+    if (this.id !== "") return;
 
-    const obj = await messageModel.find().sort({ field: 'desc', id: -1 }).limit(1);
-    this.id = obj[0] ? obj[0].id + 1 : 0;
+    this.id = uuid.v4();
     this.createdAt = new Date();
-    n();
+    next();
 });
-
 const messageModel = model("Messages", messageSchema);
 
 exports.createMessage = (writterId, text) => messageModel.create({ writterId, text });

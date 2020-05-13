@@ -49,20 +49,13 @@ query getChat($id: ID!){
         fullName
         iconName
       }
-      messages {
-        id
-        text
-        writter {
-          id
-        }
-      }
     }
   }
 
 `;
 
 export const CHAT_MESSAGES_QUERY = gql`
-query chatMessages($id: ID!, $page: Int, $limit: Int){
+query chatMessages($id: ID!, $page: Int = 1, $limit: Int = 10){
     chat(id: $id) {
         id
       messages(page: $page, limit: $limit) {
@@ -98,7 +91,7 @@ export const CHATS_LIST_QUERY = gql`
         price
         imageName
       }
-      messages {
+      messages(page: 1, limit: 1) {
           id
           text
           createdAt

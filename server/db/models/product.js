@@ -1,15 +1,15 @@
 const { Schema, model } = require("mongoose");
+const uuid = require("uuid");
 
 
 
 const productSchema = new Schema({
     id: {
-        type: Number,
-        default: 0
+        type: String,
+        default: ""
     },
     ownerId: {
-        type: Number,
-        default: 1,
+        type: String,
         required: true
     },
     title: {
@@ -49,10 +49,9 @@ const productSchema = new Schema({
 });
 
 productSchema.pre("save", async function (next) {
-    if (this.id !== 0) return next();
+    if (this.id !== "") return;
 
-    const obj = await productModel.find().sort({ field: 'desc', id: -1 }).limit(1);
-    this.id = obj[0] ? obj[0].id + 1 : 0;
+    this.id = uuid.v4();
     this.createdAt = new Date();
     next();
 });
@@ -62,7 +61,7 @@ const productModel = model("Products", productSchema);
 exports.createProduct = (ownerId, title, description, price, category, locationId, imageName, photosNames) =>
     productModel.create({ ownerId, title, description, price, category, locationId, imageName, photosNames });
 
-exports.getProductById = (id) => productModel.findOne({ id: +id });
+exports.getProductById = (id) => productModel.findOne({ id });
 exports.getProductsByIds = (ids) => productModel.find({ id: { $in: ids } });
 
 exports.getAllProducts = (titlePattern, category, locationId, priceFrom, priceTo) => productModel.find({

@@ -1,17 +1,18 @@
 const { Schema, model } = require("mongoose");
 const crypto = require("crypto");
+const uuid = require("uuid");
 
 const sessionSchema = new Schema({
     userId: {
-        type: Number,
-        default: 0
+        type: String,
+        required: true
     },
     sesid: {
         type: String,
     }
 });
 
-sessionSchema.pre("save", function(next) {
+sessionSchema.pre("save", function (next) {
     const sesid = crypto.randomBytes(256);
     this.sesid = sesid;
     next();

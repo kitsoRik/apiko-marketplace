@@ -5,6 +5,19 @@
     grid-template-rows: 50px;
     grid-column-gap: 7px;
 
+    @media screen and (max-width: 650px) {
+        height: auto;
+        grid-template-columns: auto 175px;
+        grid-template-rows: 50px 50px;
+        grid-row-gap: 10px;
+    }
+
+    &-title-field {
+        @media screen and (max-width: 650px) {
+            grid-column: 1 / span 2;
+        }
+    }
+
     &-text-field-autocomplete {
         &-products {
             height: 47px;

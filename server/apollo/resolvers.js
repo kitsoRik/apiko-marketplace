@@ -98,7 +98,7 @@ module.exports = {
             return await getUserById(sellerId);
         },
         messages: async ({ messagesIds }, { page = 1, limit = 20 }) => {
-            return await getMessagesByIds(messagesIds).skip((page - 1) * limit).limit(limit);
+            return await getMessagesByIds(messagesIds).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
         },
         messagesCount: async ({ messagesIds }) => {
             return await getMessagesByIds(messagesIds).countDocuments();
@@ -112,7 +112,7 @@ module.exports = {
     },
 
     Query: {
-        products: async (source, { title = "", category = "any", locationId = "-1", priceFrom = -1, priceTo = -1, page = 1, limit = 12 }) => {
+        products: async (source, { title = "", category = "any", locationId = "", priceFrom = -1, priceTo = -1, page = 1, limit = 12 }) => {
             return await getAllProducts(title, category, locationId, priceFrom, priceTo).skip((page - 1) * limit).limit(limit);
         },
 
@@ -120,7 +120,7 @@ module.exports = {
             return await getProductById(id);
         },
 
-        productsCount: async (source, { title = "", category = "any", locationId = "1", priceFrom = -1, priceTo = -1, page = 1, limit = 12 }) => {
+        productsCount: async (source, { title = "", category = "any", locationId = "", priceFrom = -1, priceTo = -1, page = 1, limit = 12 }) => {
             return await getAllProducts(title, category, locationId, priceFrom, priceTo).countDocuments()
         },
 
@@ -229,13 +229,13 @@ module.exports = {
 
         changeSavedStateOfProduct: async (source, { id, state }, { user }) => {
             if (!user) throw "WHAT";
-            if (state && user.savedProducts.indexOf(+id) !== -1) return state;
+            if (state && user.savedProducts.indexOf(id) !== -1) return state;
 
-            if (!state && user.savedProducts.indexOf(+id) === -1) return state;
+            if (!state && user.savedProducts.indexOf(id) === -1) return state;
 
 
-            if (state) user.savedProducts.push(+id);
-            else user.savedProducts = user.savedProducts.filter(p => p !== +id);
+            if (state) user.savedProducts.push(id);
+            else user.savedProducts = user.savedProducts.filter(p => p !== id);
             user.save();
 
             return state;

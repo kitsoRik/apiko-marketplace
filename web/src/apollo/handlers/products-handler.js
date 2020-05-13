@@ -2,6 +2,8 @@ import { SAVED_PRODUCTS_QUERY } from "../queries/products-queries";
 import client from "..";
 import gql from "graphql-tag";
 
+
+
 export const changeProductStateHandler = (product, saved) => {
     try {
         const query = client.readQuery({ query: SAVED_PRODUCTS_QUERY });
@@ -16,7 +18,6 @@ export const changeProductStateHandler = (product, saved) => {
         });
 
     } catch (e) {
-
     }
 
     client.writeFragment({

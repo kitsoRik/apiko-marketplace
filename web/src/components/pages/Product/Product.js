@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import "./Product.scss";
 import Form from '../../layouts/Form';
 import Button from '../../layouts/Button';
 import ModalLoading from '../../layouts/ModalLoading/ModalLoading';
-import LocationIcon from '../../icons/LocationIcon';
 import HeartIcon from '../../icons/HeartIcon';
 import UserIcon from '../../icons/UserIcon';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { PRODUCT_QUERY } from '../../../apollo/queries/products-queries';
-import api from '../../../services/api';
 import { notifyWarning } from '../../other/Snackbar/Snackbar';
 import { CHANGE_SAVED_STATE_MUTATION } from '../../../apollo/mutation/products-mutation';
 import { changeProductStateHandler } from '../../../apollo/handlers/products-handler';
@@ -18,13 +16,15 @@ import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
 import ProductIcon from '../../icons/ProductIcon';
 import ProductLocation from './ProductLocation/ProductLocation';
 import BuyDialog from './BuyDialog/BuyDialog';
+import FeedbacksContainer from './FeedbacksContainer/FeedbacksContainer';
 
 const Product = ({ match, history }) => {
     const { id } = match.params;
 
     const [buyDialogVisible, setBuyDialogVisible] = useState(false);
+    const [newFeedbacksListIds, setNewFeedbacksListIds] = useState([]);
 
-    const { data, loading, error } = useQuery(PRODUCT_QUERY, {
+    const { data, loading, error, subscribeToMore, } = useQuery(PRODUCT_QUERY, {
         variables: { id }
     });
 
@@ -79,6 +79,7 @@ const Product = ({ match, history }) => {
                         {data?.product?.photosNames.map(p => <ProductIcon key={p} imageName={p} />)}
                     </Form>
                 }
+                <FeedbacksContainer productId={id} />
             </div>
             <div className="product-page-user">
                 <Form className="product-page-user-form">

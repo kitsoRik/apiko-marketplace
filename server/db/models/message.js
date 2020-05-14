@@ -15,7 +15,8 @@ const messageSchema = new Schema({
         required: true
     },
     createdAt: {
-        type: String,
+        type: Number,
+        default: 0
     }
 });
 
@@ -23,7 +24,7 @@ messageSchema.pre("save", async function (next) {
     if (this.id !== "") return;
 
     this.id = uuid.v4();
-    this.createdAt = new Date();
+    this.createdAt = new Date().getTime();
     next();
 });
 const messageModel = model("Messages", messageSchema);

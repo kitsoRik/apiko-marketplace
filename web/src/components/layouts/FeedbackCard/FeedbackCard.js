@@ -6,9 +6,9 @@ import StarIcon from '../../icons/StarIcon/StarIcon';
 
 import _ from "lodash";
 
-const FeedbackCard = ({ id, rate, text }) => {
+const FeedbackCard = ({ id, rate, text, isNew = false }) => {
     return (
-        <div className="feedback-card">
+        <div className="feedback-card" isnew={isNew ? "" : null}>
             <UserIcon className="feedback-card-user-icon" fullName="R o" />
             <div className="feedback-card-rate">
                 {

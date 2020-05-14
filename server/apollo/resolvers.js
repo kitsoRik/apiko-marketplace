@@ -8,10 +8,50 @@ const { createUnverifyedLink } = require("../db/models/unverifyed");
 const { customError } = require("../helpers/errors");
 const { getMessagesByIds, createMessage } = require("../db/models/message");
 const { getChatsByUserId, createChat, getChatById, addMessageIdToChatById } = require("../db/models/chat");
-const { AuthenticationError } = require("apollo-server");
+const { AuthenticationError, withFilter, PubSub } = require("apollo-server-express");
 const { callNewMessage } = require("../socketio");
+const { createFeedback, getFeedbacksByProductId, getFeedbacksByProductIds, getPositiveFeedbacksByProductIds } = require("../db/models/feedback");
+const { createPurchase, getPurchasesBySellerId, getPurchasesByShopperId } = require("../db/models/purchase");
+const pubsub = new PubSub();
 
 module.exports = {
+
+    Subscription: {
+
+        messageSent: {
+            subscribe: withFilter(
+                () => pubsub.asyncIterator("MESSAGE_SENT"),
+                (payload, variables, context) => {
+                    return payload.chatId === variables.chatId;
+                }
+            ),
+            resolve: ({ chatId, message }) => {
+                return message;
+            }
+        },
+        chatCreated: {
+            subscribe: withFilter(
+                () => pubsub.asyncIterator("CHAT_CREATED"),
+                (payload, variables, context) => {
+                    return payload.id === variables.chatId;
+                }
+            ),
+            resolve: ({ chat }) => {
+                return chat;
+            }
+        },
+        feedbackAdded: {
+            subscribe: withFilter(
+                () => pubsub.asyncIterator("FEEDBACK_ADDED"),
+                (payload, variables, context) => {
+                    return payload.feedback.productId === variables.productId;
+                }
+            ),
+            resolve: ({ feedback }) => {
+                return feedback;
+            }
+        }
+    },
 
     User: {
 
@@ -28,12 +68,16 @@ module.exports = {
             return (await getProductsIdsByUserId(id)).length;
         },
 
-        feedbacks: () => {
-            return [];
+        feedbacks: async ({ productsIds }, { page, limit }) => {
+            return await getFeedbacksByProductIds(productsIds).skip((page - 1) * limit).limit(limit);
         },
 
-        feedbacksCount: () => {
-            return 0;
+        feedbacksCount: async ({ productsIds }) => {
+            return await getFeedbacksByProductIds(productsIds).countDocuments();
+        },
+
+        positiveFeedbacksCount: async ({ productsIds }) => {
+            return await getPositiveFeedbacksByProductIds(productsIds).countDocuments();
         },
 
         sales: () => {
@@ -58,8 +102,11 @@ module.exports = {
             const userSavedProductsIds = await getSavedProductsIdsByUserId(user.id);
             return userSavedProductsIds.indexOf(id) !== -1;
         },
-        feedbacks: () => {
-            return [];
+        feedbacks: async ({ id }, { page, limit }) => {
+            return await getFeedbacksByProductId(id).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
+        },
+        feedbacksCount: async ({ id }, { page, limit }) => {
+            return await getFeedbacksByProductId(id).countDocuments();
         }
     },
 
@@ -70,8 +117,8 @@ module.exports = {
     },
 
     Feedback: {
-        user: () => {
-            return getUserById(0)
+        user: ({ userId }) => {
+            return getUserById(userId)
         },
         product: () => {
             return getProductById(6)
@@ -87,6 +134,18 @@ module.exports = {
         }
     },
 
+    Purchase: {
+        seller: async ({ sellerId }) => {
+            return await getUserById(sellerId);
+        },
+        shopper: async ({ shopperId }) => {
+            return await getUserById(shopperId);
+        },
+        product: async ({ productId }) => {
+            return await getProductById(productId);
+        }
+    },
+
     Chat: {
         product: async ({ productId }) => {
             return await getProductById(productId);
@@ -98,7 +157,7 @@ module.exports = {
             return await getUserById(sellerId);
         },
         messages: async ({ messagesIds }, { page = 1, limit = 20 }) => {
-            return await getMessagesByIds(messagesIds).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
+            return await getMessagesByIds(messagesIds).sort({ createdAt: 1 }).skip((page - 1) * limit).limit(limit);
         },
         messagesCount: async ({ messagesIds }) => {
             return await getMessagesByIds(messagesIds).countDocuments();
@@ -163,7 +222,32 @@ module.exports = {
             if (!user) return;
 
             return getChatById(id);
-        }
+        },
+
+
+        sellerPurchases: async (source, { page, limit }, { user }) => {
+            if (!user) throw new AuthenticationError();
+
+            return await getPurchasesBySellerId(user.id).skip((page - 1) * limit).limit(limit);
+        },
+        sellerPurchasesCount: async (source, args, { user }) => {
+            if (!user) throw new AuthenticationError();
+
+            return await getPurchasesBySellerId(user.id).countDocuments();
+        },
+
+
+        shopperPurchases: async (source, { page, limit }, { user }) => {
+            if (!user) throw new AuthenticationError();
+
+            return await getPurchasesByShopperId(user.id).skip((page - 1) * limit).limit(limit);
+        },
+        shopperPurchasesCount: async (source, args, { user }) => {
+            if (!user) throw new AuthenticationError();
+
+            return await getPurchasesByShopperId(user.id).countDocuments();
+        },
+
     },
 
     Mutation: {
@@ -260,6 +344,13 @@ module.exports = {
             return product;
         },
 
+        addFeedback: async (source, { productId, rate, text }, { user }) => {
+            if (!user) throw new AuthenticationError();
+            const feedback = await createFeedback(productId, user.id, rate, text);
+            pubsub.publish("FEEDBACK_ADDED", { feedback });
+            return feedback;
+        },
+
         changeCartItemCount: async (source, { productId, count }, { user }) => {
             if (!user) throw new AuthenticationError();
 
@@ -280,15 +371,7 @@ module.exports = {
             const message = await createMessage(user.id, initialMessage);
             const chat = await createChat(productId, user.id, seller.id, message.id);
 
-            callNewMessage(seller.id, `${chat.id}`, {
-                id: `${message.id}`,
-                createdAt: message.createdAt,
-                writter: {
-                    id: `${user.id}`
-                },
-                text: message.text,
-                __typename: "Message"
-            });
+            pubsub.publish("CHAT_CREATED", { chat });
 
             return chat;
         },
@@ -300,19 +383,22 @@ module.exports = {
             const message = await createMessage(user.id, text);
             const chat = await addMessageIdToChatById(chatId, message.id);
 
-            const receiverId = chat.sellerId === user.id ? chat.shopperId : chat.sellerId;
-
-            callNewMessage(receiverId, `${chat.id}`, {
-                id: `${message.id}`,
-                createdAt: message.createdAt,
-                writter: {
-                    id: `${user.id}`
-                },
-                text,
-                __typename: "Message"
-            });
+            pubsub.publish("MESSAGE_SENT", { chatId, message });
 
             return message;
+        },
+
+        purchase: async (source, { purchases }, { user }) => {
+            if (!user) throw new AuthenticationError();
+            if (purchases.length === 0) throw new Error("NULL");
+
+            for (let i = 0; i < purchases.length; i++) {
+                const item = purchases[i];
+                const seller = await getUserByProductId(item.productId)
+                await createPurchase(seller.id, user.id, item.productId);
+            }
+
+            return true;
         }
     }
 }

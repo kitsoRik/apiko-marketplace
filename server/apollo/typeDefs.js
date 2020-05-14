@@ -4,6 +4,17 @@ module.exports = gql`
 
 scalar Upload
 
+input SinglePurchaseInput {
+    productId: ID!
+    count: Int!
+}
+
+type Subscription {
+    messageSent(chatId: ID!): Message!
+    chatCreated: Chat!
+    feedbackAdded(productId: ID!): Feedback!
+}
+
 type User {
     id: ID!
     verifyed: Boolean!
@@ -13,11 +24,12 @@ type User {
     iconName: String
     location: Location
 
-    products(page: Int, limit: Int): [Product!]
+    products(page: Int!, limit: Int!): [Product!]
     productsCount: Int!
 
-    feedbacks(page: Int, limit: Int): [Feedback!]
+    feedbacks(page: Int!, limit: Int!): [Feedback!]
     feedbacksCount: Int!
+    positiveFeedbacksCount: Int!
 
     sales(page: Int, limit: Int): [Sale!]
     salesCount(page: Int, limit: Int): Int!
@@ -41,7 +53,8 @@ type User {
         location: Location!
 
         saved: Boolean!
-        feedbacks: [Feedback!]
+        feedbacks(page: Int!, limit: Int!): [Feedback!]
+        feedbacksCount: Int!
     }
     
     type CartProduct {
@@ -68,6 +81,14 @@ type User {
         product: Product!
     }
 
+    type Purchase {
+        id: ID!
+        seller: User!
+        shopper: User!
+        product: Product!
+        date: String!
+    }
+
     type Location {
         id: ID!
         name: String!
@@ -90,7 +111,7 @@ type User {
         id: ID!
         writter: User!
         text: String!
-        createdAt: String!
+        createdAt: Float!
     }
 
     type Query {
@@ -123,6 +144,13 @@ type User {
 
             chats(page: Int, limit: Int): [Chat!]
             chat(id: ID!): Chat
+
+
+            sellerPurchases(page: Int!, limit: Int!): [Purchase!]!
+            sellerPurchasesCount: Int!
+
+            shopperPurchases(page: Int!, limit: Int!): [Purchase!]!
+            shopperPurchasesCount: Int!
     }
 
     type Mutation {
@@ -138,7 +166,7 @@ type User {
 
 
         addProduct (title: String!, locationId: ID!, description: String!, price: Float!, category: String! photos: [Upload!]): Product
-
+        addFeedback (productId: ID!, rate: Float!, text: String!): Feedback!
 
         changeCartItemCount(productId: ID!, count: Int!): Int!
         addProductToCart(productId: ID!, count: Int!): Boolean
@@ -146,6 +174,8 @@ type User {
 
         createChat(productId: ID!, initialMessage: String!): Chat!
         sendMessage(chatId: ID!, text: String!): Message!
+
+        purchase(purchases: [SinglePurchaseInput!]!): Boolean
     }
 
 `

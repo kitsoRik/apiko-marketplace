@@ -13,10 +13,5 @@
     &-item-wrapper {
         display: flex;
         flex-direction: column;
-        transform: scaleX(-1) rotate(180deg);
-    }
-
-    & .ReactVirtualized__Grid.ReactVirtualized__List {
-        transform: rotate(180deg) scaleX(-1);
     }
 }

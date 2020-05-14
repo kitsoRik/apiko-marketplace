@@ -4,10 +4,10 @@ import "./PaymentMethods.scss";
 import PaymentCard from './PaymentCard/PaymentCard';
 import VisaIcon from '../../../icons/VisaIcon';
 
-const PaymentMethods = () => {
+const PaymentMethods = () => { // NOT REALIZED
 
     const [selectedMethodIndex, setSelectedMethodIndex] = useState(-1);
-
+    return null;
     return (
         <div className="purchase-page-payment-methods">
             <PaymentCard

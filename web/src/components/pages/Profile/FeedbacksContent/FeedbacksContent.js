@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import "./FeedbacksContent.scss";
 import Pagination from '../../../layouts/Pagination/Pagination';
@@ -9,7 +9,14 @@ import { useQuery } from '@apollo/react-hooks';
 
 const FeedbacksContent = () => {
 
-    const { data, loading } = useQuery(USER_CONTENT_QUERY);
+    const [page, setPage] = useState(1);
+
+    const { data, loading } = useQuery(USER_CONTENT_QUERY, {
+        variables: {
+            page,
+            limit: 10
+        }
+    });
 
     return (
         <div className="feedbacks-content">
@@ -25,18 +32,25 @@ const FeedbacksContent = () => {
                 </div>
             }
 
-            <Pagination pages={10} page={1} />
+            <Pagination pages={Math.ceil(data?.currentUser?.feedbacksCount / 10)} page={page} onChangePage={setPage} />
         </div>
     )
 };
 
 export default FeedbacksContent;
 
-const USER_CONTENT_QUERY = gql`query currentUser($page: Int, $limit: Int) {
+const USER_CONTENT_QUERY = gql`query currentUser($page: Int!, $limit: Int!) {
     currentUser{
-      feedbacks(page: $page, limit: $limit) {
         id
-        text
+      feedbacks(page: $page, limit: $limit) {
+            id
+            user {
+                id
+                fullName
+                iconName
+            }
+            rate
+            text
       },
       feedbacksCount
     }

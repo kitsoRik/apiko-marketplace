@@ -7,6 +7,8 @@ import ChatMessagesItem from './ChatMessagesItem/ChatMessagesItem';
 import { CURRENT_USER_QUERY } from '../../../../../apollo/queries/user-queries';
 import ModalLoading from '../../../../layouts/ModalLoading/ModalLoading';
 import { List, AutoSizer, CellMeasurer, CellMeasurerCache, InfiniteLoader } from 'react-virtualized';
+import gql from 'graphql-tag';
+import { MESSAGE_SENT_SUBSCRIPTION } from '../../../../../apollo/subscriptions/chats-subscriptions';
 
 const ChatMessages = ({ chatId, isChatLoading }) => {
 
@@ -23,14 +25,32 @@ const ChatMessages = ({ chatId, isChatLoading }) => {
         setLastChatId(chatId);
     }, [chatId]);
 
-    const { data, error, loading } = useQuery(CHAT_MESSAGES_QUERY, {
+    const { data, error, loading, subscribeToMore } = useQuery(CHAT_MESSAGES_QUERY, {
         variables: {
             id: chatId,
             page,
             limit: 30
         },
-        skip: isChatLoading || chatId != lastChatId
+        skip: isChatLoading || chatId != lastChatId,
     });
+
+    useEffect(() => {
+        subscribeToMore({
+            document: MESSAGE_SENT_SUBSCRIPTION,
+            variables: { chatId, page: 1, limit: 30 },
+            updateQuery: (prev, { subscriptionData: { data: { messageSent } } }) => {
+                return {
+                    chat: {
+                        ...prev.chat,
+                        messages: [
+                            ...prev.chat.messages,
+                            messageSent,
+                        ]
+                    }
+                }
+            }
+        })
+    }, [chatId]);
 
     const client = useApolloClient();
     const user = useQuery(CURRENT_USER_QUERY);
@@ -76,7 +96,7 @@ const ChatMessages = ({ chatId, isChatLoading }) => {
                                     rowHeight={cache.rowHeight}
                                     rowCount={messages.length}
                                     overscanRowCount={3}
-                                    style={{ paddingBottom: '45px' }}
+                                    style={{ paddingTop: '45px' }}
                                     rowRenderer={renderMessage(messages, cache, user)} />
                         }
                     </AutoSizer>

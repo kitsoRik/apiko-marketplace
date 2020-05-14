@@ -7,7 +7,11 @@
 
     grid-column-gap: 5px;
 
-    border: 1px solid #349A89;
+    border: 1px solid #349a89;
+
+    &[isnew] {
+        animation: new-feedback-appearance 0.3s ease-in;
+    }
 
     &-user-icon {
         grid-row: 1 / span 2;
@@ -21,4 +25,17 @@
         }
     }
 
+    &-text {
+        word-break: break-all;
+    }
+}
+
+@keyframes new-feedback-appearance {
+    from {
+        background-color: yellow;
+    }
+
+    to {
+        background-color: transparent;
+    }
 }

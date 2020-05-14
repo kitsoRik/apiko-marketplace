@@ -16,6 +16,7 @@ import Product from './components/pages/Product/Product';
 import Chats from './components/pages/Chats/Chats';
 import Cart from './components/pages/Cart/Cart';
 import Purchase from './components/pages/Purchase/Purchase';
+import Purchases from './components/pages/Purchases/Purchases';
 
 const Routes = () => {
     return (
@@ -39,6 +40,7 @@ const Routes = () => {
 
             <Route exact path="/cart" component={Cart} />
             <Route exact path="/purchase" component={Purchase} />
+            <Route exact path="/purchases" component={Purchases} />
 
         </Switch>
     )

@@ -24,31 +24,7 @@ const ChatInputMessage = ({ chatId, loading }) => {
             variables: { chatId, text }
         });
 
-        setText("");
-
-        const data = client.readQuery({
-            query: CHAT_MESSAGES_QUERY,
-            variables: {
-                id: chatId,
-                page: 1,
-                limit: 30
-            }
-        });
-        client.writeQuery({
-            query: CHAT_MESSAGES_QUERY,
-            variables: { id: chatId, page: 1, limit: 30 },
-            data: {
-                ...data,
-                chat: {
-                    ...data.chat,
-                    messages: [
-                        { ...result.data.sendMessage },
-                        ...data.chat.messages,
-                    ]
-                }
-            }
-        });
-
+        setText(""); 
         const { chats } = client.readQuery({
             query: CHATS_LIST_QUERY,
         });

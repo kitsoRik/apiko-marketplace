@@ -31,7 +31,7 @@ export default ChatMessagesItem;
 
 const parseTime = (str) => {
 
-    const time = new Date(str);
+    const time = new Date(+str);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 

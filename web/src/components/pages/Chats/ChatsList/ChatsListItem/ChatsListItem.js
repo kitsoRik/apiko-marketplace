@@ -1,14 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import "./ChatsListItem.scss";
 import api from '../../../../../services/api';
 import ProductIcon from '../../../../icons/ProductIcon';
 import withScreenSize from '../../../../hocs/withScreenSize/withScreenSize';
+import { useSubscription, useQuery, useApolloClient } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import { CHATS_LIST_QUERY } from '../../../../../apollo/queries/chat-queries';
+import { MESSAGE_SENT_SUBSCRIPTION } from '../../../../../apollo/subscriptions/chats-subscriptions';
+import { addMessageToChat } from '../../../../../apollo/handlers/chats-handler';
 
-const ChatsListItem = ({ screenSize, fullName, lastMessage, product, selected, onSelect }) => {
+const ChatsListItem = ({ chatId, screenSize, fullName, lastMessage, product, selected, onSelect }) => {
     const lastMessageTime = parseLastMessageTime(lastMessage.createdAt);
 
     const isMinItem = screenSize.width > 1024;
+
+    const { data, loading, subscribeToMore } = useQuery(CHATS_LIST_QUERY);
+
+    const { } = useSubscription(MESSAGE_SENT_SUBSCRIPTION, {
+        variables: { chatId },
+        onSubscriptionComplete: (a, b, c) => {
+            console.log(a, b, c);
+        },
+        onSubscriptionData: ({ subscriptionData: { data } }) => {
+            console.log(data);
+        }
+    })
+    useEffect(() => {
+        // subscribeToMore({
+        //     document: MESSAGE_SENT_SUBSCRIPTION,
+        //     variables: { chatId },
+        //     updateQuery: (prev, { subscriptionData: { data: { messageSent } } }) => {
+        //         addMessageToChat(chatId, messageSent);
+        //     }
+        // })
+    }, []);
 
     return (
         <div className={`chats-list-item ${selected ? "chats-list-item-selected" : ""}`}

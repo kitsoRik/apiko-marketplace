@@ -72,3 +72,22 @@ export const PRODUCT_QUERY = gql`
         }
     }
 `;
+
+export const PRODUCT_FEEDBACKS_QUERY = gql`
+query getProductFeedbacks($productId: ID!, $page: Int!, $limit: Int!){
+    product(id: $productId) {
+        id
+        feedbacks(page: $page, limit: $limit) {
+            id
+            user {
+                id
+                fullName
+                iconName
+            }
+            rate
+            text
+        }
+        feedbacksCount
+    }
+}
+`;

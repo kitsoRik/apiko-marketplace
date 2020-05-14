@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-export const HOST = "http://5.45.118.116:3500";
+export const HOST = "http://localhost:3500";
 
 const axios = Axios.create({
     baseURL: `${HOST}/api`,

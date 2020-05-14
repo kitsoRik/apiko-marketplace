@@ -19,7 +19,7 @@ const Tabs = ({ tabIndex, setTabIndex }) => {
     }, [data]);
 
     const tabsInfo = [
-        { main: feedbacksCount + "%", minor: "Positive feedbacks", loading },
+        { main: Math.floor(data?.currentUser?.positiveFeedbacksCount / data?.currentUser?.feedbacksCount * 100) + "%", minor: "Positive feedbacks", loading },
         { main: salesCount, minor: "sales", loading, },
         { main: productsCount, minor: "Active listings", loading }
     ]
@@ -49,6 +49,7 @@ const USER_PRODUCTS_COUNT_QUERY = gql`
             productsCount
             salesCount
             feedbacksCount
+            positiveFeedbacksCount
         }
     }
 `;

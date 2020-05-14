@@ -41,7 +41,7 @@ export default (ProductsContent);
 
 
 const USER_PRODUCTS_CONTENT = gql`
-query currentUser($page: Int, $limit: Int) {
+query currentUser($page: Int!, $limit: Int!) {
     currentUser {
         id
      products(page: $page, limit: $limit) {

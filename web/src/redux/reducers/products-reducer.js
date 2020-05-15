@@ -8,7 +8,7 @@ const initState = {
         priceFrom: -1,
         priceTo: -1,
         page: 1,
-        limit: 12
+        limit: 12   
     },
     reactionSearchQuery: {
         title: "",

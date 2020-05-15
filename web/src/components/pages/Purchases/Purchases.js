@@ -1,18 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import "./Purchases.scss";
 import ShopperPurchases from './ShopperPurchases';
 import QueryString from 'qs';
 import SellerPurchases from './SellerPurchases/';
+import Tabs from '../../layouts/Tabs';
+import Tab from '../../layouts/Tabs/Tab/Tab';
+import withLoginedLock from '../../hocs/withLoginedLock/withLoginedLock';
+import { useHistory } from 'react-router-dom';
+import { compose } from 'redux';
+import withQuery from '../../hocs/withQuery/withQuery';
+import useLocationQuery from '../../hooks/useLocationQuery/useLocationQuery';
+import { useSubscription } from '@apollo/react-hooks';
+import { PURCHASE_STATUS_CHANGED } from '../../../apollo/subscriptions/purchases-subscriptions';
 
-const Purchases = ({ location: { search } }) => {
-    const { side } = QueryString.parse(search?.substring(1))
+const parseSideTabIndex = (side) => {
+    switch (side) {
+        case "shopper": return 0;
+        case "seller": return 1;
+        default: return -1;
+    }
+}
+
+const parseTabIndexToSide = (tabIndex) => {
+    switch (tabIndex) {
+        case 0: return "shopper";
+        case 1: return "seller";
+        default: return undefined;
+    }
+}
+
+const Purchases = () => {
+    const { query: { side }, setQuery } = useLocationQuery();
+    useSubscription(PURCHASE_STATUS_CHANGED)
+
+    const onChangeTabIndex = (index) => {
+        setQuery({ side: parseTabIndexToSide(index) });
+    }
+
     return (
         <div className="purchases-page">
-            {side === 'shopper' && <ShopperPurchases />}
-            {side === 'seller' && <SellerPurchases />}
+            <div className="purchases-page-tabs">
+                <Tabs tabIndex={parseSideTabIndex(side)} onChangeTabIndex={onChangeTabIndex}>
+                    <Tab />
+                    <Tab />
+                </Tabs>
+            </div>
+            <div className="purchases-page-content">
+                {side === 'shopper' && <ShopperPurchases />}
+                {side === 'seller' && <SellerPurchases />}
+            </div>
         </div>
     )
 };
 
-export default Purchases;
+export default withLoginedLock(true)(Purchases);

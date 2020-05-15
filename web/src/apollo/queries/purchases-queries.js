@@ -15,9 +15,13 @@ query shopperPurchases($page: Int!, $limit: Int!){
       product {
         id
         title
+        price
         imageName
       }
-      date 
+      statuses {
+        status
+        date
+      }
     },
     shopperPurchasesCount
   }
@@ -39,9 +43,41 @@ query sellerPurchases($page: Int!, $limit: Int!){
         id
         title
         imageName
+        price
       }
-      date 
+      statuses {
+        status
+        date
+      }
     },
     sellerPurchasesCount
+  }
+`;
+
+export const PURCHASE_ITEM_QUERY = gql`
+  query purchase($id: ID!) {
+    purchase(id: $id) {
+      id
+      seller {
+        id
+        fullName
+        iconName
+      }
+      shopper {
+        id
+        fullName
+        iconName
+      }
+      product {
+        id
+        title
+        imageName
+        price
+      }
+      statuses {
+        status
+        date
+      }
+    }
   }
 `;

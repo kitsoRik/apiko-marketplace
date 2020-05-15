@@ -11,7 +11,7 @@ const { getChatsByUserId, createChat, getChatById, addMessageIdToChatById } = re
 const { AuthenticationError, withFilter, PubSub } = require("apollo-server-express");
 const { callNewMessage } = require("../socketio");
 const { createFeedback, getFeedbacksByProductId, getFeedbacksByProductIds, getPositiveFeedbacksByProductIds } = require("../db/models/feedback");
-const { createPurchase, getPurchasesBySellerId, getPurchasesByShopperId } = require("../db/models/purchase");
+const { createPurchase, getPurchasesBySellerId, getPurchasesByShopperId, changePurchaseStatus, getPurchaseById } = require("../db/models/purchase");
 const pubsub = new PubSub();
 
 module.exports = {
@@ -49,6 +49,32 @@ module.exports = {
             ),
             resolve: ({ feedback }) => {
                 return feedback;
+            }
+        },
+
+        purchaseStatusChanged: {
+            subscribe: withFilter(
+                () => pubsub.asyncIterator("PURCHASE_STATUS_CHANGED"),
+                (payload, variables, context) => {
+                    console.log(context);
+                    return true;
+                }
+            ),
+            resolve: ({ purchase }) => {
+                return purchase
+            }
+        },
+
+        purchaseCreated: {
+            subscribe: withFilter(
+                () => pubsub.asyncIterator("PURCHASE_CREATED"),
+                (payload, variables, context) => {
+                    console.log(context);
+                    return true;
+                }
+            ),
+            resolve: ({ purchase }) => {
+                return purchase;
             }
         }
     },
@@ -228,7 +254,7 @@ module.exports = {
         sellerPurchases: async (source, { page, limit }, { user }) => {
             if (!user) throw new AuthenticationError();
 
-            return await getPurchasesBySellerId(user.id).skip((page - 1) * limit).limit(limit);
+            return await getPurchasesBySellerId(user.id).sort({ index: -1 }).skip((page - 1) * limit).limit(limit);
         },
         sellerPurchasesCount: async (source, args, { user }) => {
             if (!user) throw new AuthenticationError();
@@ -240,14 +266,16 @@ module.exports = {
         shopperPurchases: async (source, { page, limit }, { user }) => {
             if (!user) throw new AuthenticationError();
 
-            return await getPurchasesByShopperId(user.id).skip((page - 1) * limit).limit(limit);
+            return await getPurchasesByShopperId(user.id).sort({ index: -1 }).skip((page - 1) * limit).limit(limit);
         },
         shopperPurchasesCount: async (source, args, { user }) => {
             if (!user) throw new AuthenticationError();
 
             return await getPurchasesByShopperId(user.id).countDocuments();
         },
-
+        purchase: async (source, { id }) => {
+            return await getPurchaseById(id);
+        }
     },
 
     Mutation: {
@@ -395,10 +423,17 @@ module.exports = {
             for (let i = 0; i < purchases.length; i++) {
                 const item = purchases[i];
                 const seller = await getUserByProductId(item.productId)
-                await createPurchase(seller.id, user.id, item.productId);
+                const purchase = await createPurchase(seller.id, user.id, item.productId);
+                pubsub.publish("PURCHASE_CREATED", { purchase });
             }
 
             return true;
+        },
+
+        changePurchaseStatus: async (source, { purchaseId, status }) => {
+            const purchase = await changePurchaseStatus(purchaseId, status);
+            pubsub.publish("PURCHASE_STATUS_CHANGED", { purchase })
+            return purchase;
         }
     }
 }

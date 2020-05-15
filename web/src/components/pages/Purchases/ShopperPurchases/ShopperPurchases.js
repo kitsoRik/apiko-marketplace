@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import "./ShopperPurchases.scss";
 import { useQuery } from '@apollo/react-hooks';
 import { SHOPPER_PURCHASES_QUERY } from '../../../../apollo/queries/purchases-queries';
 import ShopperPurchasesItem from './ShopperPurchasesItem/ShopperPurchasesItem';
 import Pagination from '../../../layouts/Pagination/Pagination';
+import { PURCHASE_CREATED } from '../../../../apollo/subscriptions/purchases-subscriptions';
 
 const SHOPPER_PURACHSES_LIMIT_PAGE = 10;
 
 const ShopperPurchases = () => {
 
     const [page, setPage] = useState(1);
-    const { data, loading } = useQuery(SHOPPER_PURCHASES_QUERY, {
+    const { data, loading, subscribeToMore } = useQuery(SHOPPER_PURCHASES_QUERY, {
         variables: {
             page, limit: SHOPPER_PURACHSES_LIMIT_PAGE
-        }
+        },
     });
 
     return (

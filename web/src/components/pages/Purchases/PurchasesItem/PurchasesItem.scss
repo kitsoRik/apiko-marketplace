@@ -1,0 +1,20 @@
+.purchases-item-page {
+    &-product {
+        height: 100px;
+
+        &-image {
+            height: 100%;
+            overflow: hidden;
+        }
+    }
+
+    &-statuses {
+        display: flex;
+        flex-direction: column;
+
+        &-item {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+}

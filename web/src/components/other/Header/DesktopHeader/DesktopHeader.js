@@ -13,6 +13,8 @@ import { useQuery } from '@apollo/react-hooks';
 import { CURRENT_USER_QUERY } from '../../../../apollo/queries/user-queries';
 import PostboxIcon from '../../../icons/PostboxIcon/PostboxIcon';
 import UserPanel from '../UserPanel/UserPanel';
+import CartIcon from '../../../icons/CartIcon/CartIcon';
+import PurchaseIcon from '../../../icons/PurchaseIcon/PurchaseIcon';
 
 const DesktopHeader = () => {
     const history = useHistory();
@@ -33,7 +35,11 @@ const DesktopHeader = () => {
                 <ApikoLogo darkMode={darkMode} className="header__apiko-logo" />
             </Link>
             <div></div>
-            {loginStatus === LOGINED ? <PostboxIcon onClick={() => history.push("/chats")} /> : <div></div>}
+            {loginStatus === LOGINED ? <div className="desktop-header-icons">
+                <PostboxIcon onClick={() => history.push("/chats")} />
+                <CartIcon onClick={() => history.push("/cart")} />
+                <PurchaseIcon onClick={() => history.push("/purchases")} />
+            </div> : <div></div>}
 
             <Button.Default
                 className="desktop-header-sell-button"

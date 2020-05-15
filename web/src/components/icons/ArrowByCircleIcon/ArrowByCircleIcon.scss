@@ -1,0 +1,11 @@
+.arrow-by-circle {
+    fill: black;
+
+    &:hover {
+        fill: #a00;
+    }
+
+    &:active {
+        fill: blue;
+    }
+}

@@ -1,6 +1,44 @@
 .shopper-purchases-item {
     height: 70px;
-    width: 500px;
+
+    display: grid;
+    grid-template-columns: auto min-content;
 
     border: 2px solid black;
+
+    &-product {
+        overflow: hidden;
+
+        display: grid;
+        grid-template-columns: 70px auto;
+        align-items: center;
+        &-image {
+        }
+
+        &-info {
+            padding: 5px;
+            height: 100%;
+
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            box-sizing: border-box;
+            font-weight: bold;
+
+            &-title {
+                font-size: 18px;
+            }
+
+            &-price {
+                font-size: 21px;
+                align-self: flex-end;
+            }
+        }
+    }
+
+    &-status {
+        padding: 10px;
+    }
 }

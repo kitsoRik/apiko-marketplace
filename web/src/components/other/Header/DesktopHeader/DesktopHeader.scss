@@ -6,13 +6,19 @@
     flex: 1;
 
     display: grid;
-    grid-template-columns: 120px auto 18px 131px 100px 20px;
+    grid-template-columns: 120px auto ((18px + 5) * 3) 131px 100px 20px;
     grid-column-gap: 15px;
     grid-row-gap: 22px;
     align-items: center;
 
     &__apiko-logo {
         cursor: pointer;
+    }
+
+    &-icons {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-column-gap: 5px;
     }
 
     & &-sell-button {

@@ -2,6 +2,13 @@ const { Schema, model } = require("mongoose");
 const uuid = require("uuid");
 
 const purchaseSchema = new Schema({
+    index: {
+        type: Number,
+        auto: true,
+        unique: true,
+        index: true,
+        default: 0
+    },
     id: {
         type: String,
         default: ""
@@ -18,16 +25,21 @@ const purchaseSchema = new Schema({
         type: String,
         required: true
     },
-    date: {
-        type: Date
+    statuses: {
+        type: [Object],
+        required: true
     }
 });
 
-purchaseSchema.pre("save", function (next) {
+purchaseSchema.pre("save", async function (next) {
     if (this.id !== "") return;
 
+    this.index = await purchaseModel.countDocuments();
     this.id = uuid.v4();
-    this.date = new Date();
+    this.statuses = [{
+        status: "OPENED",
+        date: new Date()
+    }];
     next();
 });
 
@@ -37,5 +49,15 @@ exports.createPurchase = (sellerId, shopperId, productId) => purchaseModel.creat
     shopperId, sellerId, productId
 });
 
+exports.changePurchaseStatus = (purchaseId, status) => purchaseModel.findOneAndUpdate({ id: purchaseId }, {
+    $push: {
+        statuses: {
+            status,
+            date: new Date()
+        }
+    }
+}, { new: true });
+
+exports.getPurchaseById = (id) => purchaseModel.findOne({ id });
 exports.getPurchasesBySellerId = (sellerId) => purchaseModel.find({ sellerId });
 exports.getPurchasesByShopperId = (shopperId) => purchaseModel.find({ shopperId });

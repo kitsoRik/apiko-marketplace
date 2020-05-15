@@ -8,6 +8,10 @@
     grid-column-gap: 5px;
     grid-row-gap: 10px;
 
+    &-load {
+        background-color: gray;
+    }
+
     & .product-card {
         height: 212px;
         width: 206.25px;

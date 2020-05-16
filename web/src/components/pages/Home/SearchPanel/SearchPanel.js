@@ -6,8 +6,20 @@ import ComboboxOption from '../../../layouts/Combobox/ComboboxOption/ComboboxOpt
 import TextField from '../../../layouts/TextField';
 import Form from '../../../layouts/Form';
 import CategoryIcon from '../../../icons/CategoryIcon/CategoryIcon';
+import SortIcon from '../../../icons/SortIcon/SortIcon';
 
-const SearchPanel = ({ category, setCategory, priceFrom, setPriceFrom, priceTo, setPriceTo }) => {
+const SearchPanel = ({
+    category,
+    setCategory,
+    priceFrom,
+    setPriceFrom,
+    priceTo,
+    setPriceTo,
+    sortField,
+    setSortField,
+    sortOrder,
+    setSortOrder
+}) => {
     return (
         <Form className="home-page-search-panel">
             <Combobox type="medium" value={category} onChange={setCategory} >
@@ -17,6 +29,15 @@ const SearchPanel = ({ category, setCategory, priceFrom, setPriceFrom, priceTo, 
             </Combobox>
             <TextField type="medium" placeholder="Price from (USD)" value={priceFrom} onValueChange={setPriceFrom} />
             <TextField type="medium" placeholder="Price to (USD)" value={priceTo} onValueChange={setPriceTo} />
+            <Combobox type="medium" value={sortField} onChange={setSortField}>
+                <ComboboxOption value="createdAt">Date</ComboboxOption>
+                <ComboboxOption value="title">Title</ComboboxOption>
+                <ComboboxOption value="rate">Rate</ComboboxOption>
+            </Combobox>
+            <SortIcon
+                style={{ transform: `scaleY(${sortOrder === "DESC" ? 1 : -1})` }}
+                onClick={() => setSortOrder(sortOrder === 'ASC' ? 'DESC' : 'ASC')}
+            />
         </Form>
     )
 };

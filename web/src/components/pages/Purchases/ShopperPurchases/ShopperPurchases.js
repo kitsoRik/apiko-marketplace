@@ -6,6 +6,7 @@ import { SHOPPER_PURCHASES_QUERY } from '../../../../apollo/queries/purchases-qu
 import ShopperPurchasesItem from './ShopperPurchasesItem/ShopperPurchasesItem';
 import Pagination from '../../../layouts/Pagination/Pagination';
 import { PURCHASE_CREATED } from '../../../../apollo/subscriptions/purchases-subscriptions';
+import FilterPanel from '../FilterPanel/FilterPanel';
 
 const SHOPPER_PURACHSES_LIMIT_PAGE = 10;
 
@@ -20,6 +21,7 @@ const ShopperPurchases = () => {
 
     return (
         <div className="purchases-page-shopper-purchases">
+            <FilterPanel />
             <div className="purchases-page-shopper-purchases-container">
                 {
                     data?.shopperPurchases?.map(p => <ShopperPurchasesItem {...p} />)

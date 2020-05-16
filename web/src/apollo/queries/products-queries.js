@@ -4,12 +4,23 @@ import { gql } from "apollo-boost";
 
 
 export const PRODUCTS_QUERY = gql`
-query ProductsQuery($title: String!, $locationId: ID, $category: String!, $priceFrom: Float!, $priceTo: Float!, $page: Int, $limit: Int) {
+query productsQuery(
+        $title: String!, 
+        $locationId: ID, 
+        $category: String!,
+        $sortField: String!,
+        $sortOrder: SortOrder!,
+        $priceFrom: Float!, 
+        $priceTo: Float!, 
+        $page: Int, 
+        $limit: Int) {
     products(
         title: $title, 
         location: "", 
         locationId: $locationId, 
         category: $category, 
+        sortField: $sortField,
+        sortOrder: $sortOrder,
         priceFrom: $priceFrom, 
         priceTo: $priceTo, 
         page: $page, 
@@ -28,8 +39,6 @@ productsCount(
     category: $category, 
     priceFrom: $priceFrom, 
     priceTo: $priceTo, 
-    page: $page, 
-    limit: $limit
 )
   }
 `;

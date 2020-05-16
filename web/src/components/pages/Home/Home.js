@@ -12,7 +12,18 @@ import { connect } from 'react-redux';
 import { changeProductsSearchQuery, searchProducts } from '../../../redux/actions/products-actions';
 import ProductsViewer from '../../other/ProductsViewer/ProductsViewer';
 
-const Home = ({ category, priceFrom, priceTo, page, limit, reactionSearchQuery, changeProductsSearchQuery, searchProducts }) => {
+const Home = ({
+    category,
+    priceFrom,
+    priceTo,
+    sortField,
+    sortOrder,
+    page,
+    limit,
+    reactionSearchQuery,
+    changeProductsSearchQuery,
+    searchProducts,
+}) => {
 
     const [joinedPages, setJoinsPages] = useState([page]);
 
@@ -51,16 +62,25 @@ const Home = ({ category, priceFrom, priceTo, page, limit, reactionSearchQuery, 
 
     }
 
+    const changeProductsSearchQueryWithSearch = (changes) => {
+        changeProductsSearchQuery(changes);
+        searchProducts();
+    }
+
     const pages = data ? Math.ceil(data.productsCount / limit) : 1;
     return (
         <div className="home-page">
             <SearchPanel {...{
                 category,
-                setCategory: category => changeProductsSearchQuery({ category }),
+                setCategory: category => changeProductsSearchQueryWithSearch({ category }),
                 priceFrom: priceFrom === -1 ? "" : priceFrom,
                 setPriceFrom: (priceFrom) => changeProductsSearchQuery({ priceFrom: priceFrom === "" ? -1 : +priceFrom }),
                 priceTo: priceTo === -1 ? "" : priceTo,
                 setPriceTo: (priceTo) => changeProductsSearchQuery({ priceTo: priceTo === "" ? -1 : +priceTo }),
+                sortField,
+                setSortField: sortField => changeProductsSearchQueryWithSearch({ sortField }),
+                sortOrder,
+                setSortOrder: sortOrder => changeProductsSearchQueryWithSearch({ sortOrder })
             }} />
             <ProductsViewer
                 products={products}
@@ -73,6 +93,6 @@ const Home = ({ category, priceFrom, priceTo, page, limit, reactionSearchQuery, 
 }
 
 export default connect(
-    (({ products: { searchQuery: { category, priceFrom, priceTo, page, limit }, reactionSearchQuery } }) => ({ category, priceFrom, priceTo, reactionSearchQuery, page, limit })),
-    { changeProductsSearchQuery, searchProducts }
+    (({ products: { searchQuery: { category, priceFrom, priceTo, page, limit, sortField, sortOrder }, reactionSearchQuery } }) => ({ category, priceFrom, priceTo, sortField, sortOrder, reactionSearchQuery, page, limit })),
+    { changeProductsSearchQuery, searchProducts, }
 )(Home);

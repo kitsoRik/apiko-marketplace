@@ -9,17 +9,20 @@ import QueryString from 'qs';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { CURRENT_USER_CART_QUERY } from '../../../apollo/queries/user-queries';
 import { PRODUCT_QUERY } from '../../../apollo/queries/products-queries';
-import { PURCHASE_MUTATION } from '../../../apollo/mutation/products-mutation';
+import { PURCHASE_MUTATION, PURCHASE_MUTATION_WITH_CLEAR_CARD } from '../../../apollo/mutation/products-mutation';
+import { useHistory } from 'react-router-dom';
 
 const Purchase = ({ match, location: { search } }, fromCart = true) => {
 
     const { cart, product, count } = QueryString.parse(search.substring(1));
 
+    const history = useHistory();
 
     const currentUserCart = useQuery(CURRENT_USER_CART_QUERY, { skip: !cart });
     const productQuery = useQuery(PRODUCT_QUERY, { variables: { id: product }, skip: !!cart });
 
     const [purchase] = useMutation(PURCHASE_MUTATION);
+    const [purchaseWithClearCart] = useMutation(PURCHASE_MUTATION_WITH_CLEAR_CARD);
 
     if (currentUserCart.loading || productQuery.loading) return <span>Loading...</span>
 
@@ -30,7 +33,7 @@ const Purchase = ({ match, location: { search } }, fromCart = true) => {
         let purchases = [];
 
         if (!!cart) {
-
+            purchases = cartProducts.map(c => ({ productId: c.product.id, count: +c.count }))
         } else {
             purchases = [{
                 productId: product,
@@ -38,13 +41,16 @@ const Purchase = ({ match, location: { search } }, fromCart = true) => {
             }];
         }
 
-        const { data } = await purchase({
+        const purch = cart ? purchaseWithClearCart : purchase;
+
+        const { data } = await purch({
             variables: {
                 purchases
             }
         });
 
-        console.log(data);
+        history.push("/purchases?side=shopper");
+
     }
 
     return (
@@ -55,7 +61,7 @@ const Purchase = ({ match, location: { search } }, fromCart = true) => {
                 <OrderList cartProducts={cartProducts} />
             </div>
             <div className="purchase-page-left">
-                <Checkout onPurchase={onPurchase} />
+                <Checkout totalSum={cartProducts.map(c => c.product.price * c.count).reduce((p, c) => p + c, 0)} onPurchase={onPurchase} />
             </div>
         </div>
     )

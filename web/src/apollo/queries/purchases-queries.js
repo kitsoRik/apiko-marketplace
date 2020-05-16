@@ -4,6 +4,7 @@ export const SHOPPER_PURCHASES_QUERY = gql`
 query shopperPurchases($page: Int!, $limit: Int!){
     shopperPurchases(page: $page, limit: $limit) {
       id
+      count
       seller {
         id
         fullName
@@ -28,9 +29,28 @@ query shopperPurchases($page: Int!, $limit: Int!){
 `;
 
 export const SELLER_PURCHASES_QUERY = gql`
-query sellerPurchases($page: Int!, $limit: Int!){
-    sellerPurchases(page: $page, limit: $limit) {
+query sellerPurchases(
+  $page: Int!, 
+  $limit: Int!, 
+  $viewOpened: Boolean!, 
+  $viewPosted: Boolean!,
+  $viewCanceled: Boolean!,
+  $viewClosed: Boolean!,
+  $sortField: String!,
+  $sortOrder: SortOrder!
+  ){
+    sellerPurchases(
+      page: $page, 
+      limit: $limit,
+      viewOpened: $viewOpened,
+      viewPosted: $viewPosted,
+      viewCanceled: $viewCanceled,
+      viewClosed: $viewClosed,
+      sortField: $sortField,
+      sortOrder: $sortOrder,
+      ) {
       id
+      count
       seller {
         id
         fullName

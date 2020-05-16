@@ -28,6 +28,16 @@ const purchaseSchema = new Schema({
     statuses: {
         type: [Object],
         required: true
+    },
+    count: {
+        type: Number,
+        required: true,
+        default: 1
+    },
+    price: {
+        type: Number,
+        required: true,
+        default: 1
     }
 });
 
@@ -45,8 +55,8 @@ purchaseSchema.pre("save", async function (next) {
 
 const purchaseModel = model("Purchases", purchaseSchema);
 
-exports.createPurchase = (sellerId, shopperId, productId) => purchaseModel.create({
-    shopperId, sellerId, productId
+exports.createPurchase = (sellerId, shopperId, productId, price, count) => purchaseModel.create({
+    shopperId, sellerId, productId, price, count
 });
 
 exports.changePurchaseStatus = (purchaseId, status) => purchaseModel.findOneAndUpdate({ id: purchaseId }, {
@@ -59,5 +69,7 @@ exports.changePurchaseStatus = (purchaseId, status) => purchaseModel.findOneAndU
 }, { new: true });
 
 exports.getPurchaseById = (id) => purchaseModel.findOne({ id });
-exports.getPurchasesBySellerId = (sellerId) => purchaseModel.find({ sellerId });
+exports.getPurchasesBySellerId = (sellerId, viewOpened, viewPosted, viewCanceled, viewClosed) => purchaseModel.find({
+    sellerId
+});
 exports.getPurchasesByShopperId = (shopperId) => purchaseModel.find({ shopperId });

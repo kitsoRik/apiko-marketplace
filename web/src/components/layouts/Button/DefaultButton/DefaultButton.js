@@ -1,10 +1,13 @@
 import React from 'react';
 
 import "./DefaultButton.scss";
+import { Link } from 'react-router-dom';
+import AsComponent from 'react-as-component';
 
-const DefaultButton = ({ className, style, value, disabled, uppercase, ...props }) => {
+const DefaultButton = ({ asLink = false, className, style, value, disabled, uppercase, ...props }) => {
     return (
-        <button
+        <AsComponent
+            as={asLink ? Link : 'button'}
             className={`button-default ${className ?? ""}`}
             style={{
                 textTransform: uppercase ? "uppercase" : "none",
@@ -14,7 +17,7 @@ const DefaultButton = ({ className, style, value, disabled, uppercase, ...props 
             {...props}
         >
             {value}
-        </button>
+        </AsComponent>
     )
 };
 

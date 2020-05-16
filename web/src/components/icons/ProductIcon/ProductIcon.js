@@ -16,7 +16,6 @@ const ProductIcon = ({ imageName, loading, }) => {
     if (imageName) {
         return <img src={`${api.productsImageBaseUrl}${imageName}`} alt="Product icon" />;
     }
-
     return <ImageNoAvaiableIcon style={{ height: "80%", width: '100%' }} />;
 };
 

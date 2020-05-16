@@ -9,6 +9,7 @@ import ProductIcon from '../../../icons/ProductIcon';
 import moment from 'moment';
 import { CHANGE_PURCHASE_STATUS } from '../../../../apollo/mutation/purchases-mutations';
 import { PURCHASE_STATUS_CHANGED } from '../../../../apollo/subscriptions/purchases-subscriptions';
+import withLoginedLock from '../../../hocs/withLoginedLock/withLoginedLock';
 
 const PurchasesItem = ({ match: { params: { id } } }) => {
     const currentUserQuery = useQuery(CURRENT_USER_QUERY);
@@ -46,13 +47,13 @@ const PurchasesItem = ({ match: { params: { id } } }) => {
             <div className="purchases-item-page-product">
                 <div className="purchases-item-page-product-image">
                     <ProductIcon imageName={product.imageName} />
-                    <span>{product.title}</span>
                 </div>
+                <span className="purchases-item-page-product-title">{product.title}</span>
             </div>
             <div className="purchase-item-page-statuses">
                 {
                     statuses.map(s => (
-                        <div className="purchases-item-page-statuses-item">
+                        <div className="purchases-item-page-statuses-item" status={s.status}>
                             <span>{s.status}</span>
                             <span>{moment(+s.date).calendar()}</span>
                         </div>
@@ -65,4 +66,4 @@ const PurchasesItem = ({ match: { params: { id } } }) => {
     )
 };
 
-export default PurchasesItem;
+export default withLoginedLock(true)(PurchasesItem);

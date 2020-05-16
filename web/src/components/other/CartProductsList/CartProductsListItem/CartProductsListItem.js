@@ -21,14 +21,14 @@ const CartProductsListItem = ({ editable, onCountChange, cartProduct: { count, p
                     <span className="cart-products-list-item-info-headers-total">Total sum</span>
                 </div>
                 <div className="cart-products-list-item-info-price-container">
-                    <span className="cart-products-list-item-info-price-container-price">{price}</span>
+                    <span className="cart-products-list-item-info-price-container-price">{price}$</span>
                     <div className="cart-products-list-item-info-price-container-counter">
                         {editable && <button onClick={() => onCountChange(count - 1)} disabled={count === 1}>-</button>}
                         <span>{count}</span>
                         {editable && <button onClick={() => onCountChange(count + 1)} >+</button>}
                     </div>
                     <div className="cart-products-list-item-info-price-container-total">
-                        <span>{count * price}</span>
+                        <span>{count * price}$</span>
                     </div>
                 </div>
             </div>

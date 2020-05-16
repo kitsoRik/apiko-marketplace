@@ -1,6 +1,8 @@
 .button-default {
     padding: 20px 50px;
 
+    display: inline-block;
+
     border: none;
     color: #fff;
     background-color: #349a89;
@@ -8,6 +10,7 @@
     border-radius: 5px;
 
     font-size: 14px;
+    text-decoration: none;
 
     &:hover {
         background-color: red;

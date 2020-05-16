@@ -1,5 +1,5 @@
 const { getProductById, getAllProducts, getProductsByIds, createProduct } = require("../db/models/product");
-const { getSavedProductsIdsByUserId, getUserById, addProductByUserId, saveUserById, createUser, getUserByEmail, getUserByEmailAndPassword, getProductsIdsByUserId, getUserByProductId, changeCartItemCountByUserId, addProductToCardByUserId } = require("../db/models/user");
+const { getSavedProductsIdsByUserId, getUserById, addProductByUserId, saveUserById, createUser, getUserByEmail, getUserByEmailAndPassword, getProductsIdsByUserId, getUserByProductId, changeCartItemCountByUserId, addProductToCardByUserId, clearCartByUserId } = require("../db/models/user");
 const { getLocationById, getLocationsByNamePattern } = require("../db/models/city");
 const { storeUploadFile } = require("../helpers/files");
 const { hashPassword } = require("../helpers/hash");
@@ -197,8 +197,9 @@ module.exports = {
     },
 
     Query: {
-        products: async (source, { title = "", category = "any", locationId = "", priceFrom = -1, priceTo = -1, page = 1, limit = 12 }) => {
-            return await getAllProducts(title, category, locationId, priceFrom, priceTo).skip((page - 1) * limit).limit(limit);
+        products: async (source, { title = "", category = "any", sortField, sortOrder, locationId = "", priceFrom = -1, priceTo = -1, page = 1, limit = 12 }) => {
+            console.log(sortField, sortOrder);
+            return await getAllProducts(title, category, locationId, priceFrom, priceTo).sort({ [sortField]: sortOrder === 'ASC' ? 1 : -1 }).skip((page - 1) * limit).limit(limit);
         },
 
         product: async (source, { id }) => {
@@ -251,10 +252,35 @@ module.exports = {
         },
 
 
-        sellerPurchases: async (source, { page, limit }, { user }) => {
+        sellerPurchases: async (source, { page, limit, viewOpened, viewPosted,
+            viewCanceled, viewClosed, sortField, sortOrder }, { user }) => {
             if (!user) throw new AuthenticationError();
 
-            return await getPurchasesBySellerId(user.id).sort({ index: -1 }).skip((page - 1) * limit).limit(limit);
+            let result = await getPurchasesBySellerId(user.id);
+            const old = result;
+            result.sort((a, b) => {
+                if (sortField === "created") return a.statuses[0].date.getTime() < b.statuses[0].date.getTime() ? -1 : 1;
+                if (sortField === "changed") return a.statuses[a.statuses.length - 1].date.getTime() < b.statuses[b.statuses.length - 1].date.getTime() ? -1 : 1;;
+                if (sortField === "count") return a.count < b.count ? -1 : 1;;
+                if (sortField === "price") return a.price < b.price ? -1 : 1;;
+                if (sortField === "total") return a.price * a.count < b.price * b.count ? -1 : 1;
+
+
+                throw new Error("Unknown sort field");
+            });
+            if (sortOrder === "DESC") result = result.reverse();
+            result = result.filter(p => {
+                const status = p.statuses[p.statuses.length - 1].status;
+                if (viewOpened && status === "OPENED") return true;
+                if (viewPosted && status === "POSTED") return true;
+                if (viewCanceled && status === "CANCELED") return true;
+                if (viewClosed && status === "CLOSED") return true;
+                return false;
+            })
+                .filter((c, i) => i >= (page - 1) * limit)
+                .filter((c, i) => i < limit);
+
+            return result;
         },
         sellerPurchasesCount: async (source, args, { user }) => {
             if (!user) throw new AuthenticationError();
@@ -350,7 +376,7 @@ module.exports = {
             else user.savedProducts = user.savedProducts.filter(p => p !== id);
             user.save();
 
-            return state;
+            return await getProductById(id);
         },
 
         saveUser: async (source, { fullName, locationId, phone, icon }, { user }) => {
@@ -389,8 +415,14 @@ module.exports = {
         addProductToCart: async (source, { productId, count }, { user }) => {
             if (!user) throw new AuthenticationError();
 
-            await addProductToCardByUserId(user.id, productId, count);
+            console.log(await addProductToCardByUserId(user.id, productId, count));
             return true;
+        },
+
+        clearCart: async (source, args, { user }) => {
+            if (!user) throw new AuthenticationError();
+
+            return await clearCartByUserId(user.id);
         },
 
         createChat: async (source, { productId, initialMessage }, { user }) => {
@@ -423,7 +455,8 @@ module.exports = {
             for (let i = 0; i < purchases.length; i++) {
                 const item = purchases[i];
                 const seller = await getUserByProductId(item.productId)
-                const purchase = await createPurchase(seller.id, user.id, item.productId);
+                const product = await getProductById(item.productId);
+                const purchase = await createPurchase(seller.id, user.id, item.productId, product.price, item.count);
                 pubsub.publish("PURCHASE_CREATED", { purchase });
             }
 

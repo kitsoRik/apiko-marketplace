@@ -1,6 +1,14 @@
 .purchases-item-page {
     &-product {
-        height: 100px;
+        max-height: 100%;
+
+        display: flex;
+        flex-direction: column;
+
+        &-title {
+            font-size: 40px;
+            text-align: center;
+        }
 
         &-image {
             height: 100%;
@@ -13,8 +21,19 @@
         flex-direction: column;
 
         &-item {
+            padding: 5px;
             display: flex;
             justify-content: space-between;
+
+            &[status="OPENED"] {
+                background-color: lime;
+            }
+            &[status="POSTED"] {
+                background-color: yellow;
+            }
+            &[status="CLOSED"] {
+                background-color: red;
+            }
         }
     }
 }

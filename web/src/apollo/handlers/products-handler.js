@@ -19,16 +19,4 @@ export const changeProductStateHandler = (product, saved) => {
 
     } catch (e) {
     }
-
-    client.writeFragment({
-        id: product.id,
-        fragment: gql`
-            fragment saveProduct on Product {
-                saved
-            }
-        `,
-        data: {
-            saved
-        }
-    });
 }

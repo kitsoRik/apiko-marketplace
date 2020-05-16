@@ -90,9 +90,9 @@ exports.changeCartItemCountByUserId = async (id, productId, count) => {
 exports.addProductToCardByUserId = async (id, productId, count) => {
     const userCartProducts = (await this.getUserById(id)).cartProducts;
     const cp = userCartProducts.find(cp => cp.productId === productId);
-    if (cp) {
-        this.changeCartItemCountByUserId(id, productId, cp.count + count);
-    } else {
-        userModel.findOneAndUpdate({ id }, { $push: { cartProducts: { productId, count } } });
-    }
-}
+    if (cp)
+        return this.changeCartItemCountByUserId(id, productId, cp.count + count);
+    return userModel.findOneAndUpdate({ id }, { $push: { cartProducts: { productId, count } } });
+};
+
+exports.clearCartByUserId = (id) => userModel.findOneAndUpdate({ id }, { cartProducts: [] }, { new: true });

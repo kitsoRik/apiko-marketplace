@@ -1,0 +1,10 @@
+.purchases-page-filtering-panel {
+    padding: 5px;
+    margin: 10px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr min-content;
+
+    &-sort {
+        width: 32px;
+    }
+}

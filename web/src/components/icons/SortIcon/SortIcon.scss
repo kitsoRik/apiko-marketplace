@@ -1,0 +1,8 @@
+.sort-icon {
+    height: 100%;
+    width: 100%;
+
+    &[order="ASC"] {
+        transform: scaleY(-1);
+    }
+}

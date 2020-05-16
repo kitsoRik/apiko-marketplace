@@ -10,9 +10,9 @@ import withLoginedLock from '../../hocs/withLoginedLock/withLoginedLock';
 import { useHistory } from 'react-router-dom';
 import { compose } from 'redux';
 import withQuery from '../../hocs/withQuery/withQuery';
-import useLocationQuery from '../../hooks/useLocationQuery/useLocationQuery';
 import { useSubscription } from '@apollo/react-hooks';
 import { PURCHASE_STATUS_CHANGED } from '../../../apollo/subscriptions/purchases-subscriptions';
+import useLocationQuery from '../../hooks/useLocationQuery/useLocationQuery';
 
 const parseSideTabIndex = (side) => {
     switch (side) {
@@ -31,13 +31,12 @@ const parseTabIndexToSide = (tabIndex) => {
 }
 
 const Purchases = () => {
-    const { query: { side }, setQuery } = useLocationQuery();
+    const { query: { side }, setQuery } = useLocationQuery({ side: 'shopper' });
     useSubscription(PURCHASE_STATUS_CHANGED)
 
     const onChangeTabIndex = (index) => {
         setQuery({ side: parseTabIndexToSide(index) });
     }
-
     return (
         <div className="purchases-page">
             <div className="purchases-page-tabs">

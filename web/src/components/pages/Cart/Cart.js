@@ -8,6 +8,7 @@ import { useMutation, useApolloClient } from '@apollo/react-hooks';
 import _ from 'lodash';
 import { CHANGE_CART_ITEM_COUNT } from '../../../apollo/mutation/user-mutation';
 import { CURRENT_USER_CART_QUERY } from '../../../apollo/queries/user-queries';
+import withLoginedLock from '../../hocs/withLoginedLock/withLoginedLock';
 
 const Cart = () => {
 
@@ -58,9 +59,9 @@ const Cart = () => {
             <div className="cart-page-products">
                 <CartProductsList onCountChange={onCountChange} cartProducts={data.currentUser.cartProducts} />
             </div>
-            <Button.Default value="Purchase" />
+            <Button.Default value="Purchase" asLink={true} to="/purchase?cart=true" />
         </div>
     )
 };
 
-export default Cart;
+export default withLoginedLock(true)(Cart);

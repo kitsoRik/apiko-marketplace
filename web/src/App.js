@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.scss';
 import './index.scss';
-import { BrowserRouter, useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, useHistory } from 'react-router-dom';
 import Header from './components/other/Header/Header';
 import Footer from './components/other/Footer/Footer';
 import Snackbar from './components/other/Snackbar/Snackbar';
@@ -11,7 +11,7 @@ import gql from 'graphql-tag';
 
 const App = () => {
 	return (
-		<BrowserRouter>
+		<Router>
 			<div className="app">
 				<Header />
 				<main>
@@ -20,7 +20,7 @@ const App = () => {
 				<Footer />
 			</div>
 			<Snackbar />
-		</BrowserRouter>
+		</Router>
 	);
 }
 

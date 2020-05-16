@@ -5,15 +5,19 @@ const initState = {
         title: "",
         locationId: -1,
         category: "any",
+        sortField: "rate",
+        sortOrder: "ASC",
         priceFrom: -1,
         priceTo: -1,
         page: 1,
-        limit: 12   
+        limit: 12
     },
     reactionSearchQuery: {
         title: "",
         locationId: -1,
         category: "any",
+        sortField: "rate",
+        sortOrder: "ASC",
         priceFrom: -1,
         priceTo: -1,
         page: 1,

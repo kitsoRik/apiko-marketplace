@@ -19,9 +19,7 @@ const withLoginedLock = (needLogin = true) => (WrapperComponent) => {
 
         const { data, loading } = useQuery(CURRENT_USER_QUERY);
 
-
-        const loadingDataState = loading ? LOADING : (data?.currentUser !== null ? LOADED : LOADED_ERROR);
-
+        const loadingDataState = loading ? LOADING : (!!data && data.currentUser !== null ? LOADED : LOADED_ERROR);
         const loadingVisible = (loadingDataState === LOADING && registerStatus !== REGISTERING && loginStatus !== LOGINING) || loginStatus === UNLOGINING;
         const loadedWithoutLogin = loadingDataState === LOADED && loginStatus !== LOGINED && registerStatus !== REGISTERED;
         const dataNotLoaded = loadingDataState === LOADED_ERROR || loadingDataState === UNLOADED;

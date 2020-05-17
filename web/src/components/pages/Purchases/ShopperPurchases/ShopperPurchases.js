@@ -7,16 +7,26 @@ import ShopperPurchasesItem from './ShopperPurchasesItem/ShopperPurchasesItem';
 import Pagination from '../../../layouts/Pagination/Pagination';
 import { PURCHASE_CREATED } from '../../../../apollo/subscriptions/purchases-subscriptions';
 import FilterPanel from '../FilterPanel/FilterPanel';
+import useLocationQuery from 'react-use-location-query';
 
 const SHOPPER_PURACHSES_LIMIT_PAGE = 10;
 
 const ShopperPurchases = () => {
-
+    const { query: { viewOpened, viewPosted, viewCanceled, viewClosed, sortField, sortOrder, limit }, setQuery } = useLocationQuery({
+        viewOpened: true, viewPosted: true, viewClosed: true, viewCanceled: true, sortField: "created", sortOrder: "ASC", limit: 10
+    }, { parseBoolean: true, parseNumber: true });
     const [page, setPage] = useState(1);
-    const { data, loading, subscribeToMore } = useQuery(SHOPPER_PURCHASES_QUERY, {
+    const { data, loading } = useQuery(SHOPPER_PURCHASES_QUERY, {
         variables: {
-            page, limit: SHOPPER_PURACHSES_LIMIT_PAGE
-        },
+            page,
+            limit: limit,
+            viewOpened,
+            viewPosted,
+            viewCanceled,
+            viewClosed,
+            sortField,
+            sortOrder
+        }
     });
 
     return (

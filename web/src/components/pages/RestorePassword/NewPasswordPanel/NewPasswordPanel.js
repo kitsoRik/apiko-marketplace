@@ -10,7 +10,7 @@ import Button from '../../../layouts/Button';
 import { NOT_RESTORED, RESTORED, RESTORED_ERROR, RESTORING } from '../../../../constants/restore';
 import api from '../../../../services/api';
 import Checkbox from '../../../layouts/Checkbox/Checkbox';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 
 const NewPasswordPanel = ({ restoreKey }) => {

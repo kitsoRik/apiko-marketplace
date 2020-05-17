@@ -7,7 +7,7 @@ import api from '../../../services/api';
 import NewPasswordPanel from './NewPasswordPanel';
 import ErrorKeyPanel from './ErrorKeyPanel/ErrorKeyPanel';
 import withLoginedLock from '../../hocs/withLoginedLock';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 
 const RestorePassword = ({ history: { location: { search = "?" } } }) => {

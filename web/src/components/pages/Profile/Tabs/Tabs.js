@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import "./Tabs.scss";
 import Tab from './Tab/Tab';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 
 const Tabs = ({ tabIndex, setTabIndex }) => {
@@ -18,8 +18,12 @@ const Tabs = ({ tabIndex, setTabIndex }) => {
         setProductsCount(data.currentUser.productsCount);
     }, [data]);
 
+    const feedbacksMain = data?.currentUser?.feedbacksCount > 0 ?
+        Math.floor(data?.currentUser?.positiveFeedbacksCount / data?.currentUser?.feedbacksCount * 100) + "%"
+        : "0/0";
+
     const tabsInfo = [
-        { main: Math.floor(data?.currentUser?.positiveFeedbacksCount / data?.currentUser?.feedbacksCount * 100) + "%", minor: "Positive feedbacks", loading },
+        { main: feedbacksMain, minor: "Positive feedbacks", loading },
         { main: salesCount, minor: "sales", loading, },
         { main: productsCount, minor: "Active listings", loading }
     ]

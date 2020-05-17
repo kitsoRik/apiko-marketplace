@@ -4,13 +4,13 @@ import "./ProductsContent.scss";
 import ProductCard from '../../../layouts/ProductCard';
 import Pagination from '../../../layouts/Pagination/Pagination';
 import ModalLoading from '../../../layouts/ModalLoading/ModalLoading';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
+import useLocationQuery from 'react-use-location-query';
 
 const ProductsContent = () => {
 
-    const [page, setPage] = useState(1);
-    const [limit] = useState(12);
+    const { query: { page, limit }, setQuery } = useLocationQuery({ page: 1, limit: 12 }, { parseNumber: true });
 
     const { data, loading, refetch } = useQuery(USER_PRODUCTS_CONTENT, {
         variables: { page, limit }
@@ -32,7 +32,11 @@ const ProductsContent = () => {
                     <ModalLoading darken={false} />
                 </div>
             }
-            <Pagination onChangePage={setPage} page={page} pages={data ? Math.ceil(data.currentUser.productsCount / limit) : 1} />
+            <Pagination
+                page={page}
+                pages={data ? Math.ceil(data.currentUser.productsCount / limit) : 1}
+                onChangePage={page => setQuery({ page })}
+            />
         </div>
     )
 };

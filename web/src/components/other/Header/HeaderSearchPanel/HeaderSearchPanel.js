@@ -10,11 +10,11 @@ import SearchIcon from '../../../icons/SearchIcon/SearchIcon';
 import _ from 'lodash';
 import api from '../../../../services/api';
 import { useHistory } from 'react-router-dom';
-import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
 import { connect } from 'react-redux';
 import { changeProductsSearchQuery, searchProducts, searchProductsHint } from '../../../../redux/actions/products-actions';
 import { getLatestProductsTitleQuery, addProductsTitleQuery } from '../../../../services/localstorage/localstore';
+import gql from 'graphql-tag';
 
 const HeaderSearchPanel = ({ title, locationId, searchProductsHintQuery, searchProductsHint, changeProductsSearchQuery, searchProducts }) => {
 
@@ -30,7 +30,7 @@ const HeaderSearchPanel = ({ title, locationId, searchProductsHintQuery, searchP
 
     const onSearch = () => {
         searchProducts();
-        history.push("/");
+        if (history.location.pathname !== "/") history.push("/");
         if (title !== "") {
             addProductsTitleQuery(title);
         }

@@ -5,7 +5,7 @@ import TextField from '../../layouts/TextField';
 import TextFieldAutocompleteOption from '../../layouts/TextField/TextFieldAutocompleteOption';
 import Icon from '../../layouts/Icon';
 import { useQuery } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import LocationIcon from '../../icons/LocationIcon';
 
 const LocationTextField = ({ onLocationIdChange = () => { }, initialLocationName = "", locationId = -1, withIcon, ...props }) => {

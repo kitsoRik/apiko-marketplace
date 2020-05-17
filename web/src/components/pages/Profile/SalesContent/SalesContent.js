@@ -4,7 +4,7 @@ import "./SalesContent.scss";
 import Pagination from '../../../layouts/Pagination/Pagination';
 import SaleCard from '../../../layouts/SaleCard/SaleCard';
 import ModalLoading from '../../../layouts/ModalLoading/ModalLoading';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 
 const SalesContent = () => {

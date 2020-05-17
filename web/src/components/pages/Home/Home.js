@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import './Home.scss';
 import ProductCard from '../../layouts/ProductCard/ProductCard';
@@ -11,88 +11,113 @@ import { PRODUCTS_QUERY } from '../../../apollo/queries/products-queries';
 import { connect } from 'react-redux';
 import { changeProductsSearchQuery, searchProducts } from '../../../redux/actions/products-actions';
 import ProductsViewer from '../../other/ProductsViewer/ProductsViewer';
+import useLocationQuery from 'react-use-location-query';
 
 const Home = ({
-    category,
-    priceFrom,
-    priceTo,
-    sortField,
-    sortOrder,
-    page,
-    limit,
+    searchQuery,
     reactionSearchQuery,
     changeProductsSearchQuery,
     searchProducts,
 }) => {
-
-    const [joinedPages, setJoinsPages] = useState([page]);
-
+    const [justUpdate, setJustUpdate] = useState(0);
+    const firstRun = useRef(true);
     const client = useApolloClient();
-    const { data, loading } = useQuery(PRODUCTS_QUERY, { variables: { ...reactionSearchQuery } });
 
-    const onLoadMore = () => {
-        const nextPage = page + 1;
-        changeProductsSearchQuery({ page: nextPage });
-        setJoinsPages([...joinedPages, nextPage]);
-        searchProducts();
-    }
+    const { query: { title, locationId, category, priceFrom, priceTo, sortField, sortOrder, page, limit, joinedPages }, setQuery } = useLocationQuery({
+        ...reactionSearchQuery,
+        joinedPages: [reactionSearchQuery.page]
+    }, {
+        parseNumber: true,
+        allowArray: true
+    });
 
-    const onChangePage = (page) => {
-        changeProductsSearchQuery({ page });
-        setJoinsPages([page]);
-        searchProducts();
-    }
+    const variables = { title, locationId, category, priceFrom, priceTo, sortField, sortOrder, page, limit };
+
+    const { data, loading } = useQuery(PRODUCTS_QUERY, { variables });
+
+    useEffect(() => {
+        if (firstRun.current) {
+            firstRun.current = false;
+            changeProductsSearchQuery({
+                title: title,
+                locationId: locationId
+            });
+            return;
+        }
+        setQuery({
+            title: reactionSearchQuery.title,
+            locationId: reactionSearchQuery.locationId
+        });
+    }, [reactionSearchQuery.title, reactionSearchQuery.locationId]);
 
     let products = [];
 
-    try {
-        for (let i = 0; i < joinedPages.length; i++) {
-            const data = client.readQuery({
+    for (let i = 0; i < joinedPages.length; i++) {
+        let data;
+        try {
+            data = client.readQuery({
                 query: PRODUCTS_QUERY,
                 variables: {
-                    ...reactionSearchQuery,
+                    ...variables,
                     page: joinedPages[i]
                 }
             });
-
-            if (!data) continue;
-            products = products.concat(data.products);
+        } catch (e) {
+            if (!loading) {
+                client.query({
+                    query: PRODUCTS_QUERY, variables: {
+                        ...variables, page: joinedPages[i]
+                    }
+                }).then(() => setJustUpdate(justUpdate + 1));
+            }
         }
-    } catch (e) {
-
+        if (!data) continue;
+        products = products.concat(data.products);
     }
 
-    const changeProductsSearchQueryWithSearch = (changes) => {
+    if (products.length === 0)
+        products = data?.products ?? [];
+
+    const onChangeSearchOptions = (changes, search = false) => {
         changeProductsSearchQuery(changes);
-        searchProducts();
+        setQuery(changes);
+
+        if (search) searchProducts();
+    }
+
+    const onLoadMore = () => {
+        const nextPage = page + 1;
+        const nextJoinedPages = (Array.isArray(joinedPages) ? joinedPages : [joinedPages]);
+        onChangeSearchOptions({
+            page: nextPage,
+            joinedPages: [...nextJoinedPages, nextPage]
+        }, true);
     }
 
     const pages = data ? Math.ceil(data.productsCount / limit) : 1;
+
     return (
         <div className="home-page">
-            <SearchPanel {...{
-                category,
-                setCategory: category => changeProductsSearchQueryWithSearch({ category }),
-                priceFrom: priceFrom === -1 ? "" : priceFrom,
-                setPriceFrom: (priceFrom) => changeProductsSearchQuery({ priceFrom: priceFrom === "" ? -1 : +priceFrom }),
-                priceTo: priceTo === -1 ? "" : priceTo,
-                setPriceTo: (priceTo) => changeProductsSearchQuery({ priceTo: priceTo === "" ? -1 : +priceTo }),
-                sortField,
-                setSortField: sortField => changeProductsSearchQueryWithSearch({ sortField }),
-                sortOrder,
-                setSortOrder: sortOrder => changeProductsSearchQueryWithSearch({ sortOrder })
-            }} />
+            <SearchPanel
+                changeProductsSearchQuery={changeProductsSearchQuery}
+                searchProducts={searchProducts}
+            />
             <ProductsViewer
                 products={products}
                 loading={loading}
-                visibleLoad={page !== pages}
-                onLoadMore={onLoadMore} />
-            <Pagination onChangePage={onChangePage} page={page} pages={pages} />
+                visibleLoad={page < pages}
+                onLoadMore={onLoadMore}
+            />
+            <Pagination
+                page={page}
+                pages={pages}
+                onChangePage={page => onChangeSearchOptions({ page, joinedPages: [page] }, true)}
+            />
         </div>
     );
 }
 
 export default connect(
-    (({ products: { searchQuery: { category, priceFrom, priceTo, page, limit, sortField, sortOrder }, reactionSearchQuery } }) => ({ category, priceFrom, priceTo, sortField, sortOrder, reactionSearchQuery, page, limit })),
+    (({ products: { searchQuery, reactionSearchQuery } }) => ({ reactionSearchQuery, searchQuery })),
     { changeProductsSearchQuery, searchProducts, }
 )(Home);

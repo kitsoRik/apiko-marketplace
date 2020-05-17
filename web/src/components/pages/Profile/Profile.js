@@ -8,13 +8,14 @@ import FeedbacksContent from './FeedbacksContent/FeedbacksContent';
 import ProductsContent from './ProductsContent/ProductsContent';
 import SalesContent from './SalesContent/SalesContent';
 import withLoginedLock from '../../hocs/withLoginedLock';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
+import useLocationQuery from 'react-use-location-query';
 
 const Profile = () => {
 
-	const [tabIndex, setTabIndex] = useState(1);
+	const { query: { tabIndex }, setQuery } = useLocationQuery({ tabIndex: 1 }, { parseNumber: true });
 
 	const { data, loading } = useQuery(CURRENT_USER_QUERY)
 
@@ -22,7 +23,7 @@ const Profile = () => {
 		<div className="profile-page">
 			<Panel className="profile-page-panel">
 				{!loading && <UserInformation user={data.currentUser} />}
-				<Tabs tabIndex={tabIndex} setTabIndex={setTabIndex} />
+				<Tabs tabIndex={tabIndex} setTabIndex={tabIndex => setQuery({ tabIndex })} />
 				{!loading && <div className="profile-page-main-content">
 					{tabIndex === 0 && <FeedbacksContent userId={data.id} />}
 					{tabIndex === 1 && <SalesContent userId={data.id} />}

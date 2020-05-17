@@ -10,7 +10,7 @@ import Button from '../../layouts/Button';
 import ModalLoading from '../../layouts/ModalLoading/ModalLoading';
 import withLoginedLock from '../../hocs/withLoginedLock';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
 import { Formik } from 'formik';
 

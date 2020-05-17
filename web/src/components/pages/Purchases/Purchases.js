@@ -12,7 +12,7 @@ import { compose } from 'redux';
 import withQuery from '../../hocs/withQuery/withQuery';
 import { useSubscription } from '@apollo/react-hooks';
 import { PURCHASE_STATUS_CHANGED } from '../../../apollo/subscriptions/purchases-subscriptions';
-import useLocationQuery from '../../hooks/useLocationQuery/useLocationQuery';
+import useLocationQuery from 'react-use-location-query';
 
 const parseSideTabIndex = (side) => {
     switch (side) {
@@ -31,7 +31,7 @@ const parseTabIndexToSide = (tabIndex) => {
 }
 
 const Purchases = () => {
-    const { query: { side }, setQuery } = useLocationQuery({ side: 'shopper' });
+    const { query: { side }, setQuery } = useLocationQuery({ side: 'shopper' }, { pas: true });
     useSubscription(PURCHASE_STATUS_CHANGED)
 
     const onChangeTabIndex = (index) => {
@@ -41,8 +41,8 @@ const Purchases = () => {
         <div className="purchases-page">
             <div className="purchases-page-tabs">
                 <Tabs tabIndex={parseSideTabIndex(side)} onChangeTabIndex={onChangeTabIndex}>
-                    <Tab />
-                    <Tab />
+                    <Tab>As shopper</Tab>
+                    <Tab>As seller</Tab>
                 </Tabs>
             </div>
             <div className="purchases-page-content">

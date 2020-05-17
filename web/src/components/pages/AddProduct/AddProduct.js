@@ -9,7 +9,7 @@ import TextField from '../../layouts/TextField';
 import Button from '../../layouts/Button';
 import InputImage from '../../layouts/Input/InputImage';
 import LocationTextField from '../../other/LocationTextField/LocationTextField';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 import { Formik } from 'formik';
 

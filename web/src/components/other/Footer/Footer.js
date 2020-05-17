@@ -2,11 +2,11 @@ import React from 'react';
 
 import './Footer.scss';
 
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 const Footer = () => {
 
-    const { location: { pathname } } = useHistory();
+    const { pathname } = useLocation();
 
     switch (pathname) {
         case '/add-product':

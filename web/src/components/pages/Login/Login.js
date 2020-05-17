@@ -12,7 +12,7 @@ import LoginUpperContainerTitle from '../../layouts/LoginForm/LoginUpperContaine
 
 import { checkValidEmail } from '../../../services/checkers/checkers';
 import withLoginedLock from '../../hocs/withLoginedLock';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
 import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
 import { PRODUCTS_QUERY } from '../../../apollo/queries/products-queries';

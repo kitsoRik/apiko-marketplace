@@ -3,7 +3,6 @@ import "./ProductCard.scss";
 import ModalLoading from '../ModalLoading/ModalLoading';
 import HeartIcon from '../../icons/HeartIcon';
 import api from '../../../services/api';
-import { gql } from 'apollo-boost';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { notifyWarning } from '../../other/Snackbar/Snackbar';
 import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';

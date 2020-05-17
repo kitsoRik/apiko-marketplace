@@ -7,7 +7,7 @@ import { Link, useHistory } from 'react-router-dom';
 import Button from '../../../layouts/Button';
 import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { CURRENT_USER_QUERY } from '../../../../apollo/queries/user-queries';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 
 const UserPanel = ({ ...props }) => {
 

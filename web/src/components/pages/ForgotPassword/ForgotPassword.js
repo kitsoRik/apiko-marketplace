@@ -11,7 +11,7 @@ import api from '../../../services/api';
 import { checkValidEmail } from '../../../services/checkers/checkers';
 import { NOT_RESTORED, RESTORED, RESTORED_ERROR, RESTORING } from '../../../constants/restore';
 import withLoginedLock from '../../hocs/withLoginedLock';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 
 

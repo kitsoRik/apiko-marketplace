@@ -11,7 +11,7 @@ import LoginLowerContainer from '../../layouts/LoginForm/LoginLowerContainer/Log
 import LoginForm from '../../layouts/LoginForm/LoginForm';
 import withLoginedLock from '../../hocs/withLoginedLock/withLoginedLock';
 import { Formik } from 'formik';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
 import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
 

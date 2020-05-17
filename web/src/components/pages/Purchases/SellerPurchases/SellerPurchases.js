@@ -7,22 +7,18 @@ import SellerPurchasesItem from '../SellerPurchases/SellerPurchasesItem/SellerPu
 import { SELLER_PURCHASES_QUERY } from '../../../../apollo/queries/purchases-queries';
 import { PURCHASE_CREATED } from '../../../../apollo/subscriptions/purchases-subscriptions';
 import FilterPanel from '../FilterPanel/FilterPanel';
-import useLocationQuery from '../../../hooks/useLocationQuery/useLocationQuery';
+import useLocationQuery from 'react-use-location-query';
+import { notifyInfo } from '../../../other/Snackbar/Snackbar';
 
-const SELLER_PURACHSES_LIMIT_PAGE = 10;
 
 const SellerPurchases = () => {
-
-    const { query: { viewOpened, viewPosted, viewCanceled, viewClosed, sortField, sortOrder }, setQuery } = useLocationQuery({
-        viewOpened: true, viewPosted: true, viewClosed: true, viewCanceled: true, sortField: "created", sortOrder: "ASC"
-    }, { parseBooleanValues: true });
-
-    const [page, setPage] = useState(1);
-    const client = useApolloClient();
-    const { data, loading, subscribeToMore, refetch } = useQuery(SELLER_PURCHASES_QUERY, {
+    const { query: { viewOpened, viewPosted, viewCanceled, viewClosed, sortField, sortOrder, limit, page }, setQuery } = useLocationQuery({
+        viewOpened: true, viewPosted: true, viewClosed: true, viewCanceled: true, sortField: "created", sortOrder: "ASC", limit: 10, page: 1
+    }, { parseBoolean: true, parseNumber: true });
+    const { data, loading, subscribeToMore } = useQuery(SELLER_PURCHASES_QUERY, {
         variables: {
             page,
-            limit: SELLER_PURACHSES_LIMIT_PAGE,
+            limit: limit,
             viewOpened,
             viewPosted,
             viewCanceled,
@@ -35,24 +31,9 @@ const SellerPurchases = () => {
     useEffect(() => {
         return subscribeToMore({
             document: PURCHASE_CREATED,
-            variables: { page: 1, SELLER_PURACHSES_LIMIT_PAGE },
+            variables: { page: 1, limit },
             updateQuery: (prev, { subscriptionData: { data: { purchaseCreated } }, variables }) => {
-                const data = client.readQuery({
-                    query: SELLER_PURCHASES_QUERY,
-                    variables: { page: 1, limit: SELLER_PURACHSES_LIMIT_PAGE }
-                });
-                client.writeQuery({
-                    query: SELLER_PURCHASES_QUERY,
-                    variables: { page: 1, limit: SELLER_PURACHSES_LIMIT_PAGE },
-                    data: {
-                        ...data,
-                        sellerPurchases: [
-                            purchaseCreated,
-                            ...data.sellerPurchases.filter((p, i) => i < SELLER_PURACHSES_LIMIT_PAGE - 1),
-                        ],
-                        sellerPurchasesCount: data.sellerPurchasesCount + 1
-                    }
-                });
+                notifyInfo("New purchase, please refresh page.")
             }
         })
     }, []);
@@ -79,7 +60,7 @@ const SellerPurchases = () => {
                     data?.sellerPurchases?.map(p => <SellerPurchasesItem {...p} />)
                 }
             </div>
-            <Pagination page={page} pages={Math.ceil(data?.sellerPurchasesCount / SELLER_PURACHSES_LIMIT_PAGE)} onChangePage={setPage} />
+            <Pagination page={page} pages={Math.ceil(data?.sellerPurchasesCount / limit)} onChangePage={page => setQuery({ page })} />
         </div>
     )
 };

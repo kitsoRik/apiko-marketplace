@@ -4,18 +4,15 @@ import "./FeedbacksContent.scss";
 import Pagination from '../../../layouts/Pagination/Pagination';
 import FeedbackCard from '../../../layouts/FeedbackCard/FeedbackCard';
 import ModalLoading from '../../../layouts/ModalLoading/ModalLoading';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
+import useLocationQuery from 'react-use-location-query';
 
 const FeedbacksContent = () => {
-
-    const [page, setPage] = useState(1);
+    const { query: { page, limit }, setQuery } = useLocationQuery({ page: 1, limit: 10 }, { parseNumber: true });
 
     const { data, loading } = useQuery(USER_CONTENT_QUERY, {
-        variables: {
-            page,
-            limit: 10
-        }
+        variables: { page, limit }
     });
 
     return (
@@ -32,7 +29,11 @@ const FeedbacksContent = () => {
                 </div>
             }
 
-            <Pagination pages={Math.ceil(data?.currentUser?.feedbacksCount / 10)} page={page} onChangePage={setPage} />
+            <Pagination
+                page={page}
+                pages={Math.ceil(data?.currentUser?.feedbacksCount / 10)}
+                onChangePage={page => setQuery({ page })}
+            />
         </div>
     )
 };

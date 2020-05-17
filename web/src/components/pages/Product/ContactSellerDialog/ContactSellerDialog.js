@@ -13,12 +13,13 @@ import Chat from '../../Chats/Chat';
 import { useLocation, useHistory } from 'react-router-dom';
 import QueryString from 'qs';
 import { CREATE_CHAT_MUTATION } from '../../../../apollo/mutation/chats-mutation';
+import useLocationQuery from 'react-use-location-query';
 
 const ContactSellerDialog = ({ productId, productTitle, fullName, location, iconName }) => {
 
+    const { query, setQuery } = useLocationQuery({}, { parseBoolean: true });
+
     const history = useHistory();
-    const { search } = useLocation();
-    const query = QueryString.parse(search.substring(1));
 
     const [initialMessage, setInitialMessage] = useState("");
 
@@ -54,8 +55,9 @@ const ContactSellerDialog = ({ productId, productTitle, fullName, location, icon
         history.push(`/chats/${chat.data.createChat.id}`);
     }
     const onClosed = () => {
-        history.push(`/products/${productId}`)
+        setQuery({ chat: false });
     }
+
     if (!query.chat) return null;
     if (!chat) {
         return (

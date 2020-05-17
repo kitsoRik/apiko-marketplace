@@ -2,10 +2,10 @@ import React from 'react';
 
 import "./Tab.scss";
 
-const Tab = ({ active, ...props }) => {
+const Tab = ({ active, children, ...props }) => {
     return (
         <button className="tab" active={active ? "" : null} {...props}>
-            1
+            {children}
         </button>
     )
 };

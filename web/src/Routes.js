@@ -9,7 +9,7 @@ import RestorePassword from './components/pages/RestorePassword';
 
 import Profile from './components/pages/Profile/Profile';
 import EditProfile from './components/pages/EditProfile/EditProfile';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useLocation } from 'react-router-dom';
 import SavedItems from './components/pages/SavedItems/SavedItems';
 import AddProduct from './components/pages/AddProduct/AddProduct';
 import Product from './components/pages/Product/Product';
@@ -20,6 +20,7 @@ import Purchases from './components/pages/Purchases/Purchases';
 import PurchasesItem from './components/pages/Purchases/PurchasesItem/PurchasesItem';
 
 const Routes = () => {
+
     return (
         <Switch>
             <Route exact path="/" component={Home} />

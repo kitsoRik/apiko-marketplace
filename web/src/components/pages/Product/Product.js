@@ -17,10 +17,12 @@ import ProductIcon from '../../icons/ProductIcon';
 import ProductLocation from './ProductLocation/ProductLocation';
 import BuyDialog from './BuyDialog/BuyDialog';
 import FeedbacksContainer from './FeedbacksContainer/FeedbacksContainer';
+import useLocationQuery from 'react-use-location-query';
 
 const Product = ({ match, history }) => {
     const { id } = match.params;
 
+    const { query: { chat }, setQuery } = useLocationQuery({ chat: false }, { parseBoolean: true, hideFalseValues: true });
     const [buyDialogVisible, setBuyDialogVisible] = useState(false);
     const [newFeedbacksListIds, setNewFeedbacksListIds] = useState([]);
 
@@ -44,9 +46,7 @@ const Product = ({ match, history }) => {
         changeProductStateHandler(data?.product, state);
     }
 
-    const onOpenContactSellerDialog = () => {
-        history.push(`/products/${data?.product?.id}?chat=true`)
-    }
+    const onOpenContactSellerDialog = () => setQuery({ chat: true });
 
     return (
         <div className="product-page">

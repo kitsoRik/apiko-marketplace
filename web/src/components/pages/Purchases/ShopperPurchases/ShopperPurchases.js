@@ -5,21 +5,37 @@ import { useQuery } from '@apollo/react-hooks';
 import { SHOPPER_PURCHASES_QUERY } from '../../../../apollo/queries/purchases-queries';
 import ShopperPurchasesItem from './ShopperPurchasesItem/ShopperPurchasesItem';
 import Pagination from '../../../layouts/Pagination/Pagination';
-import { PURCHASE_CREATED } from '../../../../apollo/subscriptions/purchases-subscriptions';
 import FilterPanel from '../FilterPanel/FilterPanel';
 import useLocationQuery from 'react-use-location-query';
 
-const SHOPPER_PURACHSES_LIMIT_PAGE = 10;
 
 const ShopperPurchases = () => {
-    const { query: { viewOpened, viewPosted, viewCanceled, viewClosed, sortField, sortOrder, limit }, setQuery } = useLocationQuery({
-        viewOpened: true, viewPosted: true, viewClosed: true, viewCanceled: true, sortField: "created", sortOrder: "ASC", limit: 10
-    }, { parseBoolean: true, parseNumber: true });
-    const [page, setPage] = useState(1);
+    const { query: {
+        viewOpened,
+        viewPosted,
+        viewCanceled,
+        viewClosed,
+        sortField,
+        sortOrder,
+        page,
+        limit
+    }, setQuery } = useLocationQuery({
+        page: 1,
+        limit: 10,
+        viewOpened: true,
+        viewPosted: true,
+        viewCanceled: true,
+        viewClosed: true,
+        sortField: "created",
+        sortOrder: "DESC",
+    }, {
+        parseBoolean: true,
+        parseNumber: true
+    });
     const { data, loading } = useQuery(SHOPPER_PURCHASES_QUERY, {
         variables: {
             page,
-            limit: limit,
+            limit,
             viewOpened,
             viewPosted,
             viewCanceled,
@@ -37,7 +53,11 @@ const ShopperPurchases = () => {
                     data?.shopperPurchases?.map(p => <ShopperPurchasesItem {...p} />)
                 }
             </div>
-            <Pagination page={page} pages={Math.ceil(data?.shopperPurchasesCount / SHOPPER_PURACHSES_LIMIT_PAGE)} onChangePage={setPage} />
+            <Pagination
+                page={page}
+                pages={Math.ceil(data?.shopperPurchasesCount / limit)}
+                onChangePage={page => setQuery({ page })}
+            />
         </div>
     )
 };

@@ -31,6 +31,14 @@ const withLoginedLock = (needLogin = true) => (WrapperComponent) => {
         }, [loginStatus]);
 
         useEffect(() => {
+            if (loadingDataState === LOADED_ERROR && checked) {
+                setChecked(false);
+                notifyError("Now, you have no access to this page");
+                history.push("/");
+            }
+        }, [loadingDataState])
+
+        useEffect(() => {
             if (loadingVisible) setChecked(false);
             if (checked) return;
             if ((!needLogin && loadedWithoutLogin)

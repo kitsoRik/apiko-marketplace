@@ -1,8 +1,26 @@
 import gql from "graphql-tag";
 
 export const SHOPPER_PURCHASES_QUERY = gql`
-query shopperPurchases($page: Int!, $limit: Int!){
-    shopperPurchases(page: $page, limit: $limit) {
+query shopperPurchases(
+  $page: Int!, 
+  $limit: Int!, 
+  $viewOpened: Boolean!, 
+  $viewPosted: Boolean!,
+  $viewCanceled: Boolean!,
+  $viewClosed: Boolean!,
+  $sortField: String!,
+  $sortOrder: SortOrder!
+  ){
+    shopperPurchases(
+      page: $page, 
+      limit: $limit,
+      viewOpened: $viewOpened,
+      viewPosted: $viewPosted,
+      viewCanceled: $viewCanceled,
+      viewClosed: $viewClosed,
+      sortField: $sortField,
+      sortOrder: $sortOrder
+      ) {
       id
       count
       seller {
@@ -24,7 +42,12 @@ query shopperPurchases($page: Int!, $limit: Int!){
         date
       }
     },
-    shopperPurchasesCount
+    shopperPurchasesCount(
+      viewOpened: $viewOpened,
+      viewPosted: $viewPosted,
+      viewCanceled: $viewCanceled,
+      viewClosed: $viewClosed
+      )
   }
 `;
 
@@ -70,7 +93,12 @@ query sellerPurchases(
         date
       }
     },
-    sellerPurchasesCount
+    sellerPurchasesCount(
+      viewOpened: $viewOpened,
+      viewPosted: $viewPosted,
+      viewCanceled: $viewCanceled,
+      viewClosed: $viewClosed
+      )
   }
 `;
 

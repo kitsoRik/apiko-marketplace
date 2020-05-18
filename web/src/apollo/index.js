@@ -12,7 +12,10 @@ const uploadLink = createUploadLink({
 const webSocketLink = new WebSocketLink({
     uri: 'ws://localhost:3501/subscriptions',
     options: {
-        reconnect: true
+        reconnect: true,
+        connectionParams: {
+            cookies: document.cookie,
+        },
     }
 });
 
@@ -41,6 +44,9 @@ const client = new ApolloClient({
                 keyFields: ['id']
             },
             Message: {
+                keyFields: ['id']
+            },
+            Purchase: {
                 keyFields: ['id']
             }
         }

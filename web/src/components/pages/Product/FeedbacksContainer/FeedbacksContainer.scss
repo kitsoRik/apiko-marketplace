@@ -2,6 +2,9 @@
     margin-top: 20px;
     position: relative;
 
-    &-item {
+    &-items {
+        &-no-feedbacks {
+            margin: 25px;
+        }
     }
 }

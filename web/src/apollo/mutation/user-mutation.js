@@ -8,6 +8,17 @@ export const CHANGE_CART_ITEM_COUNT = gql`
 
 export const ADD_PRODUCT_TO_CARD = gql`
     mutation addProductToCart($productId: ID!, $count: Int!) {
-        addProductToCart(productId: $productId, count: $count)
+        addProductToCart(productId: $productId, count: $count) {
+            id
+            cartProducts {
+                product {
+                    id
+                    title
+                    imageName
+                    price
+                }
+                count
+            }
+        }
     }
 `;

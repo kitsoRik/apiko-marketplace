@@ -10,8 +10,13 @@
 
     overflow: hidden;
 
+    transform: rotate(180deg) scaleX(-1);
+
     &-item-wrapper {
         display: flex;
         flex-direction: column;
+        transform: scaleY(-1);
+
+        touch-action: none;
     }
 }

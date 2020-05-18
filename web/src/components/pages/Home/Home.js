@@ -32,7 +32,6 @@ const Home = ({
     });
 
     const variables = { title, locationId, category, priceFrom, priceTo, sortField, sortOrder, page, limit };
-
     const { data, loading } = useQuery(PRODUCTS_QUERY, { variables });
 
     useEffect(() => {

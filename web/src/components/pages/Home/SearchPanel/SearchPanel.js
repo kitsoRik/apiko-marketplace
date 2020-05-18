@@ -8,6 +8,7 @@ import Form from '../../../layouts/Form';
 import CategoryIcon from '../../../icons/CategoryIcon/CategoryIcon';
 import SortIcon from '../../../icons/SortIcon/SortIcon';
 import useLocationQuery from 'react-use-location-query';
+import CrossIcon from '../../../icons/CrossIcon/CrossIcon';
 
 const SearchPanel = ({ changeProductsSearchQuery, searchProducts }) => {
     const { query, setQuery } = useLocationQuery({}, { parseNumber: true, allowArray: true });
@@ -29,6 +30,16 @@ const SearchPanel = ({ changeProductsSearchQuery, searchProducts }) => {
     const _priceFrom = priceFrom === -1 ? "" : priceFrom;
     const _priceTo = priceTo === -1 ? "" : priceTo;
 
+    const clearQuery = () => {
+        onChangeSearchOptions({
+            category: "any",
+            priceFrom: -1,
+            priceTo: -1,
+            sortField: "rate",
+            sortOrder: "ASC"
+        })
+    }
+
     return (
         <Form className="home-page-search-panel">
             <Combobox type="medium" value={category} onChange={setCategory} >
@@ -47,6 +58,9 @@ const SearchPanel = ({ changeProductsSearchQuery, searchProducts }) => {
                 style={{ transform: `scaleY(${sortOrder === "DESC" ? 1 : -1})` }}
                 onClick={() => setSortOrder(sortOrder === 'ASC' ? 'DESC' : 'ASC')}
             />
+            <button className="home-page-search-panel-cross-button" onClick={clearQuery}>
+                <CrossIcon />
+            </button>
         </Form>
     )
 };

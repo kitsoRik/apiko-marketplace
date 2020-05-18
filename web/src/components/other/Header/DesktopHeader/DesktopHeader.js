@@ -62,14 +62,13 @@ const DesktopHeader = () => {
                 (visibleUserIcon || visibleUserIconLoading) &&
                 <div
                     className="desktop-header-profile"
-                    tabIndex={1}
-                    onBlur={() => setTimeout(() => setUserPanelOpen(false), 100)}>
+                    tabIndex={1}>
                     {visibleUserIcon &&
                         <UserIcon
                             src={currentUserQuery.data.currentUser.iconName}
                             fullName={currentUserQuery.data.currentUser.fullName}
                             onClick={() => setUserPanelOpen(!userPanelOpen)} />}
-                    {userPanelOpen && <UserPanel />}
+                    {userPanelOpen && <UserPanel onClose={() => setUserPanelOpen(false)} />}
                     {visibleUserIconLoading && <ModalLoading style={{ height: `48px`, width: `48px`, borderRadius: `50%` }} />}
                 </div>
             }

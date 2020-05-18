@@ -22,20 +22,20 @@ import useLocationQuery from 'react-use-location-query';
 const Product = ({ match, history }) => {
     const { id } = match.params;
 
-    const { query: { chat }, setQuery } = useLocationQuery({ chat: false }, { parseBoolean: true, hideFalseValues: true });
+    const { setQuery } = useLocationQuery({ chat: false }, { parseBoolean: true, hideFalseValues: true });
     const [buyDialogVisible, setBuyDialogVisible] = useState(false);
-    const [newFeedbacksListIds, setNewFeedbacksListIds] = useState([]);
-
     const { data, loading, error, subscribeToMore, } = useQuery(PRODUCT_QUERY, {
         variables: { id }
     });
 
     const currentUserQuery = useQuery(CURRENT_USER_QUERY);
-
-
     const [changeState, changeStateRecord] = useMutation(CHANGE_SAVED_STATE_MUTATION, {
         optimisticResponse: {
-            changeSavedStateOfProduct: !data?.product?.saved
+            changeSavedStateOfProduct: {
+                id,
+                saved: !data?.product.saved,
+                __typename: "Product",
+            }
         }
     });
 
@@ -43,7 +43,6 @@ const Product = ({ match, history }) => {
         if (changeStateRecord.loading) return notifyWarning("Wait before next saved.");
         const state = !data?.product?.saved;
         changeState({ variables: { id, state }, });
-        changeProductStateHandler(data?.product, state);
     }
 
     const onOpenContactSellerDialog = () => setQuery({ chat: true });

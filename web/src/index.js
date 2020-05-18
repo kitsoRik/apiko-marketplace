@@ -10,9 +10,7 @@ import socket from './services/socketio';
 ReactDOM.render(
   (<Provider store={store}>
     <ApolloProvider client={client}>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
+      <App />
     </ApolloProvider>
   </Provider>),
   document.getElementById('root')

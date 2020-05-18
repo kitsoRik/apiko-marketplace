@@ -19,6 +19,8 @@ const PurchasesItem = ({ match: { params: { id } } }) => {
 
     const [changePurchaseStatus] = useMutation(CHANGE_PURCHASE_STATUS);
 
+    useSubscription(PURCHASE_STATUS_CHANGED);
+
     if (loading) return <span>Loading...</span>
 
     const { currentUser } = currentUserQuery.data;
@@ -27,8 +29,13 @@ const PurchasesItem = ({ match: { params: { id } } }) => {
     const isSeller = currentUser.id === seller.id;
     const isShopper = !isSeller;
 
-    const visiblePostedButton = isSeller && !statuses.find(s => s.status === "POSTED");
-    const visibleCloseButton = isShopper && !statuses.find(s => s.status === "CLOSED");
+    const isPosted = !!statuses.find(s => s.status === "POSTED");
+    const isCanceled = !!statuses.find(s => s.status === "CANCELED");
+    const isClosed = !!statuses.find(s => s.status === "CLOSED");
+
+    const visiblePostedButton = isSeller && !isPosted && !isCanceled;
+    const visibleCancelButton = isShopper && !isCanceled && !isPosted;
+    const visibleCloseButton = isShopper && !isClosed && !!isPosted && !isCanceled;
 
     const onClickPost = async () => {
         await changePurchaseStatus({
@@ -39,6 +46,12 @@ const PurchasesItem = ({ match: { params: { id } } }) => {
     const onClickClose = async () => {
         await changePurchaseStatus({
             variables: { purchaseId: id, status: "CLOSED" }
+        })
+    }
+
+    const onClickCancel = async () => {
+        await changePurchaseStatus({
+            variables: { purchaseId: id, status: "CANCELED" }
         })
     }
 
@@ -61,6 +74,7 @@ const PurchasesItem = ({ match: { params: { id } } }) => {
                 }
             </div>
             {visiblePostedButton && <Button.Default value="Posted" uppercase={true} onClick={onClickPost} />}
+            {visibleCancelButton && <Button.Default value="Cancel" uppercase={true} onClick={onClickCancel} />}
             {visibleCloseButton && <Button.Default value="Close" uppercase={true} onClick={onClickClose} />}
         </div>
     )

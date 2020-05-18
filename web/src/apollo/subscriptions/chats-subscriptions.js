@@ -29,6 +29,21 @@ subscription onChatCreated {
 }
 `;
 
+export const MESSAGE_SENT_ANY_SUBSCRIPTION = gql`
+subscription onMessageSentAny {
+    messageSentAny {
+        id
+        writter {
+        id
+        }
+        text
+        createdAt
+        chat {
+          id
+        }
+    }
+}`
+
 export const MESSAGE_SENT_SUBSCRIPTION = gql`
 subscription onMessageSent($chatId: ID!) {
     messageSent(chatId: $chatId) {

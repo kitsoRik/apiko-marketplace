@@ -10,24 +10,44 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import { CURRENT_USER_CART_QUERY } from '../../../apollo/queries/user-queries';
 import { PRODUCT_QUERY } from '../../../apollo/queries/products-queries';
 import { PURCHASE_MUTATION, PURCHASE_MUTATION_WITH_CLEAR_CARD } from '../../../apollo/mutation/products-mutation';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
+import useLocationQuery from 'react-use-location-query';
 
 const Purchase = ({ match, location: { search } }, fromCart = true) => {
 
-    const { cart, product, count } = QueryString.parse(search.substring(1));
+
+    const { query: { cart, product, count }, setQuery } = useLocationQuery({
+        cart: false,
+        product: "1",
+        count: 0
+    }, { parseNumber: true, parseBoolean: true });
 
     const history = useHistory();
 
     const currentUserCart = useQuery(CURRENT_USER_CART_QUERY, { skip: !cart });
-    const productQuery = useQuery(PRODUCT_QUERY, { variables: { id: product }, skip: !!cart });
+    const productQuery = useQuery(PRODUCT_QUERY, { variables: { id: product }, skip: !!cart && !!product });
 
     const [purchase] = useMutation(PURCHASE_MUTATION);
     const [purchaseWithClearCart] = useMutation(PURCHASE_MUTATION_WITH_CLEAR_CARD);
 
+    if (!cart && !product) return (
+        <div>
+            <h1>Please, select <Link to="/">product</Link> or <span onClick={() => setQuery({ cart: true })}>cart</span>
+            </h1>
+        </div>
+    );
+
     if (currentUserCart.loading || productQuery.loading) return <span>Loading...</span>
 
-    const cartProducts = cart ? currentUserCart.data.currentUser.cartProducts :
-        [{ count: +count, product: productQuery.data.product }];
+    if (!cart) {
+        console.log(productQuery);
+        if (!productQuery?.data) {
+            return <span>Unknown product</span>
+        }
+    }
+
+    const cartProducts = (cart ? currentUserCart?.data?.currentUser.cartProducts :
+        [{ count: +count, product: productQuery.data.product }]) ?? [];
 
     const onPurchase = async () => {
         let purchases = [];
@@ -50,7 +70,6 @@ const Purchase = ({ match, location: { search } }, fromCart = true) => {
         });
 
         history.push("/purchases?side=shopper");
-
     }
 
     return (

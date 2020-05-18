@@ -13,7 +13,7 @@ import { notifyInfo } from '../../../other/Snackbar/Snackbar';
 
 const SellerPurchases = () => {
     const { query: { viewOpened, viewPosted, viewCanceled, viewClosed, sortField, sortOrder, limit, page }, setQuery } = useLocationQuery({
-        viewOpened: true, viewPosted: true, viewClosed: true, viewCanceled: true, sortField: "created", sortOrder: "ASC", limit: 10, page: 1
+        viewOpened: true, viewPosted: true, viewClosed: true, viewCanceled: true, sortField: "created", sortOrder: "DESC", limit: 10, page: 1
     }, { parseBoolean: true, parseNumber: true });
     const { data, loading, subscribeToMore } = useQuery(SELLER_PURCHASES_QUERY, {
         variables: {
@@ -40,20 +40,7 @@ const SellerPurchases = () => {
 
     return (
         <div className="purchases-page-seller-purchases">
-            <FilterPanel {...{
-                viewOpened,
-                setViewOpened: viewOpened => setQuery({ viewOpened }),
-                viewPosted,
-                setViewPosted: viewPosted => setQuery({ viewPosted }),
-                viewCanceled,
-                setViewCanceled: viewCanceled => setQuery({ viewCanceled }),
-                viewClosed,
-                setViewClosed: viewClosed => setQuery({ viewClosed }),
-                sortField,
-                setSortField: sortField => setQuery({ sortField }),
-                sortOrder,
-                setSortOrder: sortOrder => setQuery({ sortOrder }),
-            }}
+            <FilterPanel
             />
             <div className="purchases-page-seller-purchases-container">
                 {

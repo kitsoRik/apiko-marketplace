@@ -17,7 +17,7 @@ import useLocationQuery from 'react-use-location-query';
 
 const ContactSellerDialog = ({ productId, productTitle, fullName, location, iconName }) => {
 
-    const { query, setQuery } = useLocationQuery({}, { parseBoolean: true });
+    const { query, setQuery } = useLocationQuery({}, { parseBoolean: true, hideFalseValues: true });
 
     const history = useHistory();
 

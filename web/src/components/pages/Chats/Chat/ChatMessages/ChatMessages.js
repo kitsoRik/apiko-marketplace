@@ -9,10 +9,63 @@ import ModalLoading from '../../../../layouts/ModalLoading/ModalLoading';
 import { List, AutoSizer, CellMeasurer, CellMeasurerCache, InfiniteLoader } from 'react-virtualized';
 import gql from 'graphql-tag';
 import { MESSAGE_SENT_SUBSCRIPTION } from '../../../../../apollo/subscriptions/chats-subscriptions';
+import { clamp } from 'lodash';
+import useLocationQuery from 'react-use-location-query';
+
+
+const useCustomScroll = () => {
+
+    let timeouts = [];
+    let nextStep = 0;
+
+    const dispatchScrollEvent = e => {
+        const reactVirtualizedItem = document.querySelector(".ReactVirtualized__Grid.ReactVirtualized__List");
+        const scrollTop = reactVirtualizedItem.scrollTop;
+
+        if (timeouts !== []) {
+            timeouts.forEach(t => clearTimeout(t));
+            timeouts = [];
+
+        }
+        const deltaY = e.deltaY;
+
+        nextStep = clamp(nextStep - deltaY, 0, reactVirtualizedItem.scrollHeight - reactVirtualizedItem.clientHeight);
+        e.preventDefault();
+
+
+        const sub = nextStep - scrollTop;
+        for (let i = 0; i < 1; i += 0.1) {
+            const timer = setTimeout(() => {
+                const koef = 1 - i * i;
+                reactVirtualizedItem.scrollTo(0, nextStep - (sub * koef));
+                reactVirtualizedItem.dispatchEvent(new CustomEvent("scroll"))
+                timeouts = timeouts.filter(t => t !== timer);
+            }, 20);
+
+            timeouts.push(timer);
+        }
+    }
+
+    const preventScroll = () => {
+        const reactVirtualizedItem = document.querySelector(".ReactVirtualized__Grid.ReactVirtualized__List");
+        if (!reactVirtualizedItem) return;
+
+
+        reactVirtualizedItem.removeEventListener("wheel", dispatchScrollEvent);
+        reactVirtualizedItem.addEventListener("wheel", dispatchScrollEvent);
+    }
+
+    return preventScroll;
+}
+
 
 const ChatMessages = ({ chatId, isChatLoading }) => {
 
-    const [page, setPage] = useState(1);
+    const preventScroll = useCustomScroll();
+
+    const { query: { page, limit }, setQuery } = useLocationQuery({ page: 1, limit: 30 }, { parseNumber: true });
+
+    const [ref, setRef] = useState(null);
     const [lastChatId, setLastChatId] = useState(-1);
 
     const cache = useCallback(() => new CellMeasurerCache({
@@ -21,36 +74,27 @@ const ChatMessages = ({ chatId, isChatLoading }) => {
     }))();
 
     useEffect(() => {
-        setPage(1);
+    }, []);
+
+    useEffect(() => {
+        setQuery({ page: 1 });
         setLastChatId(chatId);
     }, [chatId]);
 
-    const { data, error, loading, subscribeToMore } = useQuery(CHAT_MESSAGES_QUERY, {
+    useEffect(() => {
+        if (ref) {
+            preventScroll();
+        }
+    }, [ref]);
+
+    const { data, loading } = useQuery(CHAT_MESSAGES_QUERY, {
         variables: {
             id: chatId,
             page,
-            limit: 30
+            limit
         },
         skip: isChatLoading || chatId != lastChatId,
     });
-
-    useEffect(() => {
-        subscribeToMore({
-            document: MESSAGE_SENT_SUBSCRIPTION,
-            variables: { chatId, page: 1, limit: 30 },
-            updateQuery: (prev, { subscriptionData: { data: { messageSent } } }) => {
-                return {
-                    chat: {
-                        ...prev.chat,
-                        messages: [
-                            ...prev.chat.messages,
-                            messageSent,
-                        ]
-                    }
-                }
-            }
-        })
-    }, [chatId]);
 
     const client = useApolloClient();
     const user = useQuery(CURRENT_USER_QUERY);
@@ -62,12 +106,11 @@ const ChatMessages = ({ chatId, isChatLoading }) => {
         for (let i = 1; i <= page; i++) {
             const c = client.readQuery({
                 query: CHAT_MESSAGES_QUERY,
-                variables: { id: chatId, page: i, limit: 30 }
+                variables: { id: chatId, page: i, limit }
             });
             messages = [...messages, ...c.chat.messages];
         }
     } catch (e) {
-
     }
 
     if (loading && messages.length === 0)
@@ -81,22 +124,25 @@ const ChatMessages = ({ chatId, isChatLoading }) => {
         <div className="chats-page-chat-messages">
             <InfiniteLoader
                 rowCount={messagesCount}
-                loadMoreRows={s => setPage(page + 1)}
+                
+                loadMoreRows={s => setQuery({ page: page + 1 })}
                 isRowLoaded={({ index }) => { return loading || index < messages.length; }}>
                 {
                     ({ onRowsRendered, registerChild }) => <AutoSizer>
                         {
                             ({ width, height }) =>
                                 <List
-                                    ref={registerChild}
+                                    ref={r => {
+                                        setRef(r);
+                                        registerChild(r);
+                                    }}
                                     deferredMeasurementCache={cache}
                                     onRowsRendered={onRowsRendered}
                                     width={width}
                                     height={height}
                                     rowHeight={cache.rowHeight}
                                     rowCount={messages.length}
-                                    overscanRowCount={3}
-                                    style={{ paddingTop: '45px' }}
+                                    style={{ paddingBottom: '45px' }}
                                     rowRenderer={renderMessage(messages, cache, user)} />
                         }
                     </AutoSizer>
@@ -119,6 +165,11 @@ const renderMessage = (messages, cache, user) => ({ index, key, parent, style })
             parent={parent}>
             <div className="chats-page-chat-messages-item-wrapper" style={style}>
                 <ChatMessagesItem
+                    onWheel={e => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        console.log(e.target.scroll());
+                    }}
                     key={m.id}
                     text={m.text}
                     fromMe={m.writter.id === user.data.currentUser.id}
@@ -128,3 +179,6 @@ const renderMessage = (messages, cache, user) => ({ index, key, parent, style })
     );
 }
 export default ChatMessages;
+
+
+/* */

@@ -19,7 +19,11 @@ const ProductCard = ({ className, product, onChangeSavedState = () => { }, ...pr
 
     const [changeState, { loading }] = useMutation(CHANGE_SAVED_STATE_MUTATION, {
         optimisticResponse: {
-            changeSavedStateOfProduct: !saved
+            changeSavedStateOfProduct: {
+                id,
+                saved: !saved,
+                __typename: "Product",
+            }
         }
     });
 

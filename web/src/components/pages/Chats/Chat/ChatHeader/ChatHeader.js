@@ -8,11 +8,17 @@ import TREdgeArrow from '../../../../icons/TREdgeArrow';
 import { useHistory } from 'react-router-dom';
 import withScreenSize from '../../../../hocs/withScreenSize/withScreenSize';
 import ModalLoading from '../../../../layouts/ModalLoading/ModalLoading';
+import Menu from '../../../../layouts/Menu/Menu';
+import MenuItem from '../../../../layouts/Menu/MenuItem';
+import HeartIcon from '../../../../icons/HeartIcon/HeartIcon';
+import { notifyInfo } from '../../../../other/Snackbar/Snackbar';
+import ReportIcon from '../../../../icons/ReportIcon/ReportIcon';
 
 const ChatHeader = ({ user, product, loading, screenSize }) => {
     const history = useHistory();
 
     const isMobileChat = screenSize.width <= 480;
+
     if (!isMobileChat)
         return (
             <div className="chats-page-chat-header">
@@ -35,6 +41,15 @@ const ChatHeader = ({ user, product, loading, screenSize }) => {
                         onClick={() => history.push(`/products/${product.id}`)}>
                         <TREdgeArrow />
                     </button>
+                </div>
+                <div className="chats-page-chat-header-menu">
+                    <Menu>
+                        <MenuItem
+                            icon={<ReportIcon />}
+                            value="Report"
+                            onAccept={() => notifyInfo("Thanks for report. We check its very soon")}
+                        />
+                    </Menu>
                 </div>
             </div >
         );
@@ -59,6 +74,9 @@ const ChatHeader = ({ user, product, loading, screenSize }) => {
                     onClick={() => history.push(`/products/${product.id}`)}>
                     <TREdgeArrow />
                 </button>
+            </div>
+            <div>
+                <Menu />
             </div>
         </div >
     );

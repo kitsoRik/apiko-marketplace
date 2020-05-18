@@ -55,11 +55,18 @@ const Cart = () => {
 
     return (
         <div className="cart-page">
-            <h1>Cart</h1>
-            <div className="cart-page-products">
-                <CartProductsList onCountChange={onCountChange} cartProducts={data.currentUser.cartProducts} />
-            </div>
-            <Button.Default value="Purchase" asLink={true} to="/purchase?cart=true" />
+            <h1 className="cart-page-title">Cart</h1>
+            {data.currentUser.cartProducts.length !== 0 && <div className="cart-page-products">
+                <CartProductsList
+                    cartProducts={data.currentUser.cartProducts}
+                    onCountChange={onCountChange}
+                />
+            </div>}
+            {data.currentUser.cartProducts.length !== 0 && 
+                <Button.Default className="cart-page-purchase-button" value="Purchase" asLink={true} to="/purchase?cart=true" />}
+            {data.currentUser.cartProducts.length === 0 &&
+                <h3 className="cart-page-empty">Your cart is empty</h3>
+            }
         </div>
     )
 };

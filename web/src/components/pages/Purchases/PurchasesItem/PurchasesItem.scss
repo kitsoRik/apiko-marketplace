@@ -34,6 +34,9 @@
             &[status="CLOSED"] {
                 background-color: red;
             }
+            &[status="CANCELED"] {
+                background-color: orange;
+            }
         }
     }
 }

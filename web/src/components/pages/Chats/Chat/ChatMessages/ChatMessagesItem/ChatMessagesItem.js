@@ -4,7 +4,7 @@ import "./ChatMessagesItem.scss";
 import ChatMessageItemEdge from './ChatMessageItemEdge';
 import moment from 'moment';
 
-const ChatMessagesItem = ({ style, text, fromMe = false, createdAt }) => {
+const ChatMessagesItem = ({ style, text, fromMe = false, createdAt, ...props }) => {
 
     const [time, setTime] = useState(parseTime(createdAt));
 
@@ -15,7 +15,7 @@ const ChatMessagesItem = ({ style, text, fromMe = false, createdAt }) => {
     });
 
     return (
-        <div className="chats-page-chat-messages-item" fromme={fromMe ? "" : null} style={style}>
+        <div className="chats-page-chat-messages-item" fromme={fromMe ? "" : null} style={style} {...props}>
             <div className="chats-page-chat-messages-item-bg">
                 <span>{text}</span>
             </div>

@@ -16,6 +16,7 @@ import gql from 'graphql-tag';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
 import { CURRENT_USER_QUERY } from '../../../apollo/queries/user-queries';
 import { PRODUCTS_QUERY } from '../../../apollo/queries/products-queries';
+import { getOperationName } from '@apollo/client/utilities';
 
 const Login = ({ history }) => {
     const [error, setError] = useState(null);
@@ -24,17 +25,7 @@ const Login = ({ history }) => {
     const [password, setPassword] = useState("");
 
     const apolloClient = useApolloClient();
-    const [login, { loading }] = useMutation(LOGIN_MUTATION, {
-        refetchQueries: [{
-            query: PRODUCTS_QUERY, variables: {
-                title: "",
-                locationId: -1,
-                category: "any",
-                priceFrom: -1,
-                priceTo: -1
-            }
-        },]
-    });
+    const [login, { loading }] = useMutation(LOGIN_MUTATION);
 
     const _login = () =>
         login({
@@ -42,7 +33,8 @@ const Login = ({ history }) => {
                 email, password
             }
         })
-            .then(({ data: { login } }) => {
+            .then(async ({ data: { login } }) => {
+                await apolloClient.resetStore();
                 apolloClient.writeQuery({
                     query: CURRENT_USER_QUERY,
                     data: {

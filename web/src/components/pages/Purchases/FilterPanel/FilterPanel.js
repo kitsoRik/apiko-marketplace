@@ -6,21 +6,18 @@ import Combobox from '../../../layouts/Combobox/Combobox';
 import ComboboxOption from '../../../layouts/Combobox/ComboboxOption/ComboboxOption';
 import Form from '../../../layouts/Form';
 import SortIcon from '../../../icons/SortIcon/SortIcon';
+import useLocationQuery from 'react-use-location-query';
 
-const FilterPanel = ({
-    viewOpened,
-    setViewOpened,
-    viewPosted,
-    setViewPosted,
-    viewCanceled,
-    setViewCanceled,
-    viewClosed,
-    setViewClosed,
-    sortField,
-    setSortField,
-    sortOrder,
-    setSortOrder
-}) => {
+const FilterPanel = () => {
+
+    const { query: { viewOpened, viewPosted, viewCanceled, viewClosed, sortField, sortOrder }, setQuery } = useLocationQuery({}, { parseBoolean: true });
+
+    const setViewOpened = viewOpened => setQuery({ viewOpened });
+    const setViewPosted = viewPosted => setQuery({ viewPosted });
+    const setViewCanceled = viewCanceled => setQuery({ viewCanceled });
+    const setViewClosed = viewClosed => setQuery({ viewClosed });
+    const setSortField = sortField => setQuery({ sortField });
+    const setSortOrder = sortOrder => setQuery({ sortOrder });
 
     return (
         <Form className="purchases-page-filtering-panel">

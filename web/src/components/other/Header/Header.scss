@@ -1,27 +1,27 @@
 .header {
-    &-wrapper {
-        display: flex;
-        justify-content: center;
+	&-wrapper {
+		display: flex;
+		justify-content: center;
 
-        transition: all 0.7s;
+		transition: all 0.7s;
 
-        position: relative;
-        &::before {
-            content: "";
-            position: absolute;
-            height: 100%;
-            width: 100%;
+		position: relative;
+		&::before {
+			content: "";
+			position: absolute;
+			height: 100%;
+			width: 100%;
 
-            transition: all 0.7s;
+			transition: all 0.7s;
 
-            background: linear-gradient(180deg, #090810 0%, #171236 100%);
-            opacity: 0;
+			background: linear-gradient(180deg, #090810 0%, #171236 100%);
+			opacity: 0;
 
-            z-index: -1;
-        }
+			z-index: -1;
+		}
 
-        &[dark-mode]::before {
-            opacity: 1;
-        }
-    }
+		&[dark-mode]::before {
+			opacity: 1;
+		}
+	}
 }

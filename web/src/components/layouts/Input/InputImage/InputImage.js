@@ -1,76 +1,81 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 import "./InputImage.scss";
 
 const InputImage = ({
-    className,
-    onlyView = false,
-    multiple = false,
-    file = null,
-    setFile = () => { },
-    setFiles = () => { },
-    onClear = () => { },
-    ...props }) => {
+	className,
+	onlyView = false,
+	multiple = false,
+	file = null,
+	setFile = () => {},
+	setFiles = () => {},
+	onClear = () => {},
+	...props
+}) => {
+	const [isDrag, setIsDrag] = useState(false);
+	const [image, setImage] = useState(null);
 
-    const [isDrag, setIsDrag] = useState(false);
-    const [image, setImage] = useState(null);
+	useEffect(() => {
+		if (!file) return;
 
+		let reader = new FileReader();
 
-    useEffect(() => {
-        if (!file) return;
+		reader.onload = (event) => {
+			setImage(event.target.result);
+		};
 
-        let reader = new FileReader();
+		reader.readAsDataURL(file);
+	}, [file]);
 
-        reader.onload = (event) => {
-            setImage(event.target.result);
-        }
+	const onChange = (e) => {
+		const files = e.target.files;
 
-        reader.readAsDataURL(file);
-    }, [file]);
+		if (!files[0]) return;
 
-    const onChange = (e) => {
+		if (multiple) {
+			setFiles([...files]);
+		} else {
+			setFile(files[0]);
+		}
+	};
 
-        const files = e.target.files;
+	const onClick = (e) => {
+		if (onlyView) e.preventDefault();
+		else if (ref) ref.current.click();
+	};
 
-        if (!files[0]) return;
+	const ref = React.createRef();
 
-        if (multiple) {
-            setFiles([...files]);
-        } else {
-            setFile(files[0]);
-        }
-    }
-
-    const onClick = (e) => {
-        if (onlyView) e.preventDefault();
-        else if (ref) ref.current.click();
-    }
-
-    const ref = React.createRef();
-
-    return (
-        <div
-            className={`input-image ${className ?? ""}`}
-            onClick={onClick}
-            is-drag={isDrag ? "true" : null}
-            has-file={!!file ? "true" : "false"}
-            {...props}
-        >
-            {!!file && <button className="input-image-clear-button" onClick={onClear}></button>}
-            <input
-                ref={ref}
-                type="file"
-                multiple={multiple}
-                onChange={onChange}
-                onClick={(e) => e.stopPropagation()}
-                onDragEnter={() => setIsDrag(true)}
-                onDragLeave={() => setIsDrag(false)}
-            />
-            {image && <div className="input-image-container">
-                <img src={image} alt="Unknown" />
-            </div>}
-        </div>
-    )
+	return (
+		<div
+			className={`input-image ${className ?? ""}`}
+			onClick={onClick}
+			is-drag={isDrag ? "true" : null}
+			has-file={!!file ? "true" : "false"}
+			{...props}
+		>
+			{!!file && (
+				<button
+					className="input-image-clear-button"
+					onClick={onClear}
+				></button>
+			)}
+			<input
+				ref={ref}
+				type="file"
+				multiple={multiple}
+				onChange={onChange}
+				onClick={(e) => e.stopPropagation()}
+				onDragEnter={() => setIsDrag(true)}
+				onDragLeave={() => setIsDrag(false)}
+			/>
+			{image && (
+				<div className="input-image-container">
+					<img src={image} alt="Unknown" />
+				</div>
+			)}
+		</div>
+	);
 };
 
 export default InputImage;

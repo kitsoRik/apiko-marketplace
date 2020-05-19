@@ -9,7 +9,7 @@ exports[`Label should render with children 1`] = `
     className="label-values"
   >
     <span
-      className="label-values-value undefined"
+      className="label-values-value"
       error={null}
     >
       
@@ -30,7 +30,7 @@ exports[`Label should render with children and error 1`] = `
     className="label-values"
   >
     <span
-      className="label-values-value undefined"
+      className="label-values-value"
       error="true"
     >
       
@@ -56,7 +56,7 @@ exports[`Label should render with children and error if touched 1`] = `
     className="label-values"
   >
     <span
-      className="label-values-value undefined"
+      className="label-values-value"
       error={null}
     >
       
@@ -77,7 +77,7 @@ exports[`Label should render with children and value 1`] = `
     className="label-values"
   >
     <span
-      className="label-values-value undefined"
+      className="label-values-value"
       error={null}
     >
       My custom value

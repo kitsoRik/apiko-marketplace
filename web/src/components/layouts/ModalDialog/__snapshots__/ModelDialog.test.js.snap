@@ -1,0 +1,120 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalDialog should be rendered 1`] = `
+<div
+  className="modal-dialog"
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
+  <div
+    className="form modal-dialog-form "
+    onClick={[Function]}
+  />
+</div>
+`;
+
+exports[`ModalDialog should render closed 1`] = `
+<div
+  className="modal-dialog"
+  onClick={[Function]}
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
+  <div
+    className="form modal-dialog-form "
+    onClick={[Function]}
+  >
+    <div>
+      <span />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ModalDialog should render opened 1`] = `
+<div
+  className="modal-dialog"
+  onClick={[Function]}
+  style={
+    Object {
+      "display": "flex",
+    }
+  }
+>
+  <div
+    className="form modal-dialog-form "
+    onClick={[Function]}
+  >
+    <div>
+      <span />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ModalDialog should render with children 1`] = `
+<div
+  className="modal-dialog"
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
+  <div
+    className="form modal-dialog-form "
+    onClick={[Function]}
+  >
+    <div>
+      <span />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ModalDialog should render with classname 1`] = `
+<div
+  className="modal-dialog"
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
+  <div
+    className="form modal-dialog-form custom-class-name"
+    onClick={[Function]}
+  >
+    <div>
+      <span />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ModalDialog should render with style 1`] = `
+<div
+  className="modal-dialog"
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
+  <div
+    className="form modal-dialog-form "
+    onClick={[Function]}
+    style={Object {}}
+  >
+    <div>
+      <span />
+    </div>
+  </div>
+</div>
+`;

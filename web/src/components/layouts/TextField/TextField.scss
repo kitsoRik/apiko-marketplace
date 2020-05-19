@@ -1,96 +1,104 @@
 .text-field {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 
-    position: relative;
+	position: relative;
 
-    &- {
-        width: 100%;
-        height: 100%;
+	&[disabled] {
+		border-color: gray;
+	}
 
-        color: #000;
-        background-color: #f9fafb;
+	&- {
+		width: 100%;
+		height: 100%;
 
-        font-size: 16px;
+		color: #000;
+		background-color: #f9fafb;
 
-        border-radius: 5px;
-        border: 1px solid #dedee0;
-        box-sizing: border-box;
+		font-size: 16px;
 
-        resize: none;
+		border-radius: 5px;
+		border: 1px solid #dedee0;
+		box-sizing: border-box;
 
-        &::placeholder {
-            color: #66666666;
-        }
+		resize: none;
 
-        &[error="true"] {
-            border-color: red;
-        }
-    }
+		&::placeholder {
+			color: #66666666;
+		}
 
-    &-icon {
-        height: 18px;
-        width: 18px;
+		&[error="true"] {
+			border-color: red;
+		}
 
-        position: absolute;
+		&:disabled {
+			color: gray;
+		}
+	}
 
-        display: flex;
-        align-items: center;
-        margin-left: 10px;
-    }
+	&-icon {
+		height: 18px;
+		width: 18px;
 
-    &-loading {
-        height: 18px;
-        width: 18px;
+		position: absolute;
 
-        position: absolute;
-        right: 18px;
+		display: flex;
+		align-items: center;
+		margin-left: 10px;
+	}
 
-        display: flex;
-        align-items: center;
-        margin-left: 10px;
-    }
+	&-loading {
+		height: 18px;
+		width: 18px;
 
-    &-view-password {
-        margin-right: 20px;
+		position: absolute;
+		right: 18px;
 
-        width: 24px;
-        height: 16px;
+		display: flex;
+		align-items: center;
+		margin-left: 10px;
+	}
 
-        position: absolute;
+	&-view-password {
+		margin-right: 20px;
 
-        right: 0;
-    }
+		width: 24px;
+		height: 16px;
 
-    &-medium {
-        &- {
-            padding: 9px;
-        }
-    }
+		position: absolute;
 
-    &-auto-complete-container {
-        padding: 15px;
-        width: 100%;
+		right: 0;
+	}
 
-        position: absolute;
-        top: 100%;
+	&-medium {
+		&- {
+			padding: 9px;
+		}
+	}
 
-        background-color: white;
+	&-auto-complete-container {
+		padding: 15px;
+		width: 100%;
 
-        border: 1px solid gray;
-        border-radius: 4px;
+		position: absolute;
+		top: 100%;
 
-        box-sizing: border-box;
+		background-color: white;
 
-        z-index: 1500;
-    }
+		border: 1px solid gray;
+		border-radius: 4px;
 
-    &[type="medium"] .text-field- {
-        padding: 9px;
-        font-size: 14px;
-    }
+		box-sizing: border-box;
 
-    &[type="big"] .text-field- {
-        padding: 20px 13px;
-    }
+		z-index: 1500;
+	}
+
+	&[type="medium"] .text-field- {
+		padding: 9px;
+		font-size: 14px;
+	}
+
+	&[type="big"] .text-field- {
+		padding: 20px 13px;
+	}
 }

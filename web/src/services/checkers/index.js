@@ -1,3 +1,3 @@
-import * as checkers from './checkers';
+import * as checkers from "./checkers";
 
 export default checkers;

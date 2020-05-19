@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MenuItem should be rendered 1`] = `
+<div
+  className="menu-item"
+  onClick={[Function]}
+>
+  <span>
+    
+  </span>
+</div>
+`;
+
+exports[`MenuItem should render with accept event 1`] = `
+<div
+  className="menu-item"
+  onClick={[Function]}
+>
+  <span>
+    
+  </span>
+</div>
+`;
+
+exports[`MenuItem should render with value 1`] = `
+<div
+  className="menu-item"
+  onClick={[Function]}
+>
+  <span>
+    Custom value
+  </span>
+</div>
+`;

@@ -1,68 +1,53 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
 import "./Chat.scss";
-import ChatHeader from './ChatHeader/ChatHeader';
-import { useQuery, useApolloClient } from '@apollo/react-hooks';
-import { CHAT_QUERY } from '../../../../apollo/queries/chat-queries';
-import ChatMessages from './ChatMessages/ChatMessages';
-import ChatInputMessage from './ChatInputMessage/ChatInputMessage';
-import { connect } from 'react-redux';
-import { setViewingChat } from '../../../../redux/actions/chats-actions';
-import gql from 'graphql-tag';
+import ChatHeader from "./ChatHeader/ChatHeader";
+import { useQuery, useApolloClient } from "@apollo/react-hooks";
+import { CHAT_QUERY } from "../../../../apollo/queries/chat-queries";
+import ChatMessages from "./ChatMessages/ChatMessages";
+import ChatInputMessage from "./ChatInputMessage/ChatInputMessage";
+import { connect } from "react-redux";
+import { setViewingChat } from "../../../../redux/actions/chats-actions";
+import useCurrentUser from "../../../hooks/useCurrentUser/useCurrentUser";
+import { CHAT_FRAGMENT } from "../../../../apollo/fragments/chat-fragment";
 
 const Chat = ({ setViewingChat, chatId, className }) => {
-    const client = useApolloClient();
+	const client = useApolloClient();
 
-    let chat = client.readFragment({
-        fragment: gql`
-            fragment chat on Chat {
-                id
-                product {
-                  id
-                  title
-                  price
-                  imageName
-                }
-                seller {
-                  id
-                  fullName
-                  iconName
-                }
-                shopper  {
-                  id
-                  fullName
-                  iconName
-                }
-            }
-        `,
-        id: chatId,
-    });
-    const { data } = useQuery(CHAT_QUERY, {
-        variables: { id: chatId },
-        skip: !!chat
-    });
+	let chat = client.readFragment({
+		fragment: CHAT_FRAGMENT,
+		id: chatId,
+	});
+	const { data } = useQuery(CHAT_QUERY, {
+		variables: { id: chatId },
+		skip: !!chat,
+	});
 
-    useEffect(() => {
-        if (!chatId) return;
-        setViewingChat(chatId);
+	const { currentUser } = useCurrentUser();
 
-        return () => {
-            setViewingChat(null);
-        }
-    }, [chatId]);
+	useEffect(() => {
+		if (!chatId) return;
+		setViewingChat(chatId);
 
-    if (!chat) chat = data?.chat;
+		return () => setViewingChat(null);
+	}, [chatId]);
 
-    const loading = !chat;
-    const { product, seller, shopper } = chat ?? {};
+	if (!chat) chat = data?.chat;
 
-    return (
-        <div className={`chats-page-chat ${className ?? ""}`}>
-            <ChatHeader product={loading ? null : product} user={loading ? null : seller} loading={loading} />
-            <ChatMessages chatId={chatId} isChatLoading={loading} />
-            <ChatInputMessage chatId={chatId} loading={loading} />
-        </div>
-    )
+	const loading = !chat;
+	const { product, seller, shopper } = chat ?? {};
+
+	return (
+		<div className={`chats-page-chat ${className ?? ""}`}>
+			<ChatHeader
+				product={loading ? null : product}
+				user={loading ? null : (currentUser.id === shopper?.id ? seller : shopper)}
+				loading={loading}
+			/>
+			<ChatMessages chatId={chatId} isChatLoading={loading} />
+			<ChatInputMessage chatId={chatId} loading={loading} />
+		</div>
+	);
 };
 
 export default connect(null, { setViewingChat })(Chat);

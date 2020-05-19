@@ -1,44 +1,44 @@
 .saved-items-page {
-    &-form {
-        padding: 25px;
+	&-form {
+		padding: 25px;
 
-        &-title {
-            margin-bottom: 25px;
+		&-title {
+			margin-bottom: 25px;
 
-            &-loading {
-                width: 17px;
-                height: 17px;
+			&-loading {
+				width: 17px;
+				height: 17px;
 
-                position: static;
-                display: inline-flex;
-            }
-        }
+				position: static;
+				display: inline-flex;
+			}
+		}
 
-        &-products-container {
-            display: grid;
-            grid-template-columns: repeat(4, 210px);
+		&-products-container {
+			display: grid;
+			grid-template-columns: repeat(4, 210px);
 
-            grid-column-gap: 5px;
-            grid-row-gap: 10px;
+			grid-column-gap: 5px;
+			grid-row-gap: 10px;
 
-            @media screen and (max-width: 900px) {
-                grid-template-columns: repeat(3, 210px);
-            }
+			@media screen and (max-width: 900px) {
+				grid-template-columns: repeat(3, 210px);
+			}
 
-            @media screen and (max-width: 692px) {
-                grid-template-columns: repeat(2, 210px);
-            }
+			@media screen and (max-width: 692px) {
+				grid-template-columns: repeat(2, 210px);
+			}
 
-            & .product-card {
-                height: 212px;
-                width: 206.25px;
-            }
+			& .product-card {
+				height: 212px;
+				width: 206.25px;
+			}
 
-            &-loading {
-                grid-column: 1 / span 4;
-                position: static;
-                height: 210px;
-            }
-        }
-    }
+			&-loading {
+				grid-column: 1 / span 4;
+				position: static;
+				height: 210px;
+			}
+		}
+	}
 }

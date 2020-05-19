@@ -1,41 +1,41 @@
 .feedback-card {
-    padding: 5px;
+	padding: 5px;
 
-    display: grid;
-    grid-template-columns: min-content auto;
-    grid-template-rows: min-content auto;
+	display: grid;
+	grid-template-columns: min-content auto;
+	grid-template-rows: min-content auto;
 
-    grid-column-gap: 5px;
+	grid-column-gap: 5px;
 
-    border: 1px solid #349a89;
+	border: 1px solid #349a89;
 
-    &[isnew] {
-        animation: new-feedback-appearance 0.3s ease-in;
-    }
+	&[isnew] {
+		animation: new-feedback-appearance 0.3s ease-in;
+	}
 
-    &-user-icon {
-        grid-row: 1 / span 2;
-    }
+	&-user-icon {
+		grid-row: 1 / span 2;
+	}
 
-    &-rate {
-        & &-star-icon {
-            margin: 0 1px;
-            height: 14px;
-            width: 14px;
-        }
-    }
+	&-rate {
+		& &-star-icon {
+			margin: 0 1px;
+			height: 14px;
+			width: 14px;
+		}
+	}
 
-    &-text {
-        word-break: break-all;
-    }
+	&-text {
+		word-break: break-all;
+	}
 }
 
 @keyframes new-feedback-appearance {
-    from {
-        background-color: yellow;
-    }
+	from {
+		background-color: yellow;
+	}
 
-    to {
-        background-color: transparent;
-    }
+	to {
+		background-color: transparent;
+	}
 }

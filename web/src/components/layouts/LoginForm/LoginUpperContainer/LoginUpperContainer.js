@@ -1,13 +1,9 @@
-import React from 'react';
+import React from "react";
 
-import './LoginUpperContainer.scss';
+import "./LoginUpperContainer.scss";
 
 const LoginUpperContainer = ({ children }) => {
-    return ( 
-        <div className="login-upper-container">
-            { children }
-        </div>
-     );
-}
+	return <div className="login-upper-container">{children}</div>;
+};
 
 export default LoginUpperContainer;

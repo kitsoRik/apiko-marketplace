@@ -1,16 +1,16 @@
 .unknown-chat {
-    flex: 1;
+	flex: 1;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 
-    background-color: #0005;
+	background-color: #0005;
 
-    cursor: pointer;
+	cursor: pointer;
 
-    &-label {
-        color: white;
-        font-size: 4em;
-    }
+	&-label {
+		color: white;
+		font-size: 4em;
+	}
 }

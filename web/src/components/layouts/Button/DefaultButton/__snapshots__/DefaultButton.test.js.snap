@@ -4,6 +4,11 @@ exports[`Default button should render disabled 1`] = `
 <button
   className="button-default "
   disabled={true}
+  style={
+    Object {
+      "textTransform": "none",
+    }
+  }
 >
   My custom calue
 </button>
@@ -13,6 +18,11 @@ exports[`Default button should render with value 1`] = `
 <button
   className="button-default "
   disabled={null}
+  style={
+    Object {
+      "textTransform": "none",
+    }
+  }
 >
   My custom value
 </button>
@@ -22,5 +32,10 @@ exports[`Default button should render without value 1`] = `
 <button
   className="button-default "
   disabled={null}
+  style={
+    Object {
+      "textTransform": "none",
+    }
+  }
 />
 `;

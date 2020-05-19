@@ -1,13 +1,13 @@
 .mobile-header {
-    padding: 18px 25px;
-    flex: 1;
+	padding: 18px 25px;
+	flex: 1;
 
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
 
-    &-burger {
-        justify-self: flex-end;
-        background-color: transparent;
-        border: none;
-    }
+	&-burger {
+		justify-self: flex-end;
+		background-color: transparent;
+		border: none;
+	}
 }

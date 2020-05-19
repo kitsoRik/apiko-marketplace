@@ -1,13 +1,9 @@
-import React from 'react';
+import React from "react";
 
-import './LoginLowerContainer.scss';
+import "./LoginLowerContainer.scss";
 
 const LoginLowerContainer = ({ children }) => {
-    return ( 
-        <div className="login-lower-container">
-            { children }
-        </div>
-     );
-}
+	return <div className="login-lower-container">{children}</div>;
+};
 
 export default LoginLowerContainer;

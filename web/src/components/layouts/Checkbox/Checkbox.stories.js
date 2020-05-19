@@ -1,6 +1,6 @@
-import React from 'react';
-import Checkbox from '.';
+import React from "react";
+import Checkbox from ".";
 
 export default { title: "Checkbox" };
 
-export const withText = () => <Checkbox value="My checkbox"/>
+export const withText = () => <Checkbox value="My checkbox" />;

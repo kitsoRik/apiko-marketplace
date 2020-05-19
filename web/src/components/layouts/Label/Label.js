@@ -1,32 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 import "./Label.scss";
 
-const Label = ({ value, as = "span", error, errorValueIfTouched, className, children, ...props }) => {
+const Label = ({
+	value,
+	as = "span",
+	error,
+	errorValueIfTouched,
+	className,
+	children,
+	...props
+}) => {
+	const [touched, setTouched] = useState(false);
 
-    const [touched, setTouched] = useState(false);
+	if (!children) {
+		return textToComponent(
+			as,
+			{
+				className: `label-solo-value ${className}`,
+				error: error ? "true" : null,
+				...props,
+			},
+			value
+		);
+	}
 
-    if (!children) {
-        return textToComponent(as, {
-            className: `label-solo-value ${className}`, error: error ? "true" : null, ...props
-        }, value);
-    }
+	return (
+		<div
+			className={`label ${className}`}
+			{...props}
+			onBlur={() => setTouched(true)}
+		>
+			<div className="label-values">
+				{textToComponent(
+					as,
+					{
+						className: `label-values-value`,
+						error: error ? "true" : null,
+						...props,
+					},
+					value
+				)}
+				{(touched || error) && (
+					<span className="label-values-error-value">
+						{error || errorValueIfTouched}
+					</span>
+				)}
+			</div>
+			{children}
+		</div>
+	);
+};
 
-    return (
-        <div className={`label ${className}`} {...props} onBlur={() => setTouched(true)}>
-            <div className="label-values">
-                {
-                    textToComponent(as, {
-                        className: `label-values-value`, error: error ? "true" : null, ...props
-                    }, value)
-                }
-                {(touched || error) && <span className="label-values-error-value">{error || errorValueIfTouched}</span>}
-            </div>
-            {children}
-        </div>
-    );
-}
-
-const textToComponent = (as, props = null, content = "") => React.createElement(as, props, content);
+const textToComponent = (as, props = null, content = "") =>
+	React.createElement(as, props, content);
 
 export default Label;

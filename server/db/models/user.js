@@ -45,7 +45,7 @@ const userSchema = new Schema({
 });
 
 userSchema.pre("save", async function (next) {
-    if (this.id !== "") return;
+    if (this.id !== "") return next();
 
     this.id = uuid.v4();
     next();
@@ -55,7 +55,7 @@ const userModel = model("Users", userSchema);
 
 exports.createUser = (fullName, email, password) => userModel.create({ fullName, email, password });
 exports.getUserById = (id) => userModel.findOne({ id });
-exports.getUserByEmail = (email) => userModel.findOne({ email }, { productsIds: true });
+exports.getUserByEmail = (email) => userModel.findOne({ email });
 exports.getUserByEmailAndPassword = (email, password) => userModel.findOne({ email, password });
 
 exports.getProductsIdsByUserId = (id) => userModel.findOne({ id }, { productsIds: true }).then(({ productsIds }) => productsIds)
@@ -92,7 +92,7 @@ exports.addProductToCardByUserId = async (id, productId, count) => {
     const cp = userCartProducts.find(cp => cp.productId === productId);
     if (cp)
         return this.changeCartItemCountByUserId(id, productId, cp.count + count);
-    return userModel.findOneAndUpdate({ id }, { $push: { cartProducts: { productId, count } } });
+    return userModel.findOneAndUpdate({ id }, { $push: { cartProducts: { productId, count } } }, { new: true });
 };
 
 exports.clearCartByUserId = (id) => userModel.findOneAndUpdate({ id }, { cartProducts: [] }, { new: true });

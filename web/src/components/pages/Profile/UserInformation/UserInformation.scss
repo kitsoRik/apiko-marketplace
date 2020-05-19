@@ -1,29 +1,29 @@
 .user-information {
-    padding: 15px 0 30px;
+	padding: 15px 0 30px;
 
-    display: grid;
-    grid-template-rows: auto min-content min-content;
+	display: grid;
+	grid-template-rows: auto min-content min-content;
 
-    text-align: center;
+	text-align: center;
 
-    &-icon {
-        margin: 0 auto;
+	&-icon {
+		margin: 0 auto;
 
-        width: 96px;
-        height: 96px;
+		width: 96px;
+		height: 96px;
 
-        border: 3px solid #349a89;
-        border-radius: 50%;
-    }
+		border: 3px solid #349a89;
+		border-radius: 50%;
+	}
 
-    &-fullname {
-        font-family: Rubik;
-        font-size: 20px;
-        color: #141414;
-    }
+	&-fullname {
+		font-family: Rubik;
+		font-size: 20px;
+		color: #141414;
+	}
 
-    &-location {
-        font-size: 13px;
-        color: #9099a7;
-    }
+	&-location {
+		font-size: 13px;
+		color: #9099a7;
+	}
 }

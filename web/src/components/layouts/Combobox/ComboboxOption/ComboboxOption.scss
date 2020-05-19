@@ -1,38 +1,38 @@
 .combobox-option {
-    padding: 8px;
-    width: 100%;
+	padding: 8px;
+	width: 100%;
 
-    background-color: #f9fafb;
-    color: #505050;
+	background-color: #f9fafb;
+	color: #505050;
 
-    border: 1px solid #dedee0;
+	border: 1px solid #dedee0;
 
-    display: grid;
-    grid-template-columns: 18px auto 15px;
-    grid-column-gap: 10px;
+	display: grid;
+	grid-template-columns: 18px auto 15px;
+	grid-column-gap: 10px;
 
-    appearance: none;
-    outline: none;
+	appearance: none;
+	outline: none;
 
-    border-radius: 5px;
-    box-sizing: border-box;
+	border-radius: 5px;
+	box-sizing: border-box;
 
-    cursor: pointer;
+	cursor: pointer;
 
-    user-select: none;
+	user-select: none;
 
-    &:hover {
-        background-color: #e8e9ea;
-    }
+	&:hover {
+		background-color: #e8e9ea;
+	}
 
-    &-icon {
-        height: 18px;
-        width: 18px;
-    }
+	&-icon {
+		height: 18px;
+		width: 18px;
+	}
 
-    &-text {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
+	&-text {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 }

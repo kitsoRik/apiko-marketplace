@@ -3,12 +3,22 @@
 exports[`OutlinedButton should render with className 1`] = `
 <button
   className="button-outlined my-custom-class-name"
+  style={
+    Object {
+      "textTransform": "none",
+    }
+  }
 />
 `;
 
 exports[`OutlinedButton should render with value 1`] = `
 <button
   className="button-outlined "
+  style={
+    Object {
+      "textTransform": "none",
+    }
+  }
 >
   My custom value
 </button>
@@ -17,5 +27,10 @@ exports[`OutlinedButton should render with value 1`] = `
 exports[`OutlinedButton should render without value 1`] = `
 <button
   className="button-outlined "
+  style={
+    Object {
+      "textTransform": "none",
+    }
+  }
 />
 `;

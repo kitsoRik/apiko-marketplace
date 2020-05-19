@@ -1,26 +1,26 @@
 .input-feedback {
-    padding: 10px;
-    margin-bottom: 10px;
+	padding: 10px;
+	margin-bottom: 10px;
 
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-row-gap: 10px;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-row-gap: 10px;
 
-    &-rate {
-        display: grid;
-        grid-template-columns: min-content auto;
-        grid-column-gap: 10px;
-        align-items: center;
+	&-rate {
+		display: grid;
+		grid-template-columns: min-content auto;
+		grid-column-gap: 10px;
+		align-items: center;
 
-        &-text {
-            font-size: 20px;
-            color: #777;
-        }
-    }
+		&-text {
+			font-size: 20px;
+			color: #777;
+		}
+	}
 
-    &-inputs {
-        display: grid;
-        grid-template-columns: auto min-content;
-        grid-column-gap: 10px;
-    }
+	&-inputs {
+		display: grid;
+		grid-template-columns: auto min-content;
+		grid-column-gap: 10px;
+	}
 }

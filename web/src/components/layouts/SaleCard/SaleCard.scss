@@ -1,17 +1,17 @@
 .sale-card {
-    display: grid;
-    grid-template-columns: min-content auto;
-    grid-template-rows: min-content auto;
+	display: grid;
+	grid-template-columns: min-content auto;
+	grid-template-rows: min-content auto;
 
-    border: 1px solid #349A89;
+	border: 1px solid #349a89;
 
-    &-icon {
-        height: 64px;
+	&-icon {
+		height: 64px;
 
-        grid-row: 1 / span 2;
+		grid-row: 1 / span 2;
 
-        & > img{
-            max-height: 100%;
-        }
-    }
+		& > img {
+			max-height: 100%;
+		}
+	}
 }

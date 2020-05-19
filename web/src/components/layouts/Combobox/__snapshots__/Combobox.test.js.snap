@@ -10,9 +10,14 @@ exports[`Combobox should render with options 1`] = `
     className="combobox-option"
     onClick={[Function]}
   >
-    <div>
+    <div
+      className="combobox-option-icon"
+    />
+    <p
+      className="combobox-option-text"
+    >
       Hello
-    </div>
+    </p>
   </div>
 </div>
 `;

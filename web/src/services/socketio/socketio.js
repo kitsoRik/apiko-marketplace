@@ -33,7 +33,6 @@
 //     } catch (e) {
 //     }
 
-
 //     try {
 //         const { chats } = client.readQuery({
 //             query: CHATS_LIST_QUERY,

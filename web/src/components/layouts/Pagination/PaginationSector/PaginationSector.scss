@@ -1,39 +1,39 @@
 .pagination-sector {
-    margin: 0 2px;
-    padding: 5px;
-    
-    flex: 1;
+	margin: 0 2px;
+	padding: 5px;
 
-    background-color: transparent;
-    
-    border: 1px solid #349A89;
-    border-radius: 4px;
+	flex: 1;
 
-    cursor: pointer;
-    user-select: none;
+	background-color: transparent;
 
-    &:hover {
-        color: yellow;
-        background-color: #349A89;
-    }
+	border: 1px solid #349a89;
+	border-radius: 4px;
 
-    &[current=true] {
-        color: yellow;
-        background-color: #349A89;
-    }
+	cursor: pointer;
+	user-select: none;
 
-    &[disabled] {
-        &:hover {
-            color: white;
-            background-color: gray;
-        }
-    }
+	&:hover {
+		color: yellow;
+		background-color: #349a89;
+	}
 
-    &-prev {
-        flex: 10;
-    }
+	&[current="true"] {
+		color: yellow;
+		background-color: #349a89;
+	}
 
-    &-next {
-        flex: 10;
-    }
+	&[disabled] {
+		&:hover {
+			color: white;
+			background-color: gray;
+		}
+	}
+
+	&-prev {
+		flex: 10;
+	}
+
+	&-next {
+		flex: 10;
+	}
 }

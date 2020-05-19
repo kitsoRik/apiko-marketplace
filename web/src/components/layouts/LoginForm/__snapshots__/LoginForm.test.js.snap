@@ -1,0 +1,200 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoginForm should be rendered 1`] = `
+<form
+  className="login-container undefined"
+  style={
+    Object {
+      "gridTemplateRows": " ",
+    }
+  }
+/>
+`;
+
+exports[`LoginForm should render the loading 1`] = `
+<form
+  className="login-container undefined"
+  style={
+    Object {
+      "gridTemplateRows": " ",
+    }
+  }
+>
+  <div
+    className="modal-loading undefined"
+    darken="true"
+    onClick={[Function]}
+  >
+    <img
+      alt="Loading"
+      src="loading.svg"
+      style={
+        Object {
+          "maxHeight": "100%",
+          "maxWidth": "100%",
+        }
+      }
+    />
+  </div>
+</form>
+`;
+
+exports[`LoginForm should render the loading with containers 1`] = `
+<form
+  className="login-container undefined"
+  style={
+    Object {
+      "gridTemplateRows": "auto ",
+    }
+  }
+>
+  <div
+    className="login-upper-container"
+  >
+    ...
+  </div>
+  <div
+    className="modal-loading undefined"
+    darken="true"
+    onClick={[Function]}
+  >
+    <img
+      alt="Loading"
+      src="loading.svg"
+      style={
+        Object {
+          "maxHeight": "100%",
+          "maxWidth": "100%",
+        }
+      }
+    />
+  </div>
+</form>
+`;
+
+exports[`LoginForm should render the loading with containers 2`] = `
+<form
+  className="login-container undefined"
+  style={
+    Object {
+      "gridTemplateRows": " 75px",
+    }
+  }
+>
+  <div
+    className="login-lower-container"
+  >
+    ...
+  </div>
+  <div
+    className="modal-loading undefined"
+    darken="true"
+    onClick={[Function]}
+  >
+    <img
+      alt="Loading"
+      src="loading.svg"
+      style={
+        Object {
+          "maxHeight": "100%",
+          "maxWidth": "100%",
+        }
+      }
+    />
+  </div>
+</form>
+`;
+
+exports[`LoginForm should render the loading with containers 3`] = `
+<form
+  className="login-container undefined"
+  style={
+    Object {
+      "gridTemplateRows": "auto 75px",
+    }
+  }
+>
+  <div
+    className="login-upper-container"
+  >
+    ...
+  </div>
+  <div
+    className="login-lower-container"
+  >
+    ...
+  </div>
+  <div
+    className="modal-loading undefined"
+    darken="true"
+    onClick={[Function]}
+  >
+    <img
+      alt="Loading"
+      src="loading.svg"
+      style={
+        Object {
+          "maxHeight": "100%",
+          "maxWidth": "100%",
+        }
+      }
+    />
+  </div>
+</form>
+`;
+
+exports[`LoginForm should render with both containers 1`] = `
+<form
+  className="login-container undefined"
+  style={
+    Object {
+      "gridTemplateRows": "auto 75px",
+    }
+  }
+>
+  <div
+    className="login-upper-container"
+  >
+    ...
+  </div>
+  <div
+    className="login-lower-container"
+  >
+    ...
+  </div>
+</form>
+`;
+
+exports[`LoginForm should render with lower container 1`] = `
+<form
+  className="login-container undefined"
+  style={
+    Object {
+      "gridTemplateRows": " 75px",
+    }
+  }
+>
+  <div
+    className="login-lower-container"
+  >
+    ...
+  </div>
+</form>
+`;
+
+exports[`LoginForm should render with upper container 1`] = `
+<form
+  className="login-container undefined"
+  style={
+    Object {
+      "gridTemplateRows": "auto ",
+    }
+  }
+>
+  <div
+    className="login-upper-container"
+  >
+    ...
+  </div>
+</form>
+`;

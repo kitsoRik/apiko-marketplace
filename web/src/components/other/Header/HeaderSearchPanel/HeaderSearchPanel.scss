@@ -1,62 +1,62 @@
 .home-page-header-panel {
-    height: 50px;
-    display: grid;
-    grid-template-columns: auto 200px 175px;
-    grid-template-rows: 50px;
-    grid-column-gap: 7px;
+	height: 50px;
+	display: grid;
+	grid-template-columns: auto 200px 175px;
+	grid-template-rows: 50px;
+	grid-column-gap: 7px;
 
-    @media screen and (max-width: 650px) {
-        height: auto;
-        grid-template-columns: auto 175px;
-        grid-template-rows: 50px 50px;
-        grid-row-gap: 10px;
-    }
+	@media screen and (max-width: 650px) {
+		height: auto;
+		grid-template-columns: auto 175px;
+		grid-template-rows: 50px 50px;
+		grid-row-gap: 10px;
+	}
 
-    &-title-field {
-        @media screen and (max-width: 650px) {
-            grid-column: 1 / span 2;
-        }
-    }
+	&-title-field {
+		@media screen and (max-width: 650px) {
+			grid-column: 1 / span 2;
+		}
+	}
 
-    &-text-field-autocomplete {
-        &-products {
-            height: 47px;
+	&-text-field-autocomplete {
+		&-products {
+			height: 47px;
 
-            display: grid;
-            grid-template-columns: 47px auto;
-            grid-template-rows: 1fr 1fr;
+			display: grid;
+			grid-template-columns: 47px auto;
+			grid-template-rows: 1fr 1fr;
 
-            cursor: pointer;
+			cursor: pointer;
 
-            &[active="true"],
-            &:hover {
-                background-color: #aaaa;
-            }
+			&[active="true"],
+			&:hover {
+				background-color: #aaaa;
+			}
 
-            &-icon {
-                margin-right: 8px;
-                grid-row: 1 / span 2;
+			&-icon {
+				margin-right: 8px;
+				grid-row: 1 / span 2;
 
-                & > img {
-                    height: 100%;
-                    width: 100%;
-                }
-            }
-        }
+				& > img {
+					height: 100%;
+					width: 100%;
+				}
+			}
+		}
 
-        &-recent-products {
-            &-header {
-                margin-bottom: 7px;
+		&-recent-products {
+			&-header {
+				margin-bottom: 7px;
 
-                display: flex;
-                justify-content: space-between;
+				display: flex;
+				justify-content: space-between;
 
-                color: #cecece;
-            }
+				color: #cecece;
+			}
 
-            &-item {
-                padding: 7px;
-            }
-        }
-    }
+			&-item {
+				padding: 7px;
+			}
+		}
+	}
 }

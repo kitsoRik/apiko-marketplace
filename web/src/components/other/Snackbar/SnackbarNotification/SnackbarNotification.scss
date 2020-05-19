@@ -1,36 +1,36 @@
 .snackbar-notification {
-    margin: 10px 0;
-    padding: 10px;
+	margin: 10px 0;
+	padding: 10px;
 
-    border: 3px solid #349A89;
-    border-radius: 5px;
+	border: 3px solid #349a89;
+	border-radius: 5px;
 
-    font-size: 1.3em;
+	font-size: 1.3em;
 
-    animation: notification-show 0.3s;
+	animation: notification-show 0.3s;
 
-    &[type=info] {
-        color: #FF7A00;
-        background-color: #34CFBE;
-    }
+	&[type="info"] {
+		color: #ff7a00;
+		background-color: #34cfbe;
+	}
 
-    &[type=warning] {
-        color: #600CAC;
-        background-color: #FFCF00EE;
-    }
+	&[type="warning"] {
+		color: #600cac;
+		background-color: #ffcf00ee;
+	}
 
-    &[type=error] {
-        color: #6BE400;
-        background-color: #E20048EE;
-    }
+	&[type="error"] {
+		color: #6be400;
+		background-color: #e20048ee;
+	}
 }
 
 @keyframes notification-show {
-    0% {
-        opacity: 0;
-    }
+	0% {
+		opacity: 0;
+	}
 
-    100% {
-        opacity: 1;
-    }
+	100% {
+		opacity: 1;
+	}
 }

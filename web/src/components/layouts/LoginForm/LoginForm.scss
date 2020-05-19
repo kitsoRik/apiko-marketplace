@@ -1,19 +1,19 @@
 .login-container {
-    width: 425px;
+	width: 425px;
 
-    position: relative;
+	position: relative;
 
-    display: grid;
-    grid-template-rows: auto 75px;
-    grid-row-gap: 20px;
+	display: grid;
+	grid-template-rows: auto 75px;
+	grid-row-gap: 20px;
 }
 
 @keyframes rotating {
-    from {
-        transform: rotate(0);
-    }
+	from {
+		transform: rotate(0);
+	}
 
-    to {
-        transform: rotate(360deg);
-    }
+	to {
+		transform: rotate(360deg);
+	}
 }

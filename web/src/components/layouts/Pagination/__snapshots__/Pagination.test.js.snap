@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pagination should be rendered 1`] = `
+<div
+  className="form pagination "
+>
+  <button
+    className="pagination-sector pagination-sector-prev"
+    current={null}
+    disabled={null}
+    onClick={[Function]}
+  >
+    &lt;
+  </button>
+  <button
+    className="pagination-sector pagination-sector-next"
+    current={null}
+    disabled={true}
+    onClick={[Function]}
+  >
+    &gt;
+  </button>
+</div>
+`;
+
+exports[`Pagination should be rendered 2`] = `
+<div
+  className="form pagination "
+>
+  <button
+    className="pagination-sector pagination-sector-prev"
+    current={null}
+    disabled={true}
+    onClick={[Function]}
+  >
+    &lt;
+  </button>
+  <button
+    className="pagination-sector "
+    current="true"
+    disabled={null}
+    onClick={[Function]}
+  >
+    1
+  </button>
+  <button
+    className="pagination-sector "
+    current={null}
+    disabled={null}
+    onClick={[Function]}
+  >
+    2
+  </button>
+  <button
+    className="pagination-sector "
+    current={null}
+    disabled={null}
+    onClick={[Function]}
+  >
+    3
+  </button>
+  <span>
+    ...
+  </span>
+  <button
+    className="pagination-sector "
+    current={null}
+    disabled={null}
+    onClick={[Function]}
+  >
+    8
+  </button>
+  <button
+    className="pagination-sector "
+    current={null}
+    disabled={null}
+    onClick={[Function]}
+  >
+    9
+  </button>
+  <button
+    className="pagination-sector "
+    current={null}
+    disabled={null}
+    onClick={[Function]}
+  >
+    10
+  </button>
+  <button
+    className="pagination-sector pagination-sector-next"
+    current={null}
+    disabled={null}
+    onClick={[Function]}
+  >
+    &gt;
+  </button>
+</div>
+`;

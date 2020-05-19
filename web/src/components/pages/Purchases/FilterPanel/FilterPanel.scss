@@ -1,10 +1,22 @@
-.purchases-page-filtering-panel {
-    padding: 5px;
-    margin: 10px 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr min-content;
+.purchases-page-filter-panel {
+	padding: 5px;
+	margin: 10px 0;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1.5fr min-content;
 
-    &-sort {
-        width: 32px;
-    }
+	@media screen and (max-width: 550px) {
+		grid-template-columns: 1fr 1fr 1fr 1fr;
+		grid-template-rows: 1fr 1fr;
+		grid-column-gap: 5px;
+	}
+
+	&-sort {
+		width: 32px;
+	}
+
+	&-sort-field {
+		@media screen and (max-width: 550px) {
+			grid-column: 1 / span 3;
+		}
+	}
 }

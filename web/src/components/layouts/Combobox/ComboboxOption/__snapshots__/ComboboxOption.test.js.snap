@@ -4,9 +4,14 @@ exports[`ComboboxOption should render with value and text 1`] = `
 <div
   className="combobox-option"
 >
-  <div>
+  <div
+    className="combobox-option-icon"
+  />
+  <p
+    className="combobox-option-text"
+  >
     text
-  </div>
+  </p>
 </div>
 `;
 
@@ -14,6 +19,11 @@ exports[`ComboboxOption should render without value and text 1`] = `
 <div
   className="combobox-option"
 >
-  <div />
+  <div
+    className="combobox-option-icon"
+  />
+  <p
+    className="combobox-option-text"
+  />
 </div>
 `;

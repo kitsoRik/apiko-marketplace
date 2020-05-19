@@ -1,117 +1,117 @@
 .chats-list-item {
-    margin: 5px 0;
-    padding: 30px 20px 30px 25px;
+	margin: 5px 0;
+	padding: 30px 20px 30px 25px;
 
-    position: relative;
+	position: relative;
 
-    display: grid;
-    grid-template-columns: 1fr min-content 1fr min-content min-content;
+	display: grid;
+	grid-template-columns: 1fr min-content 1fr min-content min-content;
 
-    background-color: white;
+	background-color: white;
 
-    box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.12);
+	box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.12);
 
-    transition: margin 0.1s;
+	transition: margin 0.1s;
 
-    @media screen and (max-width: 1024px) {
-        padding: 15px;
-        grid-template-columns: 1fr;
-    }
+	@media screen and (max-width: 1024px) {
+		padding: 15px;
+		grid-template-columns: 1fr;
+	}
 
-    &-selected {
-        margin-right: -10px;
-        margin-left: 10px;
+	&-selected {
+		margin-right: -10px;
+		margin-left: 10px;
 
-        border-left: 4px solid #349a89;
-    }
+		border-left: 4px solid #349a89;
+	}
 
-    &-user {
-        &-fullname {
-            font-size: 15px;
-        }
+	&-user {
+		&-fullname {
+			font-size: 15px;
+		}
 
-        &-last-message {
-            &-text {
-                font-size: 14px;
-                color: #3337;
+		&-last-message {
+			&-text {
+				font-size: 14px;
+				color: #3337;
 
-                width: 100px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-        }
-    }
+				width: 100px;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+		}
+	}
 
-    &-product {
-        display: grid;
-        grid-template-columns: 48px auto;
-        grid-template-rows: min-content min-content;
-        grid-column-gap: 8px;
+	&-product {
+		display: grid;
+		grid-template-columns: 48px auto;
+		grid-template-rows: min-content min-content;
+		grid-column-gap: 8px;
 
-        font-size: 15px;
+		font-size: 15px;
 
-        &-image {
-            height: 48px;
-            width: 48px;
+		&-image {
+			height: 48px;
+			width: 48px;
 
-            overflow: hidden;
+			overflow: hidden;
 
-            grid-row: 1 / span 2;
+			grid-row: 1 / span 2;
 
-            & > img {
-                max-height: 100%;
-            }
-        }
+			& > img {
+				max-height: 100%;
+			}
+		}
 
-        &-title {
-        }
+		&-title {
+		}
 
-        &-price {
-            font-weight: bold;
-        }
-    }
+		&-price {
+			font-weight: bold;
+		}
+	}
 
-    &-time {
-        display: flex;
-        align-items: center;
-        &-text {
-        }
+	&-time {
+		display: flex;
+		align-items: center;
+		&-text {
+		}
 
-        @media screen and (max-width: 1024px) {
-            position: absolute;
+		@media screen and (max-width: 1024px) {
+			position: absolute;
 
-            top: 15px;
-            right: 25px;
-        }
-    }
+			top: 15px;
+			right: 25px;
+		}
+	}
 
-    &-divider {
-        margin-right: 22px;
-        width: 1px;
-        height: 75%;
+	&-divider {
+		margin-right: 22px;
+		width: 1px;
+		height: 75%;
 
-        align-self: center;
+		align-self: center;
 
-        background-color: #e7e9ed;
+		background-color: #e7e9ed;
 
-        @media screen and (max-width: 1024px) {
-            height: 1px;
-            width: 35px;
-            margin: 10px 0;
-        }
-    }
+		@media screen and (max-width: 1024px) {
+			height: 1px;
+			width: 35px;
+			margin: 10px 0;
+		}
+	}
 
-    &-elipse {
-        width: 20px;
-        height: 20px;
+	&-elipse {
+		width: 20px;
+		height: 20px;
 
-        position: absolute;
-        top: 5px;
-        left: 5px;
+		position: absolute;
+		top: 5px;
+		left: 5px;
 
-        background-color: red;
+		background-color: red;
 
-        border-radius: 50%;
-    }
+		border-radius: 50%;
+	}
 }

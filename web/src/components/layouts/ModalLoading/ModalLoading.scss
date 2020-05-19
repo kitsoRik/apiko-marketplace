@@ -1,25 +1,25 @@
 .modal-loading {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
-    background-color: transparent;
+	background-color: transparent;
 
-    box-sizing: border-box;
+	box-sizing: border-box;
 
-    &[darken="true"] {
-        background-color: #0006;
-    }
+	&[darken="true"] {
+		background-color: #0006;
+	}
 
-    & > img {
-        max-height: 100%;
-        max-width: 100%;
-        animation: rotating 0.4s linear infinite;
-    }
+	& > img {
+		max-height: 100%;
+		max-width: 100%;
+		animation: rotating 0.4s linear infinite;
+	}
 }

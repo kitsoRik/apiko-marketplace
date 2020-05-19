@@ -36,7 +36,7 @@ const chatSchema = new Schema({
     }
 });
 
-chatSchema.pre("save", async function  (next) {
+chatSchema.pre("save", async function (next) {
     if (this.id !== "") return;
 
     this.id = uuid.v4();
@@ -54,7 +54,9 @@ exports.createChat = (productId, shopperId, sellerId, initialMessageId, shopperR
     sellerRead
 });
 
-exports.addMessageIdToChatById = (id, messagesId) => chatModel.findOneAndUpdate({ id }, { '$push': { messagesIds: messagesId } });
+exports.addMessageIdToChatById = (id, messagesId) => chatModel.findOneAndUpdate({ id }, { $push: { messagesIds: messagesId } });
 
 exports.getChatById = (id) => chatModel.findOne({ id });
 exports.getChatsByUserId = (userId) => chatModel.find({ $or: [{ shopperId: userId }, { sellerId: userId }] });
+
+exports.getChatByMessageId = (messagesId) => chatModel.findOne({ messagesIds: { $elemMatch: { $eq: messagesId } } });

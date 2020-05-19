@@ -2,7 +2,7 @@ scalar Upload
 
 enum PurchaseStatus {
     OPENED,
-    MONEYTRANSFERED,
+    CANCELED,
     POSTED,
     CLOSED
 }
@@ -18,6 +18,7 @@ input SinglePurchaseInput {
 }
 
 type Subscription {
+    messageSentAny: Message!
     messageSent(chatId: ID!): Message!
     chatCreated: Chat!
     feedbackAdded(productId: ID!): Feedback!
@@ -129,6 +130,7 @@ type User {
         writter: User!
         text: String!
         createdAt: Float!
+        chat: Chat!
     }
 
     type Query {
@@ -136,8 +138,8 @@ type User {
             location: String, 
             locationId: ID, 
             category: String, 
-            sortField: String!,
-            sortOrder: SortOrder!,
+            sortField: String
+            sortOrder: SortOrder,
             priceFrom: Float,
             priceTo: Float, 
             page: Int, 
@@ -157,6 +159,9 @@ type User {
 
             currentUser: User
             locations(name: String!, limit: Int!): [Location!]
+
+            user(id: ID!): User
+
             restorePasswordCheckKey(key: String!): Boolean
 
             chats(page: Int, limit: Int): [Chat!]
@@ -171,10 +176,23 @@ type User {
                             viewClosed: Boolean!,
                             sortField: String!,
                             sortOrder: SortOrder!): [Purchase!]!
-            sellerPurchasesCount: Int!
+            sellerPurchasesCount(viewOpened: Boolean!, 
+                            viewPosted: Boolean!,
+                            viewCanceled: Boolean!,
+                            viewClosed: Boolean!): Int!
 
-            shopperPurchases(page: Int!, limit: Int!): [Purchase!]!
-            shopperPurchasesCount: Int!
+            shopperPurchases(page: Int!, 
+                            limit: Int!, 
+                            viewOpened: Boolean!, 
+                            viewPosted: Boolean!,
+                            viewCanceled: Boolean!,
+                            viewClosed: Boolean!,
+                            sortField: String!,
+                            sortOrder: SortOrder!): [Purchase!]!
+            shopperPurchasesCount(viewOpened: Boolean!, 
+                            viewPosted: Boolean!,
+                            viewCanceled: Boolean!,
+                            viewClosed: Boolean!): Int!
 
             purchase(id: ID!): Purchase!
     }
@@ -184,7 +202,7 @@ type User {
         login(email: String!, password: String!): User
         unlogin: Boolean
 
-        restorePasswordRequest(email: String!): Boolean
+        restorePasswordRequest(email: String!): String!
         restorePassword(key: String!, password: String!): Boolean
 
         changeSavedStateOfProduct(id: ID!, state: Boolean!): Product!,
@@ -195,7 +213,7 @@ type User {
         addFeedback (productId: ID!, rate: Float!, text: String!): Feedback!
 
         changeCartItemCount(productId: ID!, count: Int!): Int!
-        addProductToCart(productId: ID!, count: Int!): Boolean
+        addProductToCart(productId: ID!, count: Int!): User!
         clearCart: User!
 
         createChat(productId: ID!, initialMessage: String!): Chat!

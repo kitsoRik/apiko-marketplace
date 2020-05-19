@@ -1,45 +1,45 @@
 .seller-purchases-item {
-    height: 70px;
+	height: 70px;
 
-    display: grid;
-    grid-template-columns: auto min-content;
+	display: grid;
+	grid-template-columns: auto min-content;
 
-    border: 2px solid #349a89;
-    border-radius: 5px;
+	border: 2px solid #349a89;
+	border-radius: 5px;
 
-    &-product {
-        overflow: hidden;
+	&-product {
+		overflow: hidden;
 
-        display: grid;
-        grid-template-columns: 70px auto;
-        align-items: center;
-        &-image {
-        }
+		display: grid;
+		grid-template-columns: 70px auto;
+		align-items: center;
+		&-image {
+		}
 
-        &-info {
-            padding: 5px;
-            height: 100%;
+		&-info {
+			padding: 5px;
+			height: 100%;
 
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
 
-            box-sizing: border-box;
-            font-weight: bold;
+			box-sizing: border-box;
+			font-weight: bold;
 
-            &-title {
-                font-size: 18px;
-            }
+			&-title {
+				font-size: 18px;
+			}
 
-            &-price {
-                font-size: 21px;
-                align-self: flex-end;
-            }
-        }
-    }
+			&-price {
+				font-size: 21px;
+				align-self: flex-end;
+			}
+		}
+	}
 
-    &-status {
-        padding: 10px;
-    }
+	&-status {
+		padding: 10px;
+	}
 }

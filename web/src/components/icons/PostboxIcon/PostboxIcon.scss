@@ -1,16 +1,16 @@
 .postbox-icon {
-    position: relative;
-    &-circle {
-        height: 10px;
-        width: 10px;
+	position: relative;
+	&-circle {
+		height: 10px;
+		width: 10px;
 
-        position: absolute;
+		position: absolute;
 
-        right: -5px;
-        top: -5px;
+		right: -5px;
+		top: -5px;
 
-        background-color: red;
+		background-color: red;
 
-        border-radius: 50%;
-    }
+		border-radius: 50%;
+	}
 }

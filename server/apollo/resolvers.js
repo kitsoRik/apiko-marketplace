@@ -7,25 +7,45 @@ const { createSession, removeSession } = require("../db/models/session");
 const { createUnverifyedLink } = require("../db/models/unverifyed");
 const { customError } = require("../helpers/errors");
 const { getMessagesByIds, createMessage } = require("../db/models/message");
-const { getChatsByUserId, createChat, getChatById, addMessageIdToChatById } = require("../db/models/chat");
+const { getChatsByUserId, createChat, getChatById, addMessageIdToChatById, getChatByMessageId } = require("../db/models/chat");
 const { AuthenticationError, withFilter, PubSub } = require("apollo-server-express");
 const { callNewMessage } = require("../socketio");
 const { createFeedback, getFeedbacksByProductId, getFeedbacksByProductIds, getPositiveFeedbacksByProductIds } = require("../db/models/feedback");
 const { createPurchase, getPurchasesBySellerId, getPurchasesByShopperId, changePurchaseStatus, getPurchaseById } = require("../db/models/purchase");
+const { createPasswordRestoreByUserId, getPasswordRestoreByLink } = require("../db/models/restore");
 const pubsub = new PubSub();
 
 module.exports = {
 
     Subscription: {
 
+        messageSentAny: {
+            subscribe: withFilter(
+                () => pubsub.asyncIterator("MESSAGE_SENT_ANY"),
+                async ({ chatId }, variables, { user }) => {
+                    if (!user) throw new AuthenticationError();
+                    console.log(chatId);
+                    const chat = await getChatById(chatId);
+                    if (!chat) return new Error("Unknown error");
+                    return chat.sellerId === user.id || chat.shopperId === user.id;
+                }
+            ),
+            resolve: ({ message }) => {
+                return message;
+            }
+        },
+
         messageSent: {
             subscribe: withFilter(
                 () => pubsub.asyncIterator("MESSAGE_SENT"),
-                (payload, variables, context) => {
-                    return payload.chatId === variables.chatId;
+                async ({ chatId }, variables, { user }) => {
+                    if (!user) throw new AuthenticationError();
+                    const chat = await getChatById(chatId);
+                    if (!chat) return new Error("Unknown error");
+                    return chatId === variables.chatId && (chat.sellerId === user.id || chat.shopperId === user.id);
                 }
             ),
-            resolve: ({ chatId, message }) => {
+            resolve: ({ message }) => {
                 return message;
             }
         },
@@ -33,6 +53,7 @@ module.exports = {
             subscribe: withFilter(
                 () => pubsub.asyncIterator("CHAT_CREATED"),
                 (payload, variables, context) => {
+                    console.log(payload, variables);
                     return payload.id === variables.chatId;
                 }
             ),
@@ -110,8 +131,8 @@ module.exports = {
             return [];
         },
 
-        salesCount: () => {
-            return 0;
+        salesCount: async ({ id }) => {
+            return await getPurchasesByShopperId(id).countDocuments();
         },
     },
 
@@ -183,7 +204,7 @@ module.exports = {
             return await getUserById(sellerId);
         },
         messages: async ({ messagesIds }, { page = 1, limit = 20 }) => {
-            return await getMessagesByIds(messagesIds).sort({ createdAt: 1 }).skip((page - 1) * limit).limit(limit);
+            return await getMessagesByIds(messagesIds).sort({ createdAt: -1 }).skip((page - 1) * limit).limit(limit);
         },
         messagesCount: async ({ messagesIds }) => {
             return await getMessagesByIds(messagesIds).countDocuments();
@@ -193,11 +214,14 @@ module.exports = {
     Message: {
         writter: async ({ writterId }) => {
             return await getUserById(writterId);
+        },
+        chat: async ({ id }) => {
+            return await getChatByMessageId(id);
         }
     },
 
     Query: {
-        products: async (source, { title = "", category = "any", sortField, sortOrder, locationId = "", priceFrom = -1, priceTo = -1, page = 1, limit = 12 }) => {
+        products: async (source, { title = "", category = "any", sortField = "title", sortOrder = "ASC", locationId = "-1", priceFrom = -1, priceTo = -1, page = 1, limit = 12 }) => {
             console.log(sortField, sortOrder);
             return await getAllProducts(title, category, locationId, priceFrom, priceTo).sort({ [sortField]: sortOrder === 'ASC' ? 1 : -1 }).skip((page - 1) * limit).limit(limit);
         },
@@ -230,7 +254,9 @@ module.exports = {
         },
 
 
-
+        user: async (source, { id }) => {
+            return await getUserById(id);
+        },
 
 
         restorePasswordCheckKey: async (source, { key }) => { // TODO
@@ -241,8 +267,27 @@ module.exports = {
 
         chats: async (source, { page, title }, { user }) => {
             if (!user) return null;
+            let chats = await getChatsByUserId(user.id);
 
-            return await getChatsByUserId(user.id);
+            if (chats.length !== 0)
+                await (() => new Promise((resolve) => {
+                    let index = 0;
+                    chats.forEach(async (c, i) => {
+                        const _c = c.toObject();
+                        chats[i] = _c;
+                        _c._lastMessage = await getMessagesByIds(c.messagesIds[c.messagesIds.length - 1]);
+                        console.log("_", i);
+                        if (++index === chats.length) {
+                            resolve();
+                        }
+                    });
+                }))();
+
+            chats = chats.sort((a, b) => {
+                return a._lastMessage[0].createdAt < b._lastMessage[0].createdAt ? 1 : -1;
+            });
+
+            return chats;
         },
 
         chat: async (source, { id }, { user }) => {
@@ -257,7 +302,6 @@ module.exports = {
             if (!user) throw new AuthenticationError();
 
             let result = await getPurchasesBySellerId(user.id);
-            const old = result;
             result.sort((a, b) => {
                 if (sortField === "created") return a.statuses[0].date.getTime() < b.statuses[0].date.getTime() ? -1 : 1;
                 if (sortField === "changed") return a.statuses[a.statuses.length - 1].date.getTime() < b.statuses[b.statuses.length - 1].date.getTime() ? -1 : 1;;
@@ -282,22 +326,66 @@ module.exports = {
 
             return result;
         },
-        sellerPurchasesCount: async (source, args, { user }) => {
+        sellerPurchasesCount: async (source, { viewOpened, viewPosted, viewCanceled, viewClosed }, { user }) => {
             if (!user) throw new AuthenticationError();
 
-            return await getPurchasesBySellerId(user.id).countDocuments();
+            let result = await getPurchasesBySellerId(user.id);
+            result = result.filter(p => {
+                const status = p.statuses[p.statuses.length - 1].status;
+                if (viewOpened && status === "OPENED") return true;
+                if (viewPosted && status === "POSTED") return true;
+                if (viewCanceled && status === "CANCELED") return true;
+                if (viewClosed && status === "CLOSED") return true;
+                return false;
+            });
+
+            return result.length;
         },
 
 
-        shopperPurchases: async (source, { page, limit }, { user }) => {
+        shopperPurchases: async (source, { page, limit, viewOpened, viewPosted,
+            viewCanceled, viewClosed, sortField, sortOrder }, { user }) => {
             if (!user) throw new AuthenticationError();
 
-            return await getPurchasesByShopperId(user.id).sort({ index: -1 }).skip((page - 1) * limit).limit(limit);
+            let result = await getPurchasesByShopperId(user.id);
+            result.sort((a, b) => {
+                if (sortField === "created") return a.statuses[0].date.getTime() < b.statuses[0].date.getTime() ? -1 : 1;
+                if (sortField === "changed") return a.statuses[a.statuses.length - 1].date.getTime() < b.statuses[b.statuses.length - 1].date.getTime() ? -1 : 1;;
+                if (sortField === "count") return a.count < b.count ? -1 : 1;;
+                if (sortField === "price") return a.price < b.price ? -1 : 1;;
+                if (sortField === "total") return a.price * a.count < b.price * b.count ? -1 : 1;
+
+
+                throw new Error("Unknown sort field");
+            });
+            if (sortOrder === "DESC") result = result.reverse();
+            result = result.filter(p => {
+                const status = p.statuses[p.statuses.length - 1].status;
+                if (viewOpened && status === "OPENED") return true;
+                if (viewPosted && status === "POSTED") return true;
+                if (viewCanceled && status === "CANCELED") return true;
+                if (viewClosed && status === "CLOSED") return true;
+                return false;
+            })
+                .filter((c, i) => i >= (page - 1) * limit)
+                .filter((c, i) => i < limit);
+
+            return result;
         },
-        shopperPurchasesCount: async (source, args, { user }) => {
+        shopperPurchasesCount: async (source, { viewOpened, viewPosted, viewCanceled, viewClosed }, { user }) => {
             if (!user) throw new AuthenticationError();
 
-            return await getPurchasesByShopperId(user.id).countDocuments();
+            let result = await getPurchasesByShopperId(user.id);
+            result = result.filter(p => {
+                const status = p.statuses[p.statuses.length - 1].status;
+                if (viewOpened && status === "OPENED") return true;
+                if (viewPosted && status === "POSTED") return true;
+                if (viewCanceled && status === "CANCELED") return true;
+                if (viewClosed && status === "CLOSED") return true;
+                return false;
+            });
+
+            return result.length;
         },
         purchase: async (source, { id }) => {
             return await getPurchaseById(id);
@@ -306,17 +394,9 @@ module.exports = {
 
     Mutation: {
         register: async (source, { fullName, email, password }, { res }) => {
-            // if (!email) throw requiredError("EMAIL");
-            // if (!fullName) throw (requiredError("FULL_NAME"));
-            // if (!password) throw (requiredError("PASSWORD"));
-
-            // if (typeof email !== 'string') throw (typeError("EMAIL", "STRING"));
-            // if (typeof fullName !== 'string') throw (typeError("FULL_NAME", "STRING"));
-            // if (typeof password !== 'string') throw (typeError("PASSWORD", "STRING"));
-
             let user = await getUserByEmail(email);
 
-            if (user) throw (customError("EMAIL_IS_BUSY"));
+            if (user) return (new Error("EMAIL_IS_BUSY"));
             user = await createUser(
                 fullName,
                 email,
@@ -359,17 +439,25 @@ module.exports = {
         },
 
         restorePasswordRequest: async (source, { email }) => { // TODO
-            return true;
+            const user = await getUserByEmail(email);
+            if (!user) throw new Error("Unknown email");
+            const { link } = await createPasswordRestoreByUserId(user.id);
+            return link;
         },
-        restorePassword: async (source, { key }) => { // TODO
+        restorePassword: async (source, { key, password }) => { // TODO
+            const restore = await getPasswordRestoreByLink(key);
+            if (!restore) return true;
+            const user = await getUserById(restore.userId);
+            user.password = await hashPassword(password);
+            await user.save();
             return true;
         },
 
         changeSavedStateOfProduct: async (source, { id, state }, { user }) => {
             if (!user) throw "WHAT";
-            if (state && user.savedProducts.indexOf(id) !== -1) return state;
+            if (state && user.savedProducts.indexOf(id) !== -1) throw "WHAT1";
 
-            if (!state && user.savedProducts.indexOf(id) === -1) return state;
+            if (!state && user.savedProducts.indexOf(id) === -1) throw "WHAT2";
 
 
             if (state) user.savedProducts.push(id);
@@ -415,8 +503,7 @@ module.exports = {
         addProductToCart: async (source, { productId, count }, { user }) => {
             if (!user) throw new AuthenticationError();
 
-            console.log(await addProductToCardByUserId(user.id, productId, count));
-            return true;
+            return await addProductToCardByUserId(user.id, productId, count);
         },
 
         clearCart: async (source, args, { user }) => {
@@ -444,6 +531,7 @@ module.exports = {
             const chat = await addMessageIdToChatById(chatId, message.id);
 
             pubsub.publish("MESSAGE_SENT", { chatId, message });
+            pubsub.publish("MESSAGE_SENT_ANY", { chatId, message });
 
             return message;
         },

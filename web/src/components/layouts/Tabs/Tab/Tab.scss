@@ -1,23 +1,23 @@
 .tab {
-    padding: 3px 10px;
-    flex: 1;
+	padding: 3px 10px;
+	flex: 1;
 
-    border: 3px solid #349a89;
-    border-radius: 5px;
+	border: 3px solid #349a89;
+	border-radius: 5px;
 
-    font-size: 21px;
+	font-size: 21px;
 
-    &:hover {
-        background-color: #ccc;
-        color: #000;
-    }
+	&:hover {
+		background-color: #ccc;
+		color: #000;
+	}
 
-    &[active] {
-        background-color: #349a89;
-        color: #fff;
-    }
+	&[active] {
+		background-color: #349a89;
+		color: #fff;
+	}
 
-    &:not(:last-child) {
-        margin-right: 10px;
-    }
+	&:not(:last-child) {
+		margin-right: 10px;
+	}
 }

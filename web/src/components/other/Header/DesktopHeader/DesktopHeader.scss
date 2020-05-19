@@ -1,87 +1,88 @@
 .desktop-header {
-    padding: 18px 10px;
+	padding: 18px 10px;
 
-    max-width: 1140px;
+	max-width: 1140px;
 
-    flex: 1;
+	flex: 1;
 
-    display: grid;
-    grid-template-columns: 120px auto ((18px + 5) * 3) 131px 100px 20px;
-    grid-column-gap: 15px;
-    grid-row-gap: 22px;
-    align-items: center;
+	display: grid;
+	grid-template-columns: min-content auto ((18px + 5) * 3) 131px minmax(0, 100px) 20px;
+	grid-column-gap: 15px;
+	grid-row-gap: 22px;
+	align-items: center;
 
-    &__apiko-logo {
-        cursor: pointer;
-    }
+	&__apiko-logo {
+		grid-column: 1 / span 2;
+		cursor: pointer;
+	}
 
-    &-icons {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-column-gap: 5px;
-    }
+	&-icons {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		grid-column-gap: 5px;
+	}
 
-    & &-sell-button {
-        font-family: Helvetica;
-        line-height: 31px;
-        height: 31px;
+	& &-sell-button {
+		font-family: Helvetica;
+		line-height: 31px;
+		height: 31px;
 
-        font-size: 14px;
+		font-size: 14px;
 
-        text-transform: uppercase;
-        padding: 0 48px;
+		text-transform: uppercase;
+		padding: 0 48px;
 
-        color: white;
-    }
+		color: white;
+	}
 
-    & &-login-button {
-        padding: 0;
+	& &-login-button {
+		padding: 0;
 
-        height: 31px;
+		height: 31px;
 
-        font-size: 14px;
-        text-transform: uppercase;
+		font-size: 14px;
+		text-transform: uppercase;
 
-        & a {
-            color: black;
-            text-decoration: none;
+		& a {
+			color: black;
+			text-decoration: none;
 
-            transition: all 0.7s;
-        }
+			transition: all 0.7s;
+		}
 
-        &[dark-mode] a {
-            color: white;
-        }
-    }
+		&[dark-mode] a {
+			color: white;
+		}
+	}
 
-    &-profile {
-        height: 100%;
+	&-profile {
+		height: 100%;
 
-        position: relative;
+		position: relative;
 
-        display: flex;
-        justify-content: center;
-    }
+		display: flex;
+		justify-content: center;
+	}
 
-    &-heart {
-        & > path {
-            fill: #2e2e2e;
-            transition: all 0.7s;
-        }
+	&-heart {
+		& > path {
+			fill: #2e2e2e;
+			transition: all 0.7s;
+		}
 
-        &[dark-mode] > path {
-            fill: #fff;
-        }
-    }
+		&[dark-mode] > path {
+			fill: #fff;
+		}
+	}
 
-    &-minor-panel {
-        margin: 0 auto;
-        max-width: 840px;
-        width: 100%;
-        grid-column: 1 / span 6;
-    }
+	&-minor-panel {
+		margin: 0 auto;
+		max-width: 840px;
+		width: 100%;
+		grid-column: 1 / span 6;
+	}
 
-    @media screen and (max-width: 480px) {
-        display: flex;
-    }
+	@media screen and (max-width: 480px) {
+		display: flex;
+	}
 }

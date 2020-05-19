@@ -1,26 +1,26 @@
 .button-default {
-    padding: 20px 50px;
+	padding: 20px 50px;
 
-    display: inline-block;
+	display: inline-block;
 
-    border: none;
-    color: #fff;
-    background-color: #349a89;
+	border: none;
+	color: #fff;
+	background-color: #349a89;
 
-    border-radius: 5px;
+	border-radius: 5px;
 
-    font-size: 14px;
-    text-decoration: none;
+	font-size: 14px;
+	text-decoration: none;
 
-    &:hover {
-        background-color: red;
-    }
+	&:hover {
+		background-color: red;
+	}
 
-    &:active {
-        background-color: #f2b;
-    }
+	&:active {
+		background-color: #f2b;
+	}
 
-    &[disabled] {
-        background-color: gray;
-    }
+	&[disabled] {
+		background-color: gray;
+	}
 }

@@ -1,25 +1,25 @@
 .label {
-    display: grid;
-    grid-template-rows: min-content auto;
+	display: grid;
+	grid-template-rows: min-content auto;
 
-    &-solo-value {
-        &[error="true"] {
-            color: red;
-        }
-    }
+	&-solo-value {
+		&[error="true"] {
+			color: red;
+		}
+	}
 
-    &-values {
-        margin-bottom: 5px;
+	&-values {
+		margin-bottom: 5px;
 
-        display: flex;
+		display: flex;
 
-        &-value {
-            text-transform: uppercase;
-        }
+		&-value {
+			text-transform: uppercase;
+		}
 
-        &-error-value {
-            margin-left: 10px;
-            color: red;
-        }
-    }
+		&-error-value {
+			margin-left: 10px;
+			color: red;
+		}
+	}
 }

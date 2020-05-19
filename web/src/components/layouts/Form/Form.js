@@ -1,12 +1,15 @@
-import React from 'react';
+import React from "react";
 
-import './Form.scss';
+import "./Form.scss";
 
 const Form = ({ className = "", children, asForm = false, ...props }) => {
+	const asComponent = asForm ? "form" : "div";
 
-    const asComponent = asForm ? 'form' : 'div';
-
-    return React.createElement(asComponent, { className: `form ${className}`, ...props }, children)
-}
+	return React.createElement(
+		asComponent,
+		{ className: `form ${className}`, ...props },
+		children
+	);
+};
 
 export default Form;

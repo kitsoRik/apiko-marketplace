@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalLoading should be rendered 1`] = `
+<div
+  className="modal-loading undefined"
+  darken="true"
+  onClick={[Function]}
+>
+  <img
+    alt="Loading"
+    src="loading.svg"
+    style={
+      Object {
+        "maxHeight": "100%",
+        "maxWidth": "100%",
+      }
+    }
+  />
+</div>
+`;
+
+exports[`ModalLoading should render with classname 1`] = `
+<div
+  className="modal-loading custom=class-name"
+  darken="true"
+  onClick={[Function]}
+>
+  <img
+    alt="Loading"
+    src="loading.svg"
+    style={
+      Object {
+        "maxHeight": "100%",
+        "maxWidth": "100%",
+      }
+    }
+  />
+</div>
+`;
+
+exports[`ModalLoading should render without darken 1`] = `
+<div
+  className="modal-loading undefined"
+  darken={null}
+  onClick={[Function]}
+>
+  <img
+    alt="Loading"
+    src="loading.svg"
+    style={
+      Object {
+        "maxHeight": "100%",
+        "maxWidth": "100%",
+      }
+    }
+  />
+</div>
+`;
+
+exports[`ModalLoading should render without different size 1`] = `
+<div
+  className="modal-loading undefined"
+  darken="true"
+  onClick={[Function]}
+>
+  <img
+    alt="Loading"
+    src="loading.svg"
+    style={
+      Object {
+        "maxHeight": "60%",
+        "maxWidth": "60%",
+      }
+    }
+  />
+</div>
+`;
+
+exports[`ModalLoading should render without different size 2`] = `
+<div
+  className="modal-loading undefined"
+  darken="true"
+  onClick={[Function]}
+>
+  <img
+    alt="Loading"
+    src="loading.svg"
+    style={
+      Object {
+        "maxHeight": "60%",
+        "maxWidth": "60%",
+      }
+    }
+  />
+</div>
+`;

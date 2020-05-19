@@ -2,7 +2,8 @@
 
 exports[`TextField should render with icon 1`] = `
 <div
-  className="text-field undefined"
+  className="text-field "
+  disabled={null}
   onBlur={[Function]}
   onFocus={[Function]}
   tabIndex="1"
@@ -15,6 +16,7 @@ exports[`TextField should render with icon 1`] = `
   </div>
   <input
     className="text-field-"
+    disabled={false}
     error="false"
     onBlur={[Function]}
     onChange={[Function]}
@@ -32,7 +34,8 @@ exports[`TextField should render with icon 1`] = `
 
 exports[`TextField should render with placeholder 1`] = `
 <div
-  className="text-field undefined"
+  className="text-field "
+  disabled={null}
   onBlur={[Function]}
   onFocus={[Function]}
   tabIndex="1"
@@ -45,6 +48,7 @@ exports[`TextField should render with placeholder 1`] = `
   </div>
   <input
     className="text-field-"
+    disabled={false}
     error="false"
     onBlur={[Function]}
     onChange={[Function]}
@@ -63,7 +67,8 @@ exports[`TextField should render with placeholder 1`] = `
 
 exports[`TextField should render with placeholder and icon 1`] = `
 <div
-  className="text-field undefined"
+  className="text-field "
+  disabled={null}
   onBlur={[Function]}
   onFocus={[Function]}
   tabIndex="1"
@@ -76,6 +81,7 @@ exports[`TextField should render with placeholder and icon 1`] = `
   </div>
   <input
     className="text-field-"
+    disabled={false}
     error="false"
     onBlur={[Function]}
     onChange={[Function]}
@@ -94,7 +100,8 @@ exports[`TextField should render with placeholder and icon 1`] = `
 
 exports[`TextField should render with placeholder and text 1`] = `
 <div
-  className="text-field undefined"
+  className="text-field "
+  disabled={null}
   onBlur={[Function]}
   onFocus={[Function]}
   tabIndex="1"
@@ -102,6 +109,7 @@ exports[`TextField should render with placeholder and text 1`] = `
 >
   <input
     className="text-field-"
+    disabled={false}
     error="false"
     onBlur={[Function]}
     onChange={[Function]}
@@ -120,7 +128,8 @@ exports[`TextField should render with placeholder and text 1`] = `
 
 exports[`TextField should render with text 1`] = `
 <div
-  className="text-field undefined"
+  className="text-field "
+  disabled={null}
   onBlur={[Function]}
   onFocus={[Function]}
   tabIndex="1"
@@ -128,6 +137,7 @@ exports[`TextField should render with text 1`] = `
 >
   <input
     className="text-field-"
+    disabled={false}
     error="false"
     onBlur={[Function]}
     onChange={[Function]}
@@ -145,7 +155,8 @@ exports[`TextField should render with text 1`] = `
 
 exports[`TextField should render with text and icon 1`] = `
 <div
-  className="text-field undefined"
+  className="text-field "
+  disabled={null}
   onBlur={[Function]}
   onFocus={[Function]}
   tabIndex="1"
@@ -158,6 +169,7 @@ exports[`TextField should render with text and icon 1`] = `
   </div>
   <input
     className="text-field-"
+    disabled={false}
     error="false"
     onBlur={[Function]}
     onChange={[Function]}
@@ -175,7 +187,8 @@ exports[`TextField should render with text and icon 1`] = `
 
 exports[`TextField should render with type=password 1`] = `
 <div
-  className="text-field undefined"
+  className="text-field "
+  disabled={null}
   onBlur={[Function]}
   onFocus={[Function]}
   tabIndex="1"
@@ -183,6 +196,7 @@ exports[`TextField should render with type=password 1`] = `
 >
   <input
     className="text-field-"
+    disabled={false}
     error="false"
     onBlur={[Function]}
     onChange={[Function]}
@@ -206,7 +220,8 @@ exports[`TextField should render with type=password 1`] = `
 
 exports[`TextField should render without text 1`] = `
 <div
-  className="text-field undefined"
+  className="text-field "
+  disabled={null}
   onBlur={[Function]}
   onFocus={[Function]}
   tabIndex="1"
@@ -214,6 +229,7 @@ exports[`TextField should render without text 1`] = `
 >
   <input
     className="text-field-"
+    disabled={false}
     error="false"
     onBlur={[Function]}
     onChange={[Function]}

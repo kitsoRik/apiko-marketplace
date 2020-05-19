@@ -1,10 +1,8 @@
 .apiko-logo {
+	&-triangle {
+	}
 
-    &-triangle {
-
-    }
- 
-    &-letter {
-        transition: all 0.7s;
-    }
+	&-letter {
+		transition: all 0.7s;
+	}
 }

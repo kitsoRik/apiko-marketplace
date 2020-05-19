@@ -1,13 +1,13 @@
 .purchase-page {
-    margin-top: 30px;
-    max-width: 1024px;
+	margin-top: 30px;
+	max-width: 1024px;
 
-    display: grid;
-    grid-template-columns: minmax(0, 1000px) 300px;
-    grid-column-gap: 10px;
-    &-right {
-    }
+	display: grid;
+	grid-template-columns: minmax(0, 1000px) 300px;
+	grid-column-gap: 10px;
+	&-right {
+	}
 
-    &-left {
-    }
+	&-left {
+	}
 }

@@ -1,17 +1,17 @@
 .menu-item {
-    padding: 5px 10px;
-    height: 20px;
+	padding: 5px 10px;
+	height: 20px;
 
-    display: grid;
-    grid-template-columns: 24px auto;
-    grid-column-gap: 10px;
+	display: grid;
+	grid-template-columns: 24px auto;
+	grid-column-gap: 10px;
 
-    font-size: 18px;
-    align-items: center;
+	font-size: 18px;
+	align-items: center;
 
-    cursor: pointer;
+	cursor: pointer;
 
-    &:hover {
-        background-color: #eee;
-    }
+	&:hover {
+		background-color: #eee;
+	}
 }

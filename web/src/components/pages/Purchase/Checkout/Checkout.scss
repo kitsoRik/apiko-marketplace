@@ -1,30 +1,30 @@
 .purchase-page-checkout {
-    padding: 20px 30px;
+	padding: 20px 30px;
 
-    background-color: #e8e8e8;
-    border: 1px solid black;
-    border-radius: 5px;
+	background-color: #e8e8e8;
+	border: 1px solid black;
+	border-radius: 5px;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 
-    &-total {
-        padding: 5px;
-        font-size: 34px;
-        flex: 1;
-    }
+	&-total {
+		padding: 5px;
+		font-size: 34px;
+		flex: 1;
+	}
 
-    &-to-pay {
-        padding: 4px 4px;
+	&-to-pay {
+		padding: 4px 4px;
 
-        font-size: 18px;
-        font-weight: bold;
+		font-size: 18px;
+		font-weight: bold;
 
-        text-align: right;
-    }
+		text-align: right;
+	}
 
-    &-purchase-button {
-        width: 100%;
-    }
+	&-purchase-button {
+		width: 100%;
+	}
 }

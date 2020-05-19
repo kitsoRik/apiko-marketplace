@@ -3,11 +3,12 @@ import React from "react";
 import "./UserInformation.scss";
 import UserIcon from "../../../icons/UserIcon";
 
-const UserInformation = ({ user: { iconName, fullName, location } = {} }) => {
+const UserInformation = ({ user: { id, iconName, fullName, location } = {} }) => {
 
 	return (
 		<div className="user-information">
 			<UserIcon
+				userId={id}
 				className="user-information-icon"
 				src={iconName}
 				fullName={fullName}

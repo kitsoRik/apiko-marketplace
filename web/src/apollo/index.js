@@ -13,11 +13,17 @@ const webSocketLink = new WebSocketLink({
 	uri: "ws://localhost:3501/subscriptions",
 	options: {
 		reconnect: true,
+
 		connectionParams: {
 			cookies: document.cookie,
 		},
 	},
 });
+
+export const socketReconnect = () => {
+	webSocketLink.subscriptionClient.close();
+	webSocketLink.subscriptionClient.tryReconnect();
+}
 
 const link = split(
 	({ query }) => {

@@ -32,6 +32,7 @@ const ChatHeader = ({ user, product, loading, screenSize }) => {
 						</div>
 					)}
 					<UserIcon
+						userId={user?.id}
 						src={user?.iconName}
 						fullName={user?.fullName}
 						loading={loading}
@@ -86,7 +87,10 @@ const ChatHeader = ({ user, product, loading, screenSize }) => {
 						onClick={() => history.push("/chats")}
 					></button>
 				</div>
-				<UserIcon src={user?.iconName} fullName={user?.fullName} />
+				<UserIcon
+					userId={user?.id}
+					src={user?.iconName}
+					fullName={user?.fullName} />
 				<span className="chats-page-chat-header-user-fullname">
 					{user?.fullName ?? "..."}
 				</span>

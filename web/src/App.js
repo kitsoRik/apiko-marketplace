@@ -8,11 +8,13 @@ import Snackbar from "./components/other/Snackbar/Snackbar";
 import Routes from "./Routes";
 import useMessageSentSubscription from "./components/hooks/useMessageSentSubscription";
 import useChatCreatedSubscription from "./components/hooks/useChatCreatedSubscription";
+import useUserLeavedSubscription from "./components/hooks/useUserLeavedSubscription";
 
 const App = () => {
 
 	useMessageSentSubscription();
 	useChatCreatedSubscription();
+	useUserLeavedSubscription();
 
 	return (
 		<Router>

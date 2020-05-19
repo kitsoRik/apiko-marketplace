@@ -16,21 +16,18 @@ import UserPanel from "../UserPanel/UserPanel";
 import CartIcon from "../../../icons/CartIcon/CartIcon";
 import PurchaseIcon from "../../../icons/PurchaseIcon/PurchaseIcon";
 
-const DesktopHeader = () => {
+const DesktopHeader = ({ visibleSearchPanel }) => {
 	const history = useHistory();
 	const location = useLocation();
-	const darkMode = !["/login", "/register"].find(
+	const darkMode = !["/login", "/register", "/forgot-password"].find(
 		(p) => p === location.pathname
 	);
-	const minorPanel =
-		!!["/", "/profile", "/saved-items"].find(
-			(p) => p === location.pathname
-		) || location.pathname.startsWith("/products");
+	const minorPanel = visibleSearchPanel;
 
 	const [userPanelOpen, setUserPanelOpen] = useState(false);
 
 	const currentUserQuery = useQuery(CURRENT_USER_QUERY);
-	const loginStatus = LOGINED; //FIX IT
+	const loginStatus = LOGINED;
 	const visibleLoginButton =
 		!currentUserQuery.loading && !currentUserQuery.data?.currentUser;
 	const visibleUserIcon =
@@ -53,10 +50,11 @@ const DesktopHeader = () => {
 					<PurchaseIcon onClick={() => history.push("/purchases")} />
 				</div>
 			) : (
-				<div></div>
-			)}
+					<div></div>
+				)}
 
 			<Button.Default
+				asLink={true}
 				className="desktop-header-sell-button"
 				value="Sell"
 				onClick={() => history.push("/add-product")}

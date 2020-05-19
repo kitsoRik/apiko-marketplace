@@ -19,9 +19,12 @@ import Combobox from "../../layouts/Combobox/Combobox";
 import ComboboxOption from "../../layouts/Combobox/ComboboxOption/ComboboxOption";
 import CategoryIcon from "../../icons/CategoryIcon/CategoryIcon";
 import { notifyError } from "../../other/Snackbar/Snackbar";
+import useHidingFooter from "../../hooks/useHidingFooter";
 
 const AddProduct = ({ history }) => {
 
+
+    useHidingFooter();
     const [photosWarned, setPhotosWarned] = useState(false);
 
     const [addProduct] = useMutation(ADD_PRODUCT_MUTATION);

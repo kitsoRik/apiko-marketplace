@@ -25,6 +25,8 @@ type Subscription {
 
     purchaseStatusChanged: Purchase!
     purchaseCreated: Purchase!
+
+    userLeaved: Boolean
 }
 
 type User {
@@ -203,7 +205,7 @@ type User {
         unlogin: Boolean
 
         restorePasswordRequest(email: String!): String!
-        restorePassword(key: String!, password: String!): Boolean
+        restorePassword(key: String!, password: String!, leaveDevices: Boolean): Boolean
 
         changeSavedStateOfProduct(id: ID!, state: Boolean!): Product!,
         saveUser(fullName: String!, locationId: ID!, phone: String!, icon: Upload): User

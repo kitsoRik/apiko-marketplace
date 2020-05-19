@@ -23,7 +23,7 @@ const NewPasswordPanel = ({ restoreKey }) => {
 	const [restorePassword, { data, loading, error }] = useMutation(
 		RESTORE_PASSWORD_MUTATION,
 		{
-			variables: { key: restoreKey, password },
+			variables: { key: restoreKey, password, leaveDevices },
 		}
 	);
 
@@ -111,7 +111,7 @@ function checkPasswordAgainValid(pass, again) {
 export default NewPasswordPanel;
 
 const RESTORE_PASSWORD_MUTATION = gql`
-	mutation restorePassword($key: String!, $password: String!) {
-		restorePassword(key: $key, password: $password)
+	mutation restorePassword($key: String!, $password: String!, $leaveDevices: Boolean = false) {
+		restorePassword(key: $key, password: $password, leaveDevices: $leaveDevices)
 	}
 `;

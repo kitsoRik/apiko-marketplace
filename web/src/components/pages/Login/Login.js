@@ -15,6 +15,7 @@ import withLoginedLock from "../../hocs/withLoginedLock";
 import gql from "graphql-tag";
 import { useMutation, useApolloClient } from "@apollo/react-hooks";
 import { CURRENT_USER_QUERY } from "../../../apollo/queries/user-queries";
+import { socketReconnect } from "../../../apollo";
 
 const Login = ({ history }) => {
 	const [error, setError] = useState(null);
@@ -33,7 +34,8 @@ const Login = ({ history }) => {
 			},
 		})
 			.then(async ({ data: { login } }) => {
-				await apolloClient.resetStore();
+				await apolloClient.cache.reset();
+				socketReconnect();
 				apolloClient.writeQuery({
 					query: CURRENT_USER_QUERY,
 					data: {
@@ -108,8 +110,8 @@ const Login = ({ history }) => {
 	);
 };
 
-const textFromError = ({ type }) => {
-	switch (type) {
+const textFromError = (error) => {
+	switch (error?.message.substring(15)) {
 		case "EMAIL_IS_REQUIRED":
 			return "Email is required";
 		case "PASSWORD_IS_REQUIRED":
@@ -117,7 +119,7 @@ const textFromError = ({ type }) => {
 		case "EMAIL_IS_NOT_VALID":
 			return "Email is not valid";
 		case "UNKNOWN_DATA":
-			return "Unknown data";
+			return "Unknown data, please check email and password";
 		default:
 			return "Unknown error";
 	}

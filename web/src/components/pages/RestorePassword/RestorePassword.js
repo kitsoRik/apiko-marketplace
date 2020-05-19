@@ -33,22 +33,6 @@ const RestorePassword = ({
 			stringError = "";
 			break;
 	}
-
-	// useEffect(() => {
-	//     setKeyLoadingStatus(LOADING);
-	//     api.checkRestoreKey(key)
-	//         .then(({ success, error }) => {
-	//             if (success) {
-	//                 setKeyLoadingStatus(LOADED);
-	//             } else {
-	//                 setKeyLoadingStatus(LOADED_ERROR);
-	//                 switch (error.type) {
-	//                     case "UNKNOWN_KEY": setError("Unknown key"); break;
-	//                     default: setError("Unknown error"); break;
-	//                 }
-	//             }
-	//         });
-	// }, []);// eslint-disable-line
 	return (
 		<div className="restore-password-page">
 			{data?.restorePasswordCheckKey && (

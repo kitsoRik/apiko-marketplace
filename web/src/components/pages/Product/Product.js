@@ -18,9 +18,12 @@ import BuyDialog from "./BuyDialog/BuyDialog";
 import FeedbacksContainer from "./FeedbacksContainer/FeedbacksContainer";
 import useLocationQuery from "react-use-location-query";
 import { Link } from "react-router-dom";
+import useHeaderSearchPanel from "../../hooks/useHeaderSearchPanel/useHeaderSearchPanel";
 
 const Product = ({ match }) => {
 	const { id } = match.params;
+
+	useHeaderSearchPanel();
 
 	const { setQuery } = useLocationQuery(
 		{ chat: false },
@@ -100,6 +103,7 @@ const Product = ({ match }) => {
 			<div className="product-page-user">
 				<Form className="product-page-user-form">
 					<UserIcon
+						userId={data?.product?.owner.id}
 						src={data?.product?.owner.iconName}
 						fullName={data?.product?.owner.fullname}
 						className="product-page-user-form-icon"
@@ -157,6 +161,7 @@ const Product = ({ match }) => {
 				)}
 			</div>
 			<ContactSellerDialog
+				userId={data?.product?.ownerId}
 				productId={data?.product?.id}
 				productTitle={data?.product?.title}
 				fullName={data?.product?.owner.fullName}

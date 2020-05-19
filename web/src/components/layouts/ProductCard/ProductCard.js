@@ -15,7 +15,7 @@ import ProductIcon from "../../icons/ProductIcon/ProductIcon";
 const ProductCard = ({
 	className,
 	product,
-	onChangeSavedState = () => {},
+	onChangeSavedState = () => { },
 	...props
 }) => {
 	const {
@@ -58,14 +58,12 @@ const ProductCard = ({
 				<ProductIcon imageName={imageName} />
 			</div>
 			<div className="product-card-info">
-				<div>
-					<Link
-						className="product-card-info-title"
-						to={`/products/${id}`}
-					>
-						{title}
-					</Link>
-				</div>
+				<Link
+					className="product-card-info-title"
+					to={`/products/${id}`}
+				>
+					{title}
+				</Link>
 				<span className="product-card-info-price">{price}</span>
 			</div>
 			<div className="product-card-like">

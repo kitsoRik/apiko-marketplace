@@ -3,7 +3,7 @@ const { getSavedProductsIdsByUserId, getUserById, addProductByUserId, saveUserBy
 const { getLocationById, getLocationsByNamePattern } = require("../db/models/city");
 const { storeUploadFile } = require("../helpers/files");
 const { hashPassword } = require("../helpers/hash");
-const { createSession, removeSession } = require("../db/models/session");
+const { createSession, removeSession, removeSessionsByUserId } = require("../db/models/session");
 const { createUnverifyedLink } = require("../db/models/unverifyed");
 const { customError } = require("../helpers/errors");
 const { getMessagesByIds, createMessage } = require("../db/models/message");
@@ -11,8 +11,8 @@ const { getChatsByUserId, createChat, getChatById, addMessageIdToChatById, getCh
 const { AuthenticationError, withFilter, PubSub } = require("apollo-server-express");
 const { callNewMessage } = require("../socketio");
 const { createFeedback, getFeedbacksByProductId, getFeedbacksByProductIds, getPositiveFeedbacksByProductIds } = require("../db/models/feedback");
-const { createPurchase, getPurchasesBySellerId, getPurchasesByShopperId, changePurchaseStatus, getPurchaseById } = require("../db/models/purchase");
-const { createPasswordRestoreByUserId, getPasswordRestoreByLink } = require("../db/models/restore");
+const { createPurchase, getPurchasesBySellerId, getPurchasesByShopperId, changePurchaseStatus, getPurchaseById, getClosedPurchasesBySellerId } = require("../db/models/purchase");
+const { createPasswordRestoreByUserId, getPasswordRestoreByLink, removePasswordRestoreKeyByUserId } = require("../db/models/restore");
 const pubsub = new PubSub();
 
 module.exports = {
@@ -24,7 +24,6 @@ module.exports = {
                 () => pubsub.asyncIterator("MESSAGE_SENT_ANY"),
                 async ({ chatId }, variables, { user }) => {
                     if (!user) throw new AuthenticationError();
-                    console.log(chatId);
                     const chat = await getChatById(chatId);
                     if (!chat) return new Error("Unknown error");
                     return chat.sellerId === user.id || chat.shopperId === user.id;
@@ -97,6 +96,20 @@ module.exports = {
             resolve: ({ purchase }) => {
                 return purchase;
             }
+        },
+
+        userLeaved: {
+            subscribe: withFilter(
+                () => pubsub.asyncIterator("USER_LEAVED"),
+                ({ userId }, variables, { user }) => {
+                    if (!user) return false;
+
+                    return user.id === userId;
+                }
+            ),
+            resolve: () => {
+                return true;
+            }
         }
     },
 
@@ -132,7 +145,7 @@ module.exports = {
         },
 
         salesCount: async ({ id }) => {
-            return await getPurchasesByShopperId(id).countDocuments();
+            return await getClosedPurchasesBySellerId(id).countDocuments();
         },
     },
 
@@ -276,7 +289,6 @@ module.exports = {
                         const _c = c.toObject();
                         chats[i] = _c;
                         _c._lastMessage = await getMessagesByIds(c.messagesIds[c.messagesIds.length - 1]);
-                        console.log("_", i);
                         if (++index === chats.length) {
                             resolve();
                         }
@@ -415,7 +427,7 @@ module.exports = {
         login: async (source, { email, password }, { res }) => {
             const user = await getUserByEmailAndPassword(email, await hashPassword(password));
 
-            if (!user) throw (customError("UNKNOWN_DATA"));
+            if (!user) throw new Error("UNKNOWN_DATA");
 
             const { sesid } = await createSession(user.id);
 
@@ -438,18 +450,25 @@ module.exports = {
             return true;
         },
 
-        restorePasswordRequest: async (source, { email }) => { // TODO
+        restorePasswordRequest: async (source, { email }) => {
             const user = await getUserByEmail(email);
-            if (!user) throw new Error("Unknown email");
+            if (!user) return "";
             const { link } = await createPasswordRestoreByUserId(user.id);
             return link;
         },
-        restorePassword: async (source, { key, password }) => { // TODO
+        restorePassword: async (source, { key, password, leaveDevices }) => { // TODO
             const restore = await getPasswordRestoreByLink(key);
             if (!restore) return true;
             const user = await getUserById(restore.userId);
             user.password = await hashPassword(password);
             await user.save();
+
+            if (leaveDevices) {
+                await removeSessionsByUserId(user.id);
+                pubsub.publish("USER_LEAVED", { userId: user.id });
+            }
+            await removePasswordRestoreKeyByUserId(user.id);
+
             return true;
         },
 

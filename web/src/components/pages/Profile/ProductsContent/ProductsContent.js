@@ -16,6 +16,7 @@ const ProductsContent = ({ userId }) => {
 
 	const { data, loading, refetch } = useQuery(USER_PRODUCTS_CONTENT, {
 		variables: { page, limit, userId },
+		skip: !userId
 	});
 
 	useEffect(() => {

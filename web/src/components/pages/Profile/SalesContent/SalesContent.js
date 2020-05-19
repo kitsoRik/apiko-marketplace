@@ -8,7 +8,9 @@ import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 
 const SalesContent = () => {
-	const { data, loading } = useQuery(USER_SALES_CONTENT);
+	const { data, loading } = useQuery(USER_SALES_CONTENT, {
+		skip: true
+	});
 
 	return (
 		<div className="sales-content">

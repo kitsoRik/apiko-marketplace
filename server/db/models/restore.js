@@ -29,5 +29,6 @@ restoreSchema.pre("save", async function (next) {
 const restoreModel = model("Restores", restoreSchema);
 
 exports.createPasswordRestoreByUserId = (userId) => restoreModel.create({ userId, type: "PASSWORD" });
+exports.removePasswordRestoreKeyByUserId = (userId) => restoreModel.deleteMany({ userId, type: "PASSWORD" });
 
 exports.getPasswordRestoreByLink = (link) => restoreModel.findOne({ link, type: "PASSWORD" });

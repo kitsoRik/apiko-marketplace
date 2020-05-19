@@ -13,6 +13,7 @@ import {
 } from "../../../redux/actions/products-actions";
 import ProductsViewer from "../../other/ProductsViewer/ProductsViewer";
 import useLocationQuery from "react-use-location-query";
+import useHeaderSearchPanel from "../../hooks/useHeaderSearchPanel/useHeaderSearchPanel";
 
 const Home = ({
 	searchQuery,
@@ -23,6 +24,8 @@ const Home = ({
 	const [justUpdate, setJustUpdate] = useState(0);
 	const firstRun = useRef(true);
 	const client = useApolloClient();
+
+	useHeaderSearchPanel();
 
 	const {
 		query: {

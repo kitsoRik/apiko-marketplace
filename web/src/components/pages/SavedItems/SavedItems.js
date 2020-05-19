@@ -7,9 +7,12 @@ import ModalLoading from "../../layouts/ModalLoading/ModalLoading";
 import { useQuery } from "@apollo/react-hooks";
 import { SAVED_PRODUCTS_QUERY } from "../../../apollo/queries/products-queries";
 import withLoginedLock from "../../hocs/withLoginedLock";
+import useHeaderSearchPanel from "../../hooks/useHeaderSearchPanel/useHeaderSearchPanel";
 
 const SavedItems = () => {
 	const { data, loading } = useQuery(SAVED_PRODUCTS_QUERY);
+
+	useHeaderSearchPanel();
 
 	const [savedProducts, setSavedProducts] = useState([]);
 	const [unSavedProducts, setUnSavedProducts] = useState([]);
@@ -72,8 +75,8 @@ const SavedItems = () => {
 			className="saved-items-page-form-title-loading"
 		/>
 	) : (
-		savedProducts.length
-	);
+			savedProducts.length
+		);
 
 	return (
 		<div className="saved-items-page">

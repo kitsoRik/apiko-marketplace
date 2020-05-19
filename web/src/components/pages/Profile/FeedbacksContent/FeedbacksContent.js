@@ -16,14 +16,14 @@ const FeedbacksContent = ({ userId }) => {
 
 	const { data, loading } = useQuery(USER_CONTENT_QUERY, {
 		variables: { page, limit, userId },
+		skip: !userId
 	});
-
 
 	return (
 		<div className="feedbacks-content">
 			<div className="feedbacks-content-container">
 				{data?.user?.feedbacks.map((f) => (
-					<FeedbackCard key={f.id} {...f} />
+					<FeedbackCard key={f.id} userId={f.user.id} {...f} />
 				))}
 			</div>
 

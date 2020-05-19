@@ -17,6 +17,7 @@ import { CREATE_CHAT_MUTATION } from "../../../../apollo/mutation/chats-mutation
 import useLocationQuery from "react-use-location-query";
 
 const ContactSellerDialog = ({
+	userId,
 	productId,
 	productTitle,
 	fullName,
@@ -76,6 +77,7 @@ const ContactSellerDialog = ({
 
 				<div className="contact-selleer-dialog-user">
 					<UserIcon
+						userId={userId}
 						src={iconName}
 						fullName={fullName}
 						className="contact-selleer-dialog-user-icon"

@@ -7,9 +7,12 @@ import UnknownChat from "./UnknownChat/UnknownChat";
 import withScreenSize from "../../hocs/withScreenSize/withScreenSize";
 import { compose } from "redux";
 import withLoginedLock from "../../hocs/withLoginedLock/withLoginedLock";
+import useHidingFooter from "../../hooks/useHidingFooter";
 
 const Chats = ({ match, screenSize }) => {
 	const chatId = match.params.id;
+
+	useHidingFooter();
 
 	const visibleChatsList = screenSize.width > 640 || chatId === undefined;
 	const visibleChats = chatId !== undefined;

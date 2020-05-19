@@ -54,7 +54,7 @@ export const USER_QUERY = gql`
 `;
 
 export const USER_PROFILE_DATA_QUERY = gql`
-	query ($id: ID!) {
+	query user($id: ID!) {
 		user(id: $id) {
 			id
 			productsCount

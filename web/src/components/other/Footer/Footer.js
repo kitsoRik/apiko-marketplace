@@ -1,24 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import "./Footer.scss";
+import { debounce } from "lodash";
 
-import { useHistory, useLocation } from "react-router-dom";
 
 const Footer = () => {
-	const { pathname } = useLocation();
+	const [visible, setVisible] = useState(true);
 
-	switch (pathname) {
-		case "/add-product":
-		case "/edit-profile":
-		case "/chats":
-			return null;
-		default:
-			break;
-	}
+	useEffect(() => {
+		setVisibleFooter = debounce(setVisible, 1);
+	}, []);
 
-	if (pathname.startsWith("/chats")) return null;
+
+
+	if (!visible) return null;
 
 	return <footer>Copyright (c) 2020. Privacy Policy</footer>;
 };
 
 export default Footer;
+
+export let setVisibleFooter = () => { }

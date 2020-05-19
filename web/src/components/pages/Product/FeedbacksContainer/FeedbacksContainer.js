@@ -65,7 +65,7 @@ const FeedbacksContainer = ({ productId }) => {
 
 			<Form className="product-page-product-feedbacks-items">
 				{data?.product?.feedbacks?.map((f) => (
-					<FeedbackCard key={f.id} {...f} />
+					<FeedbackCard key={f.id} userId={f.user.id} {...f} />
 				))}
 				{data?.product?.feedbacks?.length === 0 && (
 					<h3 className="product-page-product-feedbacks-items-no-feedbacks">

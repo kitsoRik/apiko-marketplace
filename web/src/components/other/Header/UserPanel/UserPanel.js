@@ -9,6 +9,7 @@ import { useQuery, useMutation, useApolloClient } from "@apollo/react-hooks";
 import { CURRENT_USER_QUERY } from "../../../../apollo/queries/user-queries";
 import gql from "graphql-tag";
 import OutsideClickHandler from "react-outside-click-handler";
+import { socketReconnect } from "../../../../apollo";
 
 const UserPanel = ({ onClose, ...props }) => {
 	const history = useHistory();
@@ -21,7 +22,8 @@ const UserPanel = ({ onClose, ...props }) => {
 	const onUnlogin = async () => {
 		onClose();
 		await unlogin();
-		await apolloClient.resetStore();
+		await apolloClient.cache.reset();
+		socketReconnect();
 		apolloClient.writeQuery({
 			query: CURRENT_USER_QUERY,
 			data: { currentUser: null },
@@ -60,6 +62,7 @@ const UserPanel = ({ onClose, ...props }) => {
 					value="Edit profile"
 				/>
 				<Button.Transparent
+					asLink={true}
 					className="user-panel-logout-button"
 					onClick={onUnlogin}
 					value="Logout"

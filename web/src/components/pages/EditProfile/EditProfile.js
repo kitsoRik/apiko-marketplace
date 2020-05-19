@@ -13,6 +13,7 @@ import { useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { Formik } from "formik";
 import useCurrentUser from "../../hooks/useCurrentUser/useCurrentUser";
+import useHidingFooter from "../../hooks/useHidingFooter";
 
 const EditProfile = () => {
 	const { currentUser } = useCurrentUser();
@@ -20,6 +21,8 @@ const EditProfile = () => {
 
 	const [imageData, setImageData] = useState(null);
 	const [image, setImage] = useState(null);
+
+	useHidingFooter();
 
 	useEffect(() => {
 		setImage(currentUser.iconName);

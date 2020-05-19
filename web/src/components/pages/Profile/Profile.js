@@ -12,8 +12,10 @@ import { useQuery } from "@apollo/react-hooks";
 import { USER_PROFILE_DATA_QUERY, USER_QUERY } from "../../../apollo/queries/user-queries";
 import useLocationQuery from "react-use-location-query";
 import useCurrentUser from "../../hooks/useCurrentUser/useCurrentUser";
+import useHeaderSearchPanel from "../../hooks/useHeaderSearchPanel/useHeaderSearchPanel";
 
 const Profile = ({ match: { params: { id } } }) => {
+	useHeaderSearchPanel();
 
 	const {
 		query: { tabIndex },
@@ -23,21 +25,22 @@ const Profile = ({ match: { params: { id } } }) => {
 		parseBoolean: true,
 		hideFalseValues: true
 	});
-
 	const { currentUser } = useCurrentUser();
-	const { data, loading } = useQuery(USER_QUERY, {
+	const { data, error, loading } = useQuery(USER_QUERY, {
 		variables: {
 			id,
 		},
-		skip: !id
+		skip: !id,
 	});
+
+
 
 	const userProfileDataQuery = useQuery(USER_PROFILE_DATA_QUERY, {
 		variables: {
 			id: !id ? currentUser.id : id,
 		},
+		skip: !currentUser?.id && !id
 	});
-	console.log(userProfileDataQuery);
 	return (
 		<div className="profile-page">
 			<Panel className="profile-page-panel">

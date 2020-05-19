@@ -69,7 +69,11 @@ exports.changePurchaseStatus = (purchaseId, status) => purchaseModel.findOneAndU
 }, { new: true });
 
 exports.getPurchaseById = (id) => purchaseModel.findOne({ id });
-exports.getPurchasesBySellerId = (sellerId, viewOpened, viewPosted, viewCanceled, viewClosed) => purchaseModel.find({
+exports.getPurchasesBySellerId = (sellerId) => purchaseModel.find({
     sellerId
 });
 exports.getPurchasesByShopperId = (shopperId) => purchaseModel.find({ shopperId });
+
+exports.getClosedPurchasesBySellerId = (sellerId) => purchaseModel.find({
+    sellerId, statuses: { $elemMatch: { status: "CLOSED" } }
+});

@@ -4,14 +4,6 @@ import "./Tabs.scss";
 import Tab from "./Tab/Tab";
 
 const Tabs = ({ data, loading, tabIndex, setTabIndex }) => {
-	const [productsCount, setProductsCount] = useState(0);
-	const [salesCount] = useState(0); 
-
-	useEffect(() => {
-		if (!data) return;
-		setProductsCount(data.user.productsCount);
-	}, [data]);
-
 	const feedbacksMain =
 		data?.user?.feedbacksCount > 0
 			? Math.floor(
@@ -23,8 +15,8 @@ const Tabs = ({ data, loading, tabIndex, setTabIndex }) => {
 
 	const tabsInfo = [
 		{ main: feedbacksMain, minor: "Positive feedbacks", loading },
-		{ main: salesCount, minor: "sales", loading },
-		{ main: productsCount, minor: "Active listings", loading },
+		{ main: data?.user?.salesCount ?? 0, minor: "sales", loading },
+		{ main: data?.user?.productsCount ?? 0, minor: "Active listings", loading },
 	];
 
 	return (

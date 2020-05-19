@@ -38,6 +38,7 @@ const CartProductsListItem = ({
 					<div className="cart-products-list-item-info-price-container-counter">
 						{editable && (
 							<button
+								className="cart-products-list-item-info-price-container-counter-button"
 								onClick={() => onCountChange(count - 1)}
 								disabled={count === 1}
 							>
@@ -46,7 +47,10 @@ const CartProductsListItem = ({
 						)}
 						<span>{count}</span>
 						{editable && (
-							<button onClick={() => onCountChange(count + 1)}>
+							<button
+								className="cart-products-list-item-info-price-container-counter-button"
+								onClick={() => onCountChange(count + 1)}
+							>
 								+
 							</button>
 						)}

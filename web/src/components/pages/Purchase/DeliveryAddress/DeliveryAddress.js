@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import "./DeliveryAddress.scss";
 import Label from "../../../layouts/Label/Label";
@@ -12,7 +12,7 @@ const initialValues = {
 	post: "",
 };
 
-const validate = setMayPurchase => ({ city, address, post }) => {
+const validate = (setMayPurchase) => ({ city, address, post }) => {
 	let errors = {};
 
 	if (city === "") errors.city = "City cannot be is empty";
@@ -27,9 +27,11 @@ const validate = setMayPurchase => ({ city, address, post }) => {
 };
 
 const DeliveryAddress = ({ setMayPurchase }) => {
-
 	return (
-		<Formik initialValues={initialValues} validate={validate(setMayPurchase)}>
+		<Formik
+			initialValues={initialValues}
+			validate={validate(setMayPurchase)}
+		>
 			{({ values, setFieldValue }) => (
 				<div className="purchase-page-delivery-address">
 					<Label value="City">

@@ -12,7 +12,9 @@ describe("TransparentButton", () => {
 	});
 
 	it("should render with value", () => {
-		const component = create(<TransparentButton value="My custom value" />);
+		const component = create(
+			<TransparentButton value="My custom value" />
+		);
 		const json = component.toJSON();
 
 		expect(json).toMatchSnapshot();

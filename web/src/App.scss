@@ -16,6 +16,14 @@ main {
 	display: flex;
 	justify-content: center;
 
+	@media screen and (max-width: 1440px) {
+		max-width: 1440px;
+	}
+
+	@media screen and (max-width: 1024px) {
+		max-width: 100%;
+	}
+
 	// & > *:first-child {
 	// 	max-width: 1440px;
 	// }

@@ -17,7 +17,7 @@ const PurchasesItem = ({
 	},
 }) => {
 	const currentUserQuery = useQuery(CURRENT_USER_QUERY);
-	const { data, loading, subscribeToMore } = useQuery(PURCHASE_ITEM_QUERY, {
+	const { data, loading } = useQuery(PURCHASE_ITEM_QUERY, {
 		variables: { id },
 	});
 

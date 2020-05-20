@@ -6,7 +6,7 @@ import Form from "../../../../layouts/Form";
 import StarsInput from "../../../../layouts/StarsInput/StarsInput";
 import Button from "../../../../layouts/Button";
 import { useMutation } from "@apollo/react-hooks";
-import { ADD_FEEDBACK_MTUTATIOn } from "../../../../../apollo/mutation/products-mutation";
+import { ADD_FEEDBACK_MTUTATION } from "../../../../../apollo/mutation/products-mutation";
 import ModalDialog from "../../../../layouts/ModalDialog/ModalDialog";
 import { notifyError } from "../../../../other/Snackbar/Snackbar";
 
@@ -36,7 +36,7 @@ const InputFeedback = ({ productId }) => {
 			break;
 	}
 
-	const [addFeedback, { loading }] = useMutation(ADD_FEEDBACK_MTUTATIOn);
+	const [addFeedback, { loading }] = useMutation(ADD_FEEDBACK_MTUTATION);
 
 	const onSendFeedback = async () => {
 		if (rate === 0) return notifyError("Rate cannot be a zero");

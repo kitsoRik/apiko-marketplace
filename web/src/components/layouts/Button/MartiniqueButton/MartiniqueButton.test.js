@@ -17,7 +17,9 @@ describe("MartiniqueButton", () => {
 	});
 
 	it("should render with value", () => {
-		const component = create(<MartiniqueButton value="My custom value" />);
+		const component = create(
+			<MartiniqueButton value="My custom value" />
+		);
 		const json = component.toJSON();
 
 		expect(json).toMatchSnapshot();
@@ -34,9 +36,9 @@ describe("MartiniqueButton", () => {
 
 	it("should have class", () => {
 		const component = mount(<MartiniqueButton />);
-		expect(component.find("button").hasClass("button-martinique")).toEqual(
-			true
-		);
+		expect(
+			component.find("button").hasClass("button-martinique")
+		).toEqual(true);
 	});
 
 	it("should skip click event", () => {

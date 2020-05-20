@@ -35,7 +35,7 @@ const ContactSellerDialog = ({
 
 	const [createChat, { client }] = useMutation(CREATE_CHAT_MUTATION);
 
-	const { data, loading } = useQuery(CHATS_LIST_QUERY);
+	const { data } = useQuery(CHATS_LIST_QUERY);
 
 	if (!data) return null;
 
@@ -56,7 +56,7 @@ const ContactSellerDialog = ({
 					chats: [...data.chats, chat.data.createChat],
 				},
 			});
-		} catch (e) { }
+		} catch (e) {}
 
 		history.push(`/chats/${chat.data.createChat.id}`);
 	};
@@ -72,7 +72,9 @@ const ContactSellerDialog = ({
 				opened={!!query.chat}
 				onClosed={onClosed}
 			>
-				<h5 className="contact-selleer-dialog-title">Contact seller</h5>
+				<h5 className="contact-selleer-dialog-title">
+					Contact seller
+				</h5>
 				<h1>Subject: {productTitle}</h1>
 
 				<div className="contact-selleer-dialog-user">

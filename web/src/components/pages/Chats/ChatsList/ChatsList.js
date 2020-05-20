@@ -2,9 +2,7 @@ import React from "react";
 
 import "./ChatsList.scss";
 import { useQuery } from "@apollo/react-hooks";
-import {
-	CHATS_LIST_QUERY,
-} from "../../../../apollo/queries/chat-queries";
+import { CHATS_LIST_QUERY } from "../../../../apollo/queries/chat-queries";
 import ChatsListItem from "./ChatsListItem/ChatsListItem";
 import { useHistory } from "react-router-dom";
 import useCurrentUser from "../../../hooks/useCurrentUser/useCurrentUser";
@@ -24,8 +22,10 @@ const ChatsList = ({ selectedChatId }) => {
 				<ChatsListItem
 					chatId={c.id}
 					fullName={
-						(currentUser.id === c.shopper.id ? c.seller : c.shopper)
-							.fullName
+						(currentUser.id === c.shopper.id
+							? c.seller
+							: c.shopper
+						).fullName
 					}
 					lastMessage={c.messages[c.messages.length - 1]}
 					product={c.product}

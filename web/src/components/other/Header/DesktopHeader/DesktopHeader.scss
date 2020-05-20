@@ -6,7 +6,10 @@
 	flex: 1;
 
 	display: grid;
-	grid-template-columns: min-content auto ((18px + 5) * 3) 131px minmax(0, 100px) 20px;
+	grid-template-columns: min-content auto ((18px + 5) * 3) 131px minmax(
+			0,
+			100px
+		) 20px;
 	grid-column-gap: 15px;
 	grid-row-gap: 22px;
 	align-items: center;

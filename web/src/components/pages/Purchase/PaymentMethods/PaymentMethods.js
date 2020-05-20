@@ -9,7 +9,7 @@ const PaymentMethods = () => {
 
 	const [selectedMethodIndex, setSelectedMethodIndex] = useState(-1);
 	return null;
-	return (
+	return (// eslint-disable-line
 		<div className="purchase-page-payment-methods">
 			<PaymentCard
 				active={selectedMethodIndex === 0}

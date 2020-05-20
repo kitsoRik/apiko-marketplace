@@ -7,7 +7,6 @@ import { useQuery } from "@apollo/react-hooks";
 import Button from "../../../../layouts/Button";
 import { useHistory, Link } from "react-router-dom";
 import ModalLoading from "../../../../layouts/ModalLoading/ModalLoading";
-import UserPanel from "../../UserPanel/UserPanel";
 import UserIcon from "../../../../icons/UserIcon";
 import PostboxIcon from "../../../../icons/PostboxIcon/PostboxIcon";
 import HeartIcon from "../../../../icons/HeartIcon";
@@ -39,7 +38,9 @@ const MobileHeaderMenu = ({ onClose }) => {
 				<Button.Outlined
 					className="mobile-header-menu-buttons-sell"
 					value="Sell"
-					onClick={onSomeClick(() => history.push("/add-product"))}
+					onClick={onSomeClick(() =>
+						history.push("/add-product")
+					)}
 				/>
 
 				<Button.Outlined
@@ -54,7 +55,10 @@ const MobileHeaderMenu = ({ onClose }) => {
 					value="Saved items"
 					icon={
 						<HeartIcon
-							filed={history.location.pathname === "/saved-items"}
+							filed={
+								history.location.pathname ===
+								"/saved-items"
+							}
 							color="#000"
 							className="desktop-header-heart"
 							dark-mode={true}
@@ -62,7 +66,9 @@ const MobileHeaderMenu = ({ onClose }) => {
 							height="24"
 						/>
 					}
-					onClick={onSomeClick(() => history.push("/saved-items"))}
+					onClick={onSomeClick(() =>
+						history.push("/saved-items")
+					)}
 				/>
 			</div>
 
@@ -76,7 +82,10 @@ const MobileHeaderMenu = ({ onClose }) => {
 			)}
 			<div>
 				{visibleUserIconLoading && (
-					<div className="mobile-header-menu-profile" tabIndex={1}>
+					<div
+						className="mobile-header-menu-profile"
+						tabIndex={1}
+					>
 						{visibleUserIconLoading && (
 							<ModalLoading
 								style={{
@@ -92,16 +101,26 @@ const MobileHeaderMenu = ({ onClose }) => {
 					<div className="mobile-header-menu-profile">
 						<UserIcon
 							fullName={
-								currentUserQuery.data?.currentUser?.fullName
+								currentUserQuery.data?.currentUser
+									?.fullName
 							}
-							src={currentUserQuery.data?.currentUser?.iconName}
+							src={
+								currentUserQuery.data?.currentUser
+									?.iconName
+							}
 						/>
 						<div className="mobile-header-menu-profile-info">
 							<span className="mmobile-header-menu-profile-info-name">
-								{currentUserQuery.data?.currentUser?.fullName}
+								{
+									currentUserQuery.data?.currentUser
+										?.fullName
+								}
 							</span>
 							<span className="mobile-header-menu-profile-info-email">
-								{currentUserQuery.data?.currentUser?.email}
+								{
+									currentUserQuery.data?.currentUser
+										?.email
+								}
 							</span>
 						</div>
 						<Link
@@ -121,7 +140,7 @@ const MobileHeaderMenu = ({ onClose }) => {
 							/>
 							<Button.Transparent
 								className="mobile-header-menu-profile-buttons-logout"
-								onClick={() => { }}
+								onClick={() => {}}
 								value="Logout"
 							/>
 						</div>

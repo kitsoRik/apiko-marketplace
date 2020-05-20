@@ -17,8 +17,8 @@ import { clamp } from "lodash";
 import useLocationQuery from "react-use-location-query";
 
 const useCustomScroll = () => {
-	let timeouts = [];
-	let nextStep = 0;
+	let timeouts = []; // eslint-disable-line
+	let nextStep = 0; // eslint-disable-line
 
 	const dispatchScrollEvent = (e) => {
 		const reactVirtualizedItem = document.querySelector(
@@ -42,10 +42,12 @@ const useCustomScroll = () => {
 
 		const sub = nextStep - scrollTop;
 		for (let i = 0; i < 1; i += 0.1) {
-			const timer = setTimeout(() => {
+			const timer = setTimeout(() => { // eslint-disable-line
 				const koef = 1 - i * i;
 				reactVirtualizedItem.scrollTo(0, nextStep - sub * koef);
-				reactVirtualizedItem.dispatchEvent(new CustomEvent("scroll"));
+				reactVirtualizedItem.dispatchEvent(
+					new CustomEvent("scroll")
+				);
 				timeouts = timeouts.filter((t) => t !== timer);
 			}, 20);
 
@@ -59,7 +61,10 @@ const useCustomScroll = () => {
 		);
 		if (!reactVirtualizedItem) return;
 
-		reactVirtualizedItem.removeEventListener("wheel", dispatchScrollEvent);
+		reactVirtualizedItem.removeEventListener(
+			"wheel",
+			dispatchScrollEvent
+		);
 		reactVirtualizedItem.addEventListener("wheel", dispatchScrollEvent);
 	};
 
@@ -77,7 +82,8 @@ const ChatMessages = ({ chatId, isChatLoading }) => {
 	const [ref, setRef] = useState(null);
 	const [lastChatId, setLastChatId] = useState(-1);
 
-	const cache = useCallback(
+	const cache = useCallback(// eslint-disable-line
+
 		() =>
 			new CellMeasurerCache({
 				fixedWidth: true,
@@ -85,18 +91,16 @@ const ChatMessages = ({ chatId, isChatLoading }) => {
 			})
 	)();
 
-	useEffect(() => { }, []);
-
 	useEffect(() => {
 		setQuery({ page: 1 });
 		setLastChatId(chatId);
-	}, [chatId]);
+	}, [chatId]); // eslint-disable-line
 
 	useEffect(() => {
 		if (ref) {
 			preventScroll();
 		}
-	}, [ref]);
+	}, [ref]); // eslint-disable-line
 
 	const { data, loading } = useQuery(CHAT_MESSAGES_QUERY, {
 		variables: {
@@ -104,7 +108,7 @@ const ChatMessages = ({ chatId, isChatLoading }) => {
 			page,
 			limit,
 		},
-		skip: isChatLoading || chatId != lastChatId,
+		skip: isChatLoading || chatId !== lastChatId,
 	});
 
 	const client = useApolloClient();
@@ -127,7 +131,10 @@ const ChatMessages = ({ chatId, isChatLoading }) => {
 
 	if (loading && messages.length === 0)
 		return (
-			<div className="chats-page-chat-messages" style={{ paddingTop: 0 }}>
+			<div
+				className="chats-page-chat-messages"
+				style={{ paddingTop: 0 }}
+			>
 				<ModalLoading style={{ position: "static" }} />
 			</div>
 		);

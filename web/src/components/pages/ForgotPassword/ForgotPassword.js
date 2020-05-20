@@ -13,7 +13,6 @@ import { useMutation } from "@apollo/react-hooks";
 import { Link } from "react-router-dom";
 
 const ForgotPassword = () => {
-
 	const [__devLink, __setDevLink] = useState(null);
 	const [email, setEmail] = useState("");
 
@@ -25,22 +24,29 @@ const ForgotPassword = () => {
 	);
 
 	const onClickContinue = async () => {
-		const { data: { restorePasswordRequest } } = await requrestToRestorePassword();
+		const {
+			data: { restorePasswordRequest },
+		} = await requrestToRestorePassword();
 		__setDevLink(`/restore-password?key=${restorePasswordRequest}`);
-	}
+	};
 
 	return (
 		<div className="forgot-password-page">
-			<LoginForm loading={loading} onSubmit={(e) => e.preventDefault()}>
+			<LoginForm
+				loading={loading}
+				onSubmit={(e) => e.preventDefault()}
+			>
 				<LoginUpperContainer>
 					<LoginUpperContainerTitle>
 						Restore Password
 					</LoginUpperContainerTitle>
 					{data?.restorePasswordRequest && (
 						<Label className="forgot-password-page-sended">
-							If {email} is exists, message with restore link will
-							have sent
-							{__devLink && <Link to={__devLink}>DEVLINK</Link>}
+							If {email} is exists, message with restore
+							link will have sent
+							{__devLink && (
+								<Link to={__devLink}>DEVLINK</Link>
+							)}
 						</Label>
 					)}
 					{!data?.restorePasswordRequest && (
@@ -68,17 +74,6 @@ const ForgotPassword = () => {
 			</LoginForm>
 		</div>
 	);
-};
-
-const textFromError = ({ type }) => {
-	switch (type) {
-		case "EMAIL_IS_REQUIRED":
-			return "Email cannot be empty";
-		case "EMAIL_IS_NOT_VALID":
-			return "Email is not valid";
-		default:
-			return "Unknown error";
-	}
 };
 
 export default withLoginedLock(false)(ForgotPassword);

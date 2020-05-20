@@ -16,7 +16,11 @@ const withQuery = (WrapperComponent) => (props) => {
 	};
 
 	return (
-		<WrapperComponent {...props} query={query} changeQuery={changeQuery} />
+		<WrapperComponent
+			{...props}
+			query={query}
+			changeQuery={changeQuery}
+		/>
 	);
 };
 

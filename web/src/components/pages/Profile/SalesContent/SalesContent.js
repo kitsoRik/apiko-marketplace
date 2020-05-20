@@ -9,7 +9,7 @@ import { useQuery } from "@apollo/react-hooks";
 
 const SalesContent = () => {
 	const { data, loading } = useQuery(USER_SALES_CONTENT, {
-		skip: true
+		skip: true,
 	});
 
 	return (

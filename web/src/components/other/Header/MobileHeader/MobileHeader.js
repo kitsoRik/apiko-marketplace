@@ -15,14 +15,15 @@ const MobileHeader = ({ visibleSearchPanel }) => {
 	);
 	const minorPanel = visibleSearchPanel;
 
-	const [userPanelOpen, setUserPanelOpen] = useState(false);
-
 	const [visibleMenu, setVisibleMenu] = useState(false);
 
 	return (
 		<header className="mobile-header">
 			<Link to="/">
-				<ApikoLogo darkMode={darkMode} className="header__apiko-logo" />
+				<ApikoLogo
+					darkMode={darkMode}
+					className="header__apiko-logo"
+				/>
 			</Link>
 			<button
 				className="mobile-header-burger"

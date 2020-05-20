@@ -30,7 +30,9 @@ export const asyncActionFactory = (
 		else if (!data.success && failedActions)
 			callForAll(
 				dispatch,
-				Array.isArray(failedActions) ? failedActions : [failedActions],
+				Array.isArray(failedActions)
+					? failedActions
+					: [failedActions],
 				data.error,
 				...args,
 				getState()
@@ -39,9 +41,7 @@ export const asyncActionFactory = (
 		if (data.success) return data.result;
 
 		return Promise.reject(data.error);
-	} catch (e) {
-		console.log(e);
-	}
+	} catch (e) {}
 };
 
 export const asyncActionFactoryWithGraphQLQuery = (
@@ -76,7 +76,9 @@ export const asyncActionFactoryWithGraphQLQuery = (
 		else if ({ errors } && failedActions)
 			callForAll(
 				dispatch,
-				Array.isArray(failedActions) ? failedActions : [failedActions],
+				Array.isArray(failedActions)
+					? failedActions
+					: [failedActions],
 				errors,
 				...args,
 				getState()
@@ -85,9 +87,7 @@ export const asyncActionFactoryWithGraphQLQuery = (
 		if (data) return data;
 
 		return Promise.reject(data.error);
-	} catch (e) {
-		console.log(e);
-	}
+	} catch (e) {}
 };
 
 const callForAll = (dispatch, funcs = [], ...args) => {

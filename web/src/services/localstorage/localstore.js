@@ -12,3 +12,5 @@ export const getLatestProductsTitleQuery = () =>
 	JSON.parse(localStorage.getItem("PRODUCTS_TITLE_QUERY"))
 		?.reverse()
 		.filter((c, i) => i < 8) ?? [];
+export const clearLatestProductsTitleQuery = () =>
+	localStorage.setItem("PRODUCTS_TITLE_QUERY", JSON.stringify([]));

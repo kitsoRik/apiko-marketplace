@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { setVisibleFooter } from '../../other/Footer/Footer';
+import { setVisibleFooter } from "../../other/Footer/Footer";
 
 const useHidingFooter = () => {
-    useEffect(() => {
-        setVisibleFooter(false);
-        return () => setVisibleFooter(true);
-    }, [])
+	useEffect(() => {
+		setVisibleFooter(false);
+		return () => setVisibleFooter(true);
+	}, []);
 };
 
 export default useHidingFooter;

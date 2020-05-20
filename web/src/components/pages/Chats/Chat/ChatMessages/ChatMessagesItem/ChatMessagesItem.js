@@ -18,7 +18,7 @@ const ChatMessagesItem = ({
 			setTime(parseTime(createdAt));
 		}, 1000);
 		return () => clearInterval(intervar);
-	}, []);
+	}, []); // eslint-disable-line
 
 	return (
 		<div
@@ -30,7 +30,9 @@ const ChatMessagesItem = ({
 			<div className="chats-page-chat-messages-item-bg">
 				<span>{text}</span>
 			</div>
-			<span className="chats-page-chat-messages-item-time">{time}</span>
+			<span className="chats-page-chat-messages-item-time">
+				{time}
+			</span>
 			<ChatMessageItemEdge
 				className="chats-page-chat-messages-item-edge"
 				color={fromMe ? "white" : "#349a89"}

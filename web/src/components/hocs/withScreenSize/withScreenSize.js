@@ -1,5 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
-import { connect } from "react-redux";
+import React, { useState, useEffect } from "react";
 
 const withScreenSize = (WrapperComponent) => (props) => {
 	const [screenSize, setScreenSize] = useState({

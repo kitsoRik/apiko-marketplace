@@ -11,7 +11,7 @@
 	@media screen and (max-width: 650px) {
 		grid-template-rows: 1fr 1fr;
 		grid-row-gap: 10px;
-		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+		grid-template-columns: max-content max-content 1fr 1fr 1fr 1fr;
 	}
 
 	&-category {

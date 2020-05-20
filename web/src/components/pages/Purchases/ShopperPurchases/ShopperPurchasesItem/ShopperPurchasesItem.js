@@ -6,16 +6,21 @@ import { Link } from "react-router-dom";
 
 const ShopperPurchasesItem = ({ id, product, count, statuses }) => {
 	return (
-		<Link className="shopper-purchases-item" to={`/purchases/${id}`}>
+		<div className="shopper-purchases-item">
 			<div className="shopper-purchases-item-product">
 				<div className="shopper-purchases-item-product-image">
-					<ProductIcon />
+					<ProductIcon
+						style={{ maxWidth: "70px" }}
+						imageName={product.imageName}
+					/>
 				</div>
 				<div className="shopper-purchases-item-product-info">
-					<span className="shopper-purchases-item-product-info-title">
+					<Link
+						className="shopper-purchases-item-product-info-title"
+						to={`/purchases/${id}`}
+					>
 						{product.title}
-					</span>
-					{/* <span className="shopper-purchases-item-product-info-description">{product.description}</span> */}
+					</Link>
 					<span className="shopper-purchases-item-product-info-price">
 						${product.price * count}
 					</span>
@@ -24,7 +29,7 @@ const ShopperPurchasesItem = ({ id, product, count, statuses }) => {
 			<div className="shopper-purchases-item-status">
 				<span>{statuses[statuses.length - 1].status}</span>
 			</div>
-		</Link>
+		</div>
 	);
 };
 

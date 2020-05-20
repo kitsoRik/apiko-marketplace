@@ -9,7 +9,11 @@ import _ from "lodash";
 const FeedbackCard = ({ id, userId, rate, text, isNew = false }) => {
 	return (
 		<div className="feedback-card" isnew={isNew ? "" : null}>
-			<UserIcon userId={userId} className="feedback-card-user-icon" fullName="R o" />
+			<UserIcon
+				userId={userId}
+				className="feedback-card-user-icon"
+				fullName="R o"
+			/>
 			<div className="feedback-card-rate">
 				{_.times(5, (n) => (
 					<StarIcon

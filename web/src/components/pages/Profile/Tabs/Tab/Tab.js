@@ -33,7 +33,10 @@ const Tab = ({ main, minor, active, loading, activated }) => {
 				{loading && (
 					<ModalLoading
 						darken={false}
-						style={{ height: "60%", top: "calc(50% - (60% / 2))" }}
+						style={{
+							height: "60%",
+							top: "calc(50% - (60% / 2))",
+						}}
 					/>
 				)}
 			</foreignObject>

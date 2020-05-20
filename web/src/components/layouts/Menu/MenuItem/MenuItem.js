@@ -6,7 +6,7 @@ const MenuItem = ({
 	value = "",
 	icon,
 	_close,
-	onAccept = () => { },
+	onAccept = () => {},
 	...props
 }) => {
 	const onClick = () => {

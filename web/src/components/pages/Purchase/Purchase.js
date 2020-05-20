@@ -50,7 +50,10 @@ const Purchase = ({ match, location: { search } }, fromCart = true) => {
 			<div>
 				<h1>
 					Please, select <Link to="/">product</Link> or{" "}
-					<Button.Default onClick={() => setQuery({ cart: true })} value="cart" />
+					<Button.Default
+						onClick={() => setQuery({ cart: true })}
+						value="cart"
+					/>
 				</h1>
 			</div>
 		);
@@ -60,7 +63,6 @@ const Purchase = ({ match, location: { search } }, fromCart = true) => {
 
 	if (!cart && !productQuery?.data) {
 		return <span>Unknown product</span>;
-
 	}
 
 	const cartProducts =
@@ -112,7 +114,9 @@ const Purchase = ({ match, location: { search } }, fromCart = true) => {
 					onPurchase={onPurchase}
 				/>
 			</div>
-			{(cart ? purchaseWithClearCartMutation.loading : purchaseMutation.loading) && <ModalLoading />}
+			{(cart
+				? purchaseWithClearCartMutation.loading
+				: purchaseMutation.loading) && <ModalLoading />}
 		</div>
 	);
 };

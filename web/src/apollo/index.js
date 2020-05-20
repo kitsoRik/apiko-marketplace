@@ -1,8 +1,10 @@
 import { ApolloClient, InMemoryCache, split } from "@apollo/client";
 import { WebSocketLink } from "@apollo/link-ws";
 import { getMainDefinition } from "@apollo/client/utilities";
-import { HOST } from "../services/api/api";
+import { WSHOST, HOST } from "../services/api/api";
 import { createUploadLink } from "apollo-upload-client";
+import { ErrorLink } from "apollo-link-error";
+import { notifyError } from "../components/other/Snackbar/Snackbar";
 
 const uploadLink = createUploadLink({
 	uri: HOST + "/graphql",
@@ -10,7 +12,7 @@ const uploadLink = createUploadLink({
 });
 
 const webSocketLink = new WebSocketLink({
-	uri: "ws://localhost:3501/subscriptions",
+	uri: `${WSHOST}/subscriptions`,
 	options: {
 		reconnect: true,
 
@@ -20,10 +22,19 @@ const webSocketLink = new WebSocketLink({
 	},
 });
 
+const errorLink = new ErrorLink(({ networkError }) => {
+	if (
+		networkError &&
+		networkError.message !== "argument str must be a string"
+	) {
+		notifyError("Network connection lost, reload page.", "qwe");
+	}
+});
+
 export const socketReconnect = () => {
 	webSocketLink.subscriptionClient.close();
 	webSocketLink.subscriptionClient.tryReconnect();
-}
+};
 
 const link = split(
 	({ query }) => {
@@ -38,7 +49,7 @@ const link = split(
 );
 
 const client = new ApolloClient({
-	link,
+	link: errorLink.concat(link),
 	cache: new InMemoryCache({
 		typePolicies: {
 			Product: {

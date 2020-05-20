@@ -36,39 +36,28 @@ const SellerPurchases = () => {
 		},
 		{ parseBoolean: true, parseNumber: true }
 	);
-	const { data, loading, subscribeToMore } = useQuery(
-		SELLER_PURCHASES_QUERY,
-		{
-			variables: {
-				page,
-				limit: limit,
-				viewOpened,
-				viewPosted,
-				viewCanceled,
-				viewClosed,
-				sortField,
-				sortOrder,
-			},
-		}
-	);
+	const { data, subscribeToMore } = useQuery(SELLER_PURCHASES_QUERY, {
+		variables: {
+			page,
+			limit: limit,
+			viewOpened,
+			viewPosted,
+			viewCanceled,
+			viewClosed,
+			sortField,
+			sortOrder,
+		},
+	});
 
 	useEffect(() => {
 		return subscribeToMore({
 			document: PURCHASE_CREATED,
 			variables: { page: 1, limit },
-			updateQuery: (
-				prev,
-				{
-					subscriptionData: {
-						data: { purchaseCreated },
-					},
-					variables,
-				}
-			) => {
+			updateQuery: () => {
 				notifyInfo("New purchase, please refresh page.");
 			},
 		});
-	}, []);
+	}, []); // eslint-disable-line
 
 	return (
 		<div className="purchases-page-seller-purchases">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import "./Tabs.scss";
 import Tab from "./Tab/Tab";
@@ -7,16 +7,20 @@ const Tabs = ({ data, loading, tabIndex, setTabIndex }) => {
 	const feedbacksMain =
 		data?.user?.feedbacksCount > 0
 			? Math.floor(
-				(data?.user?.positiveFeedbacksCount /
-					data?.user?.feedbacksCount) *
-				100
-			) + "%"
+					(data?.user?.positiveFeedbacksCount /
+						data?.user?.feedbacksCount) *
+						100
+			  ) + "%"
 			: "0/0";
 
 	const tabsInfo = [
 		{ main: feedbacksMain, minor: "Positive feedbacks", loading },
 		{ main: data?.user?.salesCount ?? 0, minor: "sales", loading },
-		{ main: data?.user?.productsCount ?? 0, minor: "Active listings", loading },
+		{
+			main: data?.user?.productsCount ?? 0,
+			minor: "Active listings",
+			loading,
+		},
 	];
 
 	return (

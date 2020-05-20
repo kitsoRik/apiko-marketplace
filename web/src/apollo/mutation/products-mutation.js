@@ -9,7 +9,7 @@ export const CHANGE_SAVED_STATE_MUTATION = gql`
 	}
 `;
 
-export const ADD_FEEDBACK_MTUTATIOn = gql`
+export const ADD_FEEDBACK_MTUTATION = gql`
 	mutation addFeedback($productId: ID!, $rate: Float!, $text: String!) {
 		addFeedback(productId: $productId, rate: $rate, text: $text) {
 			id

@@ -19,8 +19,12 @@ const SavedItems = () => {
 
 	const onChangeSavedState = (product, saved) => {
 		if (!saved) {
-			setUnSavedProducts(unSavedProducts.concat([{ ...product, saved }]));
-			setSavedProducts(savedProducts.filter((p) => p.id !== product.id));
+			setUnSavedProducts(
+				unSavedProducts.concat([{ ...product, saved }])
+			);
+			setSavedProducts(
+				savedProducts.filter((p) => p.id !== product.id)
+			);
 		} else {
 			setSavedProducts(savedProducts.concat([{ ...product, saved }]));
 			setUnSavedProducts(
@@ -44,8 +48,9 @@ const SavedItems = () => {
 	useEffect(() => {
 		const usSavedProductsIds = unSavedProducts.map((p) => p.id);
 		if (
-			savedProducts.filter((p) => usSavedProductsIds.indexOf(p.id) !== -1)
-				.length !== 0
+			savedProducts.filter(
+				(p) => usSavedProductsIds.indexOf(p.id) !== -1
+			).length !== 0
 		) {
 			setSavedProducts(
 				savedProducts.filter(
@@ -58,8 +63,9 @@ const SavedItems = () => {
 	useEffect(() => {
 		const savedProductsIds = savedProducts.map((p) => p.id);
 		if (
-			unSavedProducts.filter((p) => savedProductsIds.indexOf(p.id) !== -1)
-				.length !== 0
+			unSavedProducts.filter(
+				(p) => savedProductsIds.indexOf(p.id) !== -1
+			).length !== 0
 		) {
 			setUnSavedProducts(
 				unSavedProducts.filter(
@@ -75,8 +81,8 @@ const SavedItems = () => {
 			className="saved-items-page-form-title-loading"
 		/>
 	) : (
-			savedProducts.length
-		);
+		savedProducts.length
+	);
 
 	return (
 		<div className="saved-items-page">
@@ -110,7 +116,10 @@ const SavedItems = () => {
 									key={"_" + product.id}
 									product={product}
 									onChangeSavedState={(state) =>
-										onChangeSavedState(product, state)
+										onChangeSavedState(
+											product,
+											state
+										)
 									}
 								/>
 							))}

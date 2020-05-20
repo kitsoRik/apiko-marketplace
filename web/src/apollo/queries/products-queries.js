@@ -70,6 +70,10 @@ export const PRODUCT_QUERY = gql`
 				id
 				fullName
 				iconName
+				location {
+					id
+					name
+				}
 			}
 			location {
 				id

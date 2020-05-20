@@ -77,7 +77,7 @@ const Home = ({
 			title: reactionSearchQuery.title,
 			locationId: reactionSearchQuery.locationId,
 		});
-	}, [reactionSearchQuery.title, reactionSearchQuery.locationId]);
+	}, [reactionSearchQuery.title, reactionSearchQuery.locationId]); // eslint-disable-line
 
 	let products = [];
 
@@ -156,7 +156,10 @@ const Home = ({
 				page={page}
 				pages={pages}
 				onChangePage={(page) =>
-					onChangeSearchOptions({ page, joinedPages: [page] }, true)
+					onChangeSearchOptions(
+						{ page, joinedPages: [page] },
+						true
+					)
 				}
 			/>
 		</div>

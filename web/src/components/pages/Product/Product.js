@@ -19,6 +19,7 @@ import FeedbacksContainer from "./FeedbacksContainer/FeedbacksContainer";
 import useLocationQuery from "react-use-location-query";
 import { Link } from "react-router-dom";
 import useHeaderSearchPanel from "../../hooks/useHeaderSearchPanel/useHeaderSearchPanel";
+import moment from "moment";
 
 const Product = ({ match }) => {
 	const { id } = match.params;
@@ -63,7 +64,9 @@ const Product = ({ match }) => {
 				<Form className="product-page-product">
 					<div className="product-page-product-image">
 						{!loading && (
-							<ProductIcon imageName={data?.product?.imageName} />
+							<ProductIcon
+								imageName={data?.product?.imageName}
+							/>
 						)}
 						<span className="product-page-product-image-price">
 							{"\u00A0"}
@@ -77,7 +80,9 @@ const Product = ({ match }) => {
 							</span>
 							<span className="product-page-product-info-upper-time">
 								{!loading &&
-									parseTime(data?.product?.createdAt)}
+									parseTime(
+										data?.product?.createdAt
+									)}
 							</span>
 							<ProductLocation
 								location={data?.product?.location}
@@ -105,16 +110,14 @@ const Product = ({ match }) => {
 					<UserIcon
 						userId={data?.product?.owner.id}
 						src={data?.product?.owner.iconName}
-						fullName={data?.product?.owner.fullname}
+						fullName={data?.product?.owner.fullName}
 						className="product-page-user-form-icon"
 					/>
-					<Link to={`/profile/${data?.product?.owner?.id}`}>
-						{data?.product?.owner.fullName}
-						{"\u00A0"}
+					<Link to={`/profile/${data?.product?.owner.id}`}>
+						{data?.product?.owner.fullName ?? "\u00A0"}
 					</Link>
 					<span>
-						{data?.product?.owner.fullName}
-						{"\u00A0"}
+						{data?.product?.owner.location?.name ?? "\u00A0"}
 					</span>
 					{loading && (
 						<ModalLoading
@@ -127,7 +130,7 @@ const Product = ({ match }) => {
 					<div className="product-page-user-buttons">
 						{data?.product &&
 							currentUserQuery.data?.currentUser?.id !==
-							data?.product?.owner.id && (
+								data?.product?.owner.id && (
 								<Button.Default
 									className="product-page-user-buttons-chat-with-seller-button"
 									value="Chat with seller"
@@ -138,18 +141,24 @@ const Product = ({ match }) => {
 
 						{data?.product &&
 							currentUserQuery.data?.currentUser?.id !==
-							data?.product?.owner.id && (
+								data?.product?.owner.id && (
 								<Button.Default
 									className="product-page-user-buttons-chat-with-buy-button"
 									value="Buy"
 									uppercase="true"
-									onClick={() => setBuyDialogVisible(true)}
+									onClick={() =>
+										setBuyDialogVisible(true)
+									}
 								/>
 							)}
 						<Button.Outlined
 							uppercase={true}
 							onClick={onChangeSavedState}
-							icon={<HeartIcon filed={data?.product?.saved} />}
+							icon={
+								<HeartIcon
+									filed={data?.product?.saved}
+								/>
+							}
 							className="product-page-user-buttons-add-to-favorite-button"
 							value={
 								data?.product?.saved
@@ -197,5 +206,5 @@ const parseTime = (str) => {
 		return `Today ${h < 10 ? "0" + h : h}:${m < 10 ? "0" + m : m}`;
 	}
 
-	return `${time.getFullYear()}`;
+	return moment(time).calendar();
 };

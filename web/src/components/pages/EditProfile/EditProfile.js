@@ -4,7 +4,6 @@ import "./EditProfile.scss";
 import Form from "../../layouts/Form";
 import UserIcon from "../../icons/UserIcon";
 import Label from "../../layouts/Label";
-import LocationTextField from "../../other/LocationTextField";
 import TextField from "../../layouts/TextField";
 import Button from "../../layouts/Button";
 import ModalLoading from "../../layouts/ModalLoading/ModalLoading";
@@ -14,6 +13,7 @@ import gql from "graphql-tag";
 import { Formik } from "formik";
 import useCurrentUser from "../../hooks/useCurrentUser/useCurrentUser";
 import useHidingFooter from "../../hooks/useHidingFooter";
+import LocationTextField from "../../layouts/LocationTextField";
 
 const EditProfile = () => {
 	const { currentUser } = useCurrentUser();
@@ -86,117 +86,135 @@ const EditProfile = () => {
 					setFieldValue,
 					setFieldTouched,
 					handleSubmit,
-					isSubmitting
+					isSubmitting,
 				}) => (
-						<Form
-							className="edit-profile-page-form"
-							onSubmit={handleSubmit}
-							asForm={true}
-						>
-							<h2 className="edit-profile-page-form-title">
-								Edit profile
+					<Form
+						className="edit-profile-page-form"
+						onSubmit={handleSubmit}
+						asForm={true}
+					>
+						<h2 className="edit-profile-page-form-title">
+							Edit profile
 						</h2>
-							<div className="edit-profile-page-form-icon">
-								<UserIcon
-									fullName={currentUser.fullName}
-									src={image}
-									local={!!imageData}
-								/>
-								<Button.Outlined
-									type="outlined"
-									value="Upgrade Photo"
-									onClick={(e) => {
-										e.preventDefault();
-										inputImageRef.current.click();
-									}}
-								/>
-								<input
-									type="file"
-									ref={inputImageRef}
-									style={{ display: "none" }}
-									onChange={onImageChange}
-								/>
-							</div>
-							<div className="edit-profile-page-form-fields">
-								<Label
-									className="edit-profile-page-form-fields-full-email"
-									value="Email"
-								>
-									<TextField
-										value={values.email}
-										disabled={true}
-										onValueChange={(value) =>
-											setFieldValue("email", value)
-										}
-									/>
-								</Label>
-								<Label
-									className="edit-profile-page-form-fields-full-name"
-									value="Full name"
-									error={errors.fullName}
-								>
-									<TextField
-										value={values.fullName}
-										error={errors.fullName}
-										onValueChange={(value) =>
-											setFieldValue("fullName", value)
-										}
-									/>
-								</Label>
-								<Label
-									className="edit-profile-page-form-fields-phone"
-									value="Phone number"
-									error={errors.phone}
-								>
-									<TextField
-										value={values.phone}
-										onValueChange={(value) => {
-											setFieldTouched("phone", true)
-											setFieldValue("phone", value)
-										}}
-										onBlur={() =>
-											setFieldTouched("phone", true)
-										}
-									/>
-								</Label>
-								<Label
-									className="edit-profile-page-form-fields-location"
-									value="Location"
-									error={errors.locationId}
-								>
-									<LocationTextField
-										locationId={values.locationId}
-										error={errors.locationId}
-										initialLocationName={
-											currentUser.location?.name
-										}
-										onLocationIdChange={(value) => {
-											setFieldValue("locationId", value);
-											setFieldTouched("locationId", true)
-										}}
-										onBlur={() =>
-											setFieldTouched("locationId", true)
-										}
-									/>
-								</Label>
-							</div>
-							<Button.Default
-								className="edit-profile-page-form-save"
-								type="submit"
-								value="Save"
-								disabled={
-									(Object.keys(errors).length !== 0 ||
-										Object.keys(touched).length === 0 ||
-										JSON.stringify(values) ===
-										JSON.stringify(initialValues)) &&
-									!imageData
-								}
+						<div className="edit-profile-page-form-icon">
+							<UserIcon
+								fullName={currentUser.fullName}
+								src={image}
+								local={!!imageData}
 							/>
-							{(isSubmitting) && (
-								<ModalLoading style={{ top: 0, left: 0 }} />
-							)}
-						</Form>
-					)}
+							<Button.Outlined
+								type="outlined"
+								value="Upgrade Photo"
+								onClick={(e) => {
+									e.preventDefault();
+									inputImageRef.current.click();
+								}}
+							/>
+							<input
+								type="file"
+								ref={inputImageRef}
+								style={{ display: "none" }}
+								onChange={onImageChange}
+							/>
+						</div>
+						<div className="edit-profile-page-form-fields">
+							<Label
+								className="edit-profile-page-form-fields-full-email"
+								value="Email"
+							>
+								<TextField
+									value={values.email}
+									disabled={true}
+									onValueChange={(value) =>
+										setFieldValue("email", value)
+									}
+								/>
+							</Label>
+							<Label
+								className="edit-profile-page-form-fields-full-name"
+								value="Full name"
+								error={errors.fullName}
+							>
+								<TextField
+									value={values.fullName}
+									error={errors.fullName}
+									onValueChange={(value) =>
+										setFieldValue(
+											"fullName",
+											value
+										)
+									}
+								/>
+							</Label>
+							<Label
+								className="edit-profile-page-form-fields-phone"
+								value="Phone number"
+								error={errors.phone}
+							>
+								<TextField
+									value={values.phone}
+									onValueChange={(value) => {
+										setFieldTouched(
+											"phone",
+											true
+										);
+										setFieldValue("phone", value);
+									}}
+									onBlur={() =>
+										setFieldTouched("phone", true)
+									}
+								/>
+							</Label>
+							<Label
+								className="edit-profile-page-form-fields-location"
+								value="Location"
+								error={errors.locationId}
+							>
+								<LocationTextField
+									locationId={values.locationId}
+									error={errors.locationId}
+									initialLocationName={
+										currentUser.location?.name
+									}
+									onLocationIdChange={(value) => {
+										setFieldValue(
+											"locationId",
+											value
+										);
+										setFieldTouched(
+											"locationId",
+											true
+										);
+									}}
+									onBlur={() =>
+										setFieldTouched(
+											"locationId",
+											true
+										)
+									}
+								/>
+							</Label>
+						</div>
+						<Button.Default
+							className="edit-profile-page-form-save"
+							type="submit"
+							value="Save"
+							disabled={
+								(Object.keys(errors).length !== 0 ||
+									Object.keys(touched).length ===
+										0 ||
+									JSON.stringify(values) ===
+										JSON.stringify(
+											initialValues
+										)) &&
+								!imageData
+							}
+						/>
+						{isSubmitting && (
+							<ModalLoading style={{ top: 0, left: 0 }} />
+						)}
+					</Form>
+				)}
 			</Formik>
 		</div>
 	);

@@ -17,7 +17,7 @@ import { CURRENT_USER_QUERY } from "../../../apollo/queries/user-queries";
 
 const Register = ({ history }) => {
 	const apolloClient = useApolloClient();
-	const [register, { data, error }] = useMutation(REGISTER_MUTATION);
+	const [register, { data }] = useMutation(REGISTER_MUTATION);
 	const onSubmit = async (
 		{ email, fullName, password },
 		{ setSubmitting, setErrors }
@@ -26,14 +26,13 @@ const Register = ({ history }) => {
 		try {
 			const d = await register({
 				variables: { email, fullName, password },
-			})
+			});
 			apolloClient.writeQuery({
 				query: CURRENT_USER_QUERY,
 				data: {
 					currentUser: d.data.register,
 				},
 			});
-
 		} catch (error) {
 			switch (error?.message.substring(15)) {
 				case "EMAIL_IS_BUSY":
@@ -43,7 +42,7 @@ const Register = ({ history }) => {
 				default:
 					break;
 			}
-		};
+		}
 	};
 
 	const initialValues = {
@@ -87,90 +86,99 @@ const Register = ({ history }) => {
 				handleSubmit,
 				isSubmitting,
 			}) => (
-					<LoginForm loading={isSubmitting} onSubmit={handleSubmit}>
-						<LoginUpperContainer>
-							<LoginUpperContainerTitle>
-								Register
+				<LoginForm loading={isSubmitting} onSubmit={handleSubmit}>
+					<LoginUpperContainer>
+						<LoginUpperContainerTitle>
+							Register
 						</LoginUpperContainerTitle>
-							<Label
-								className="register-page-form-field"
-								value="Email"
-								error={!!touched.email && errors.email}
-							>
-								<TextField
-									value={values.email}
-									placeholder={"Example@gmail.com"}
-									name="email"
-									error={!!touched.email && !!errors.email}
-									onChange={handleChange}
-									onBlur={handleBlur}
-								/>
-							</Label>
-							<Label
-								className="register-page-form-field"
-								value="Full name"
-								error={!!touched.fullName && errors.fullName}
-							>
-								<TextField
-									value={values.fullName}
-									error={!!touched.fullName && !!errors.fullName}
-									name="fullName"
-									onChange={handleChange}
-									onBlur={handleBlur}
-								/>
-							</Label>
-							<Label
-								className="register-page-form-field"
-								value="Password"
-								error={!!touched.password && errors.password}
-							>
-								<TextField
-									value={values.password}
-									error={!!touched.password && !!errors.password}
-									name="password"
-									password={true}
-									onChange={handleChange}
-									onBlur={handleBlur}
-								/>
-							</Label>
-							<Label
-								className="register-page-form-field"
-								value="Password again"
+						<Label
+							className="register-page-form-field"
+							value="Email"
+							error={!!touched.email && errors.email}
+						>
+							<TextField
+								value={values.email}
+								placeholder={"Example@gmail.com"}
+								name="email"
 								error={
-									!!touched.passwordAgain && errors.passwordAgain
+									!!touched.email && !!errors.email
 								}
-							>
-								<TextField
-									value={values.passwordAgain}
-									error={
-										!!touched.passwordAgain &&
-										!!errors.passwordAgain
-									}
-									password={true}
-									name="passwordAgain"
-									onChange={handleChange}
-									onBlur={handleBlur}
-								/>
-							</Label>
-							<Button.Default
-								className="register-page-sumbit-button"
-								disabled={
-									Object.keys(errors).length !== 0 ||
-									Object.keys(touched).length === 0
-								}
-								type="submit"
-								onClick={handleSubmit}
-								value="Register"
+								onChange={handleChange}
+								onBlur={handleBlur}
 							/>
-						</LoginUpperContainer>
-						<LoginLowerContainer>
-							I already have account,&nbsp;
+						</Label>
+						<Label
+							className="register-page-form-field"
+							value="Full name"
+							error={!!touched.fullName && errors.fullName}
+						>
+							<TextField
+								value={values.fullName}
+								error={
+									!!touched.fullName &&
+									!!errors.fullName
+								}
+								name="fullName"
+								onChange={handleChange}
+								onBlur={handleBlur}
+							/>
+						</Label>
+						<Label
+							className="register-page-form-field"
+							value="Password"
+							error={!!touched.password && errors.password}
+						>
+							<TextField
+								value={values.password}
+								error={
+									!!touched.password &&
+									!!errors.password
+								}
+								name="password"
+								password={true}
+								onChange={handleChange}
+								onBlur={handleBlur}
+							/>
+						</Label>
+						<Label
+							className="register-page-form-field"
+							value="Password again"
+							error={
+								!!touched.passwordAgain &&
+								errors.passwordAgain
+							}
+						>
+							<TextField
+								value={values.passwordAgain}
+								error={
+									!!touched.passwordAgain &&
+									!!errors.passwordAgain
+								}
+								password={true}
+								name="passwordAgain"
+								onChange={handleChange}
+								onBlur={handleBlur}
+							/>
+						</Label>
+						<Button.Default
+							className="register-page-sumbit-button"
+							disabled={
+								Object.keys(errors).length !== 0 ||
+								Object.keys(touched).length === 0
+							}
+							type="submit"
+							onClick={handleSubmit}
+							value="Register"
+						/>
+					</LoginUpperContainer>
+					<LoginLowerContainer>
+						I already have account,&nbsp;
 						<span className="register-page-link">
-								<Link to="/login">LOGIN IN</Link>
-							</span>
-						</LoginLowerContainer>
-					</LoginForm>
-				)}
+							<Link to="/login">LOGIN IN</Link>
+						</span>
+					</LoginLowerContainer>
+				</LoginForm>
+			)}
 		</Formik>
 	);
 
@@ -236,7 +244,9 @@ const Register = ({ history }) => {
 	const registeredForm = (
 		<LoginForm>
 			<LoginUpperContainer>
-				<LoginUpperContainerTitle>Registered</LoginUpperContainerTitle>
+				<LoginUpperContainerTitle>
+					Registered
+				</LoginUpperContainerTitle>
 				<Label className="register-page-registered-label">
 					Please, check your email for verify link
 				</Label>
@@ -259,7 +269,11 @@ const Register = ({ history }) => {
 export default withLoginedLock(false)(Register);
 
 const REGISTER_MUTATION = gql`
-	mutation register($fullName: String!, $email: String!, $password: String!) {
+	mutation register(
+		$fullName: String!
+		$email: String!
+		$password: String!
+	) {
 		register(fullName: $fullName, email: $email, password: $password) {
 			id
 			fullName

@@ -16,7 +16,7 @@ const FeedbacksContent = ({ userId }) => {
 
 	const { data, loading } = useQuery(USER_CONTENT_QUERY, {
 		variables: { page, limit, userId },
-		skip: !userId
+		skip: !userId,
 	});
 
 	return (
@@ -35,7 +35,7 @@ const FeedbacksContent = ({ userId }) => {
 
 			<Pagination
 				page={page}
-				pages={Math.ceil(data?.currentUser?.feedbacksCount / 10)}
+				pages={Math.ceil(data?.user?.feedbacksCount / limit)}
 				onChangePage={(page) => setQuery({ page })}
 			/>
 		</div>

@@ -3,9 +3,7 @@ import React, { useState } from "react";
 import "./ChatInputMessage.scss";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
-import {
-	CHATS_LIST_QUERY,
-} from "../../../../../apollo/queries/chat-queries";
+import { CHATS_LIST_QUERY } from "../../../../../apollo/queries/chat-queries";
 import ChatInputMessageSmileButton from "./ChatInputMessageSmileButton";
 import ChatInputMessageLinkButton from "./ChatInputMessageLinkButton";
 import ChatInputMessageSendButton from "./ChatInputMessageSendButton";

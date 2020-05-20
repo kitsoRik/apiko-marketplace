@@ -8,7 +8,9 @@ const ErrorKeyPanel = ({ error }) => {
 	return (
 		<LoginForm>
 			<LoginUpperContainer>
-				<LoginUpperContainerTitle>Key error</LoginUpperContainerTitle>
+				<LoginUpperContainerTitle>
+					Key error
+				</LoginUpperContainerTitle>
 				<Label value={`Reason: ${error}`} />
 			</LoginUpperContainer>
 		</LoginForm>

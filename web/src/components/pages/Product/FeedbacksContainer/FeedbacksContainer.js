@@ -11,6 +11,7 @@ import ModalLoading from "../../../layouts/ModalLoading/ModalLoading";
 import { FEEDBACK_ADDED } from "../../../../apollo/subscriptions/products-subscription";
 import useLocationQuery from "react-use-location-query";
 import { clamp } from "lodash";
+import useCurrentUser from "../../../hooks/useCurrentUser/useCurrentUser";
 
 const FeedbacksContainer = ({ productId }) => {
 	const {
@@ -29,13 +30,13 @@ const FeedbacksContainer = ({ productId }) => {
 		}
 	);
 
+	const { currentUser } = useCurrentUser();
+
 	useEffect(() => {
 		return subscribeToMore({
 			document: FEEDBACK_ADDED,
 			variables: {
 				productId,
-				page: 1,
-				limit: feedbacksLimit,
 			},
 			updateQuery: (
 				prev,
@@ -57,7 +58,7 @@ const FeedbacksContainer = ({ productId }) => {
 				};
 			},
 		});
-	}, [productId]);
+	}, [productId, currentUser]); // eslint-disable-line
 
 	return (
 		<div className="product-page-product-feedbacks">
@@ -79,7 +80,8 @@ const FeedbacksContainer = ({ productId }) => {
 					page={feedbacksPage}
 					pages={clamp(
 						Math.ceil(
-							data?.product?.feedbacksCount / feedbacksLimit
+							data?.product?.feedbacksCount /
+								feedbacksLimit
 						),
 						0,
 						999

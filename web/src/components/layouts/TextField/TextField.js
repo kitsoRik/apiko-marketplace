@@ -25,8 +25,8 @@ const TextField = ({
 	password,
 	error,
 	errorIfTouched,
-	onChange = () => { },
-	onValueChange = () => { },
+	onChange = () => {},
+	onValueChange = () => {},
 	...props
 }) => {
 	const [touched, setTouched] = useState(false);
@@ -47,9 +47,10 @@ const TextField = ({
 			case "ArrowDown": {
 				e.preventDefault();
 				if (
-					autocompleteIndex === autoCompleteOptions?.length - 1 ||
 					autocompleteIndex ===
-					autoCompleteOptionsWhenEmpty?.length - 1
+						autoCompleteOptions?.length - 1 ||
+					autocompleteIndex ===
+						autoCompleteOptionsWhenEmpty?.length - 1
 				) {
 					setAutocompleteIndex(0);
 					break;
@@ -69,7 +70,8 @@ const TextField = ({
 				e.preventDefault();
 				let _value;
 				if (value === "") {
-					const el = autoCompleteOptionsWhenEmpty[autocompleteIndex];
+					const el =
+						autoCompleteOptionsWhenEmpty[autocompleteIndex];
 					if (!el) return;
 					const props = el.props;
 					_value = props.textValue;
@@ -160,25 +162,32 @@ const TextField = ({
 				<img
 					className="text-field-view-password"
 					alt="View password"
-					src={!viewPassword ? ViewPassword : ViewPasswordChecked}
+					src={
+						!viewPassword ? ViewPassword : ViewPasswordChecked
+					}
 					onClick={() => setViewPassword(!viewPassword)}
 				/>
 			)}
-			{autoCompleteTruthOptions.length !== 0 && inFocus && value !== "" && (
-				<div
-					className="text-field-auto-complete-container"
-					tabIndex="1"
-				>
-					{(() => {
-						return autoCompleteTruthOptions.map((e, i) => {
-							return React.cloneElement(e, {
-								active: autocompleteIndex === i,
-								compareValue: value,
-							});
-						});
-					})()}
-				</div>
-			)}
+			{autoCompleteTruthOptions.length !== 0 &&
+				inFocus &&
+				value !== "" && (
+					<div
+						className="text-field-auto-complete-container"
+						tabIndex="1"
+					>
+						{(() => {
+							return autoCompleteTruthOptions.map(
+								(e, i) => {
+									return React.cloneElement(e, {
+										active:
+											autocompleteIndex === i,
+										compareValue: value,
+									});
+								}
+							);
+						})()}
+					</div>
+				)}
 			{autoCompleteOptionsWhenEmpty &&
 				autoCompleteOptionsWhenEmpty.length !== 0 &&
 				inFocus &&

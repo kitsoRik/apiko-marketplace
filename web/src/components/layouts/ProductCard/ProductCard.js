@@ -2,20 +2,18 @@ import React from "react";
 import "./ProductCard.scss";
 import ModalLoading from "../ModalLoading/ModalLoading";
 import HeartIcon from "../../icons/HeartIcon";
-import api from "../../../services/api";
-import { useQuery, useMutation, useApolloClient } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 import { notifyWarning } from "../../other/Snackbar/Snackbar";
 import { CURRENT_USER_QUERY } from "../../../apollo/queries/user-queries";
 import { CHANGE_SAVED_STATE_MUTATION } from "../../../apollo/mutation/products-mutation";
 import { Link } from "react-router-dom";
-import ImageNoAvaiableIcon from "../../icons/ImageNoAvaliableIcon/ImageNoAvalaibleIcon";
 import { changeProductStateHandler } from "../../../apollo/handlers/products-handler";
 import ProductIcon from "../../icons/ProductIcon/ProductIcon";
 
 const ProductCard = ({
 	className,
 	product,
-	onChangeSavedState = () => { },
+	onChangeSavedState = () => {},
 	...props
 }) => {
 	const {

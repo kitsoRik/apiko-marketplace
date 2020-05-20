@@ -54,10 +54,14 @@ const Cart = () => {
 					},
 				},
 			});
-		} catch (e) {
-		}
+		} catch (e) {}
 	};
-	if (loading) return <div><ModalLoading darken={false} /></div>;
+	if (loading)
+		return (
+			<div>
+				<ModalLoading darken={false} />
+			</div>
+		);
 
 	return (
 		<div className="cart-page">

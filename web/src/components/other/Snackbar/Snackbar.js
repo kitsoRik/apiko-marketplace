@@ -9,21 +9,34 @@ const Snackbar = () => {
 	const [notifications, setNotification] = useState([]);
 
 	useEffect(() => {
-		notifyAny = (next) => new Promise((resolve, reject) => {
-			setNotification((_notifications = [..._notifications, next]));
-			setTimeout(() => {
+		notifyAny = (next) =>
+			new Promise((resolve, reject) => {
+				const old = _notifications.find((n) => n.id === next.id);
+				if (old) {
+					clearTimeout(old.timeout);
+				}
+				const timeout = setTimeout(() => {
+					setNotification(
+						(_notifications = _notifications.filter(
+							(n) => n.id !== next.id
+						))
+					);
+					resolve();
+				}, 4000);
 				setNotification(
-					(_notifications = _notifications.filter(
-						(n) => n.id !== next.id
-					))
+					(_notifications = [
+						..._notifications.filter((n) => n.id !== next.id),
+						{ ...next, timeout },
+					])
 				);
-				resolve();
-			}, 4000);
-		});
+			});
 
-		notifyInfo = (value) => notifyAny({ id: notifyId++, type: "info", value });
-		notifyWarning = (value) => notifyAny({ id: notifyId++, type: "warning", value });
-		notifyError = (value) => notifyAny({ id: notifyId++, type: "error", value });
+		notifyInfo = (value, id) =>
+			notifyAny({ id: id ?? notifyId++, type: "info", value });
+		notifyWarning = (value, id) =>
+			notifyAny({ id: id ?? notifyId++, type: "warning", value });
+		notifyError = (value, id) =>
+			notifyAny({ id: id ?? notifyId++, type: "error", value });
 
 		notifyWithType = (type, value) => {
 			switch (type) {
@@ -50,12 +63,12 @@ const Snackbar = () => {
 
 let notifyId = 1;
 
-let notifyAny = (next) => { };
+let notifyAny = (next) => {};
 
-export let notifyInfo = (value) => { };
-export let notifyWarning = (value) => { };
-export let notifyError = (value) => { };
+export let notifyInfo = (value, id) => {};
+export let notifyWarning = (value, id) => {};
+export let notifyError = (value, id) => {};
 
-export let notifyWithType = (type, value) => { };
+export let notifyWithType = (type, value) => {};
 
 export default Snackbar;

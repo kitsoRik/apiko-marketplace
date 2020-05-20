@@ -34,13 +34,14 @@ const withLoginedLock = (needLogin = true) => (WrapperComponent) => {
 			loginStatus !== LOGINED &&
 			registerStatus !== REGISTERED;
 		const dataNotLoaded =
-			loadingDataState === LOADED_ERROR || loadingDataState === UNLOADED;
+			loadingDataState === LOADED_ERROR ||
+			loadingDataState === UNLOADED;
 
 		useEffect(() => {
 			if (loginStatus === UNLOGINING) {
 				setChecked(false);
 			}
-		}, [loginStatus]);
+		}, [loginStatus]); // eslint-disable-line
 
 		useEffect(() => {
 			if (loadingDataState === LOADED_ERROR && checked) {
@@ -48,7 +49,7 @@ const withLoginedLock = (needLogin = true) => (WrapperComponent) => {
 				notifyError("Now, you have no access to this page");
 				history.push("/");
 			}
-		}, [loadingDataState]);
+		}, [loadingDataState]); // eslint-disable-line
 
 		useEffect(() => {
 			if (loadingVisible) setChecked(false);

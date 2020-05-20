@@ -30,7 +30,7 @@ const Chat = ({ setViewingChat, chatId, className }) => {
 		setViewingChat(chatId);
 
 		return () => setViewingChat(null);
-	}, [chatId]);
+	}, [chatId]); // eslint-disable-line
 
 	if (!chat) chat = data?.chat;
 
@@ -41,7 +41,13 @@ const Chat = ({ setViewingChat, chatId, className }) => {
 		<div className={`chats-page-chat ${className ?? ""}`}>
 			<ChatHeader
 				product={loading ? null : product}
-				user={loading ? null : (currentUser.id === shopper?.id ? seller : shopper)}
+				user={
+					loading
+						? null
+						: currentUser.id === shopper?.id
+						? seller
+						: shopper
+				}
 				loading={loading}
 			/>
 			<ChatMessages chatId={chatId} isChatLoading={loading} />

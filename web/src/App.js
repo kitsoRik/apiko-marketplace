@@ -11,7 +11,6 @@ import useChatCreatedSubscription from "./components/hooks/useChatCreatedSubscri
 import useUserLeavedSubscription from "./components/hooks/useUserLeavedSubscription";
 
 const App = () => {
-
 	useMessageSentSubscription();
 	useChatCreatedSubscription();
 	useUserLeavedSubscription();

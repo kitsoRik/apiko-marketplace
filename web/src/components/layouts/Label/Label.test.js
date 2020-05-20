@@ -26,7 +26,10 @@ describe("Label", () => {
 
 	it("should render with className", () => {
 		const component = create(
-			<Label value="My custom value" className="my-custom-class-name" />
+			<Label
+				value="My custom value"
+				className="my-custom-class-name"
+			/>
 		);
 		const json = component.toJSON();
 

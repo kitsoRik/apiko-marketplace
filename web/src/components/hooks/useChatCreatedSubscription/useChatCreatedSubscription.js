@@ -1,42 +1,41 @@
 import { unreadChat } from "../../../redux/actions/chats-actions";
 import { CHAT_CREATED_SUBSCRIPTION } from "../../../apollo/subscriptions/chats-subscriptions";
 import { CHATS_LIST_QUERY } from "../../../apollo/queries/chat-queries";
-import {
-    useSubscription,
-    useApolloClient,
-} from "@apollo/react-hooks";
+import { useApolloClient } from "@apollo/react-hooks";
 import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import useCurrentUser from "../useCurrentUser/useCurrentUser";
 
 const useChatCreatedSubscription = () => {
-    const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-    const client = useApolloClient();
-    useSubscription(
-        CHAT_CREATED_SUBSCRIPTION,
-        {
-            onSubscriptionData: ({ subscriptionData: { data } }) => {
-                dispatch(unreadChat(data.chatCreated.id));
-                try {
-                    const d = client.readQuery({
-                        query: CHATS_LIST_QUERY,
-                    });
+	const client = useApolloClient();
+	const { currentUser } = useCurrentUser();
 
-                    client.writeQuery({
-                        query: CHATS_LIST_QUERY,
-                        data: {
-                            ...d,
-                            chats: [
-                                data.chatCreated,
-                                ...d.chats
-                            ]
-                        }
-                    })
-                } catch (e) {
-                    console.log(e);
-                }
-            },
-        }
-    );
+	useEffect(() => {
+		const observer = client.subscribe({
+			query: CHAT_CREATED_SUBSCRIPTION,
+		});
+		const subscription = observer.subscribe(
+			({ data: { chatCreated } }) => {
+				dispatch(unreadChat(chatCreated.id));
+				try {
+					const d = client.readQuery({
+						query: CHATS_LIST_QUERY,
+					});
+
+					client.writeQuery({
+						query: CHATS_LIST_QUERY,
+						data: {
+							...d,
+							chats: [chatCreated, ...d.chats],
+						},
+					});
+				} catch (e) {}
+			}
+		);
+		return () => subscription.unsubscribe();
+	}, [currentUser]); // eslint-disable-line
 };
 
 export default useChatCreatedSubscription;

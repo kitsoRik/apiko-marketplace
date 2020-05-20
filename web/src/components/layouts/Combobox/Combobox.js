@@ -3,7 +3,13 @@ import React, { useState } from "react";
 import "./Combobox.scss";
 import ComboboxOption from "./ComboboxOption/ComboboxOption";
 
-const Combobox = ({ className = "", value, children = [], onChange, ...props }) => {
+const Combobox = ({
+	className = "",
+	value,
+	children = [],
+	onChange,
+	...props
+}) => {
 	const [dropable, setDropable] = useState(false);
 
 	const onClick = (e) => {
@@ -16,11 +22,9 @@ const Combobox = ({ className = "", value, children = [], onChange, ...props }) 
 	};
 
 	let optionsElements = [];
-
 	children.forEach((c) => {
 		if (c.type === ComboboxOption) optionsElements.push(c);
 	});
-
 	let select = null;
 
 	optionsElements = React.Children.map(optionsElements, (c) => {

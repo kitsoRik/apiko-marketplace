@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import qs from "qs";
 
 import "./RestorePassword.scss";
-import { NOT_LOADED, LOADING, LOADED, LOADED_ERROR } from "../../../constants";
-import api from "../../../services/api";
 import NewPasswordPanel from "./NewPasswordPanel";
 import ErrorKeyPanel from "./ErrorKeyPanel/ErrorKeyPanel";
 import withLoginedLock from "../../hocs/withLoginedLock";
@@ -17,7 +15,6 @@ const RestorePassword = ({
 }) => {
 	const { key } = qs.parse(search.slice(1));
 
-	const [keyLoadingStatus, setKeyLoadingStatus] = useState(NOT_LOADED);
 	const { data, loading, error } = useQuery(CHECK_RESTORE_KEY, {
 		variables: { key },
 		errorPolicy: "all",

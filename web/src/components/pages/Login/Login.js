@@ -53,9 +53,14 @@ const Login = ({ history }) => {
 
 	return (
 		<div className="login-page">
-			<LoginForm loading={loading} onSubmit={(e) => e.preventDefault()}>
+			<LoginForm
+				loading={loading}
+				onSubmit={(e) => e.preventDefault()}
+			>
 				<LoginUpperContainer>
-					<LoginUpperContainerTitle>Login</LoginUpperContainerTitle>
+					<LoginUpperContainerTitle>
+						Login
+					</LoginUpperContainerTitle>
 					{error && <Label error={true} value={error} />}
 					<Label
 						className="login-page-form-field"

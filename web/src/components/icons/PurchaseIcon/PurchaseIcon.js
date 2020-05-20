@@ -11,7 +11,7 @@ const PurchaseIcon = (props) => {
 			x="0px"
 			y="0px"
 			viewBox="0 0 512 512"
-			enable-background="new 0 0 512 512"
+			enableBackground="new 0 0 512 512"
 			space="preserve"
 			{...props}
 		>
@@ -28,9 +28,9 @@ const PurchaseIcon = (props) => {
 				<line
 					fill="none"
 					stroke="#fff"
-					stroke-width="23"
-					stroke-linecap="round"
-					stroke-miterlimit="10"
+					strokeWidth="23"
+					strokeLinecap="round"
+					strokeMiterlimit="10"
 					x1="159.5"
 					y1="143.5"
 					x2="342.5"
@@ -40,9 +40,9 @@ const PurchaseIcon = (props) => {
 				<line
 					fill="none"
 					stroke="#fff"
-					stroke-width="23"
-					stroke-linecap="round"
-					stroke-miterlimit="10"
+					strokeWidth="23"
+					strokeLinecap="round"
+					strokeMiterlimit="10"
 					x1="159.5"
 					y1="202.5"
 					x2="342.5"
@@ -52,9 +52,9 @@ const PurchaseIcon = (props) => {
 				<line
 					fill="none"
 					stroke="#fff"
-					stroke-width="23"
-					stroke-linecap="round"
-					stroke-miterlimit="10"
+					strokeWidth="23"
+					strokeLinecap="round"
+					strokeMiterlimit="10"
 					x1="159.5"
 					y1="263.5"
 					x2="262.5"
@@ -62,8 +62,8 @@ const PurchaseIcon = (props) => {
 				/>
 				<circle
 					stroke="#fff"
-					stroke-width="6"
-					stroke-miterlimit="10"
+					strokeWidth="6"
+					strokeMiterlimit="10"
 					cx="324"
 					cy="384"
 					r="10.5"

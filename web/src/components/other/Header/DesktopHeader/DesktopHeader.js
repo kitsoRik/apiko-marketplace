@@ -40,24 +40,29 @@ const DesktopHeader = ({ visibleSearchPanel }) => {
 	return (
 		<header className="desktop-header">
 			<Link to="/">
-				<ApikoLogo darkMode={darkMode} className="header__apiko-logo" />
+				<ApikoLogo
+					darkMode={darkMode}
+					className="header__apiko-logo"
+				/>
 			</Link>
 			<div></div>
 			{loginStatus === LOGINED ? (
 				<div className="desktop-header-icons">
 					<PostboxIcon onClick={() => history.push("/chats")} />
 					<CartIcon onClick={() => history.push("/cart")} />
-					<PurchaseIcon onClick={() => history.push("/purchases")} />
+					<PurchaseIcon
+						onClick={() => history.push("/purchases")}
+					/>
 				</div>
 			) : (
-					<div></div>
-				)}
+				<div></div>
+			)}
 
 			<Button.Default
 				asLink={true}
 				className="desktop-header-sell-button"
 				value="Sell"
-				onClick={() => history.push("/add-product")}
+				to={"/add-product"}
 			/>
 
 			{visibleLoginButton && (
@@ -73,15 +78,23 @@ const DesktopHeader = ({ visibleSearchPanel }) => {
 				<div className="desktop-header-profile" tabIndex={1}>
 					{visibleUserIcon && (
 						<UserIcon
-							src={currentUserQuery.data.currentUser.iconName}
-							fullName={
-								currentUserQuery.data.currentUser.fullName
+							src={
+								currentUserQuery.data.currentUser
+									.iconName
 							}
-							onClick={() => setUserPanelOpen(!userPanelOpen)}
+							fullName={
+								currentUserQuery.data.currentUser
+									.fullName
+							}
+							onClick={() =>
+								setUserPanelOpen(!userPanelOpen)
+							}
 						/>
 					)}
 					{userPanelOpen && (
-						<UserPanel onClose={() => setUserPanelOpen(false)} />
+						<UserPanel
+							onClose={() => setUserPanelOpen(false)}
+						/>
 					)}
 					{visibleUserIconLoading && (
 						<ModalLoading

@@ -8,7 +8,11 @@ import Form from "../../../layouts/Form";
 import CategoryIcon from "../../../icons/CategoryIcon/CategoryIcon";
 import SortIcon from "../../../icons/SortIcon/SortIcon";
 import useLocationQuery from "react-use-location-query";
+import { productCategories } from "../../../../constants/categories";
 import CrossIcon from "../../../icons/CrossIcon/CrossIcon";
+import DateIcon from "../../../icons/DateIcon";
+import TitleIcon from "../../../icons/TitleIcon";
+import RateIcon from "../../../icons/RateIcon";
 
 const SearchPanel = ({ changeProductsSearchQuery, searchProducts }) => {
 	const { query, setQuery } = useLocationQuery(
@@ -24,7 +28,8 @@ const SearchPanel = ({ changeProductsSearchQuery, searchProducts }) => {
 		if (search) searchProducts();
 	};
 
-	const setCategory = (category) => onChangeSearchOptions({ category }, true);
+	const setCategory = (category) =>
+		onChangeSearchOptions({ category }, true);
 	const setPriceFrom = (priceFrom) =>
 		onChangeSearchOptions({
 			priceFrom: priceFrom === "" ? -1 : +priceFrom,
@@ -55,12 +60,23 @@ const SearchPanel = ({ changeProductsSearchQuery, searchProducts }) => {
 				className="home-page-search-panel-category"
 				type="medium"
 				value={category}
-				onChange={setCategory}>
-				<ComboboxOption icon={<CategoryIcon />} value="any">
-					Choose category
-				</ComboboxOption>
-				<ComboboxOption value="mebels">Mebels</ComboboxOption>
-				<ComboboxOption value="technology">Technology</ComboboxOption>
+				onChange={setCategory}
+			>
+				{[
+					<ComboboxOption icon={<CategoryIcon />} value="any">
+						Choose category
+					</ComboboxOption>,
+				].concat(
+					productCategories.map((c) => (
+						<ComboboxOption
+							key={c.key}
+							icon={c.icon}
+							value={c.key}
+						>
+							{c.value}
+						</ComboboxOption>
+					))
+				)}
 			</Combobox>
 			<TextField
 				className="home-page-search-panel-price-from"
@@ -80,10 +96,17 @@ const SearchPanel = ({ changeProductsSearchQuery, searchProducts }) => {
 				className="home-page-search-panel-sort-field"
 				type="medium"
 				value={sortField}
-				onChange={setSortField}>
-				<ComboboxOption value="createdAt">Date</ComboboxOption>
-				<ComboboxOption value="title">Title</ComboboxOption>
-				<ComboboxOption value="rate">Rate</ComboboxOption>
+				onChange={setSortField}
+			>
+				<ComboboxOption icon={<DateIcon />} value="createdAt">
+					Date
+				</ComboboxOption>
+				<ComboboxOption icon={<TitleIcon />} value="title">
+					Title
+				</ComboboxOption>
+				<ComboboxOption icon={<RateIcon />} value="rate">
+					Rate
+				</ComboboxOption>
 			</Combobox>
 			<SortIcon
 				style={{

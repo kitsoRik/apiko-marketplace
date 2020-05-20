@@ -16,10 +16,13 @@ const UserIcon = ({
 }) => {
 	const history = useHistory();
 	const initials = fullName.split(" ").map((s) => s[0]);
-
 	if (!src) {
 		return (
-			<div className={`user-icon ${className ?? ""}`} onClick={() => history.push(`/profile/${userId}`)} {...props}>
+			<div
+				className={`user-icon ${className ?? ""}`}
+				onClick={() => history.push(`/profile/${userId}`)}
+				{...props}
+			>
 				<span style={{ background: "orange", color: "black" }}>
 					{initials}
 				</span>
@@ -29,12 +32,16 @@ const UserIcon = ({
 	}
 
 	return (
-		<div className={`user-icon ${className ?? ""}`} onClick={() => history.push(`/profile/${userId}`)} {...props}>
+		<div
+			className={`user-icon ${className ?? ""}`}
+			onClick={() => history.push(`/profile/${userId}`)}
+			{...props}
+		>
 			<img
 				src={`${local ? "" : userIconBaseUrl}${src}`}
 				alt="User icon"
 			/>
-		</div >
+		</div>
 	);
 };
 

@@ -4,5 +4,6 @@ export const productsWithChangingSavedState = (
 ) =>
 	products.map((p) => ({
 		...p,
-		changingSaveState: changingSavedStateOfProductsIds.indexOf(p.id) !== -1,
+		changingSaveState:
+			changingSavedStateOfProductsIds.indexOf(p.id) !== -1,
 	}));

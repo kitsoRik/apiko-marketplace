@@ -11,10 +11,7 @@ const StarIcon = ({
 	...props
 }) => {
 	const onMouseMove = (e) => {
-		const width = e.currentTarget.clientWidth;
-		const posX = e.clientX;
-		if (false) onLeftHover();
-		else onRightHover();
+		onRightHover();
 	};
 	return (
 		<svg
@@ -40,7 +37,10 @@ const StarIcon = ({
 							y2="-57.1526"
 							gradientTransform="matrix(1.0011 -4.227138e-05 4.201720e-05 0.9984 -5.0009 62.7679)"
 						>
-							<stop offset="0" style={{ stopColor: "#FCFF13" }} />
+							<stop
+								offset="0"
+								style={{ stopColor: "#FCFF13" }}
+							/>
 							<stop
 								offset="0.1979"
 								style={{ stopColor: "#FCF215" }}
@@ -49,7 +49,10 @@ const StarIcon = ({
 								offset="0.7081"
 								style={{ stopColor: "#FED51B" }}
 							/>
-							<stop offset="1" style={{ stopColor: "#FECA1D" }} />
+							<stop
+								offset="1"
+								style={{ stopColor: "#FECA1D" }}
+							/>
 						</linearGradient>
 						{!semi && !empty && (
 							<path

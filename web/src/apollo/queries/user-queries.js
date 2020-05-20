@@ -38,7 +38,7 @@ export const CURRENT_USER_CART_QUERY = gql`
 export const USER_QUERY = gql`
 	query user($id: ID!) {
 		user(id: $id) {
-		id
+			id
 			fullName
 			email
 			phone
@@ -49,7 +49,7 @@ export const USER_QUERY = gql`
 				latitude
 			}
 			iconName
-	}
+		}
 	}
 `;
 
@@ -64,4 +64,3 @@ export const USER_PROFILE_DATA_QUERY = gql`
 		}
 	}
 `;
-;

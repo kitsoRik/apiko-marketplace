@@ -37,7 +37,7 @@ const ShopperPurchases = () => {
 			parseNumber: true,
 		}
 	);
-	const { data, loading } = useQuery(SHOPPER_PURCHASES_QUERY, {
+	const { data } = useQuery(SHOPPER_PURCHASES_QUERY, {
 		variables: {
 			page,
 			limit,

@@ -7,6 +7,10 @@ import ComboboxOption from "../../../layouts/Combobox/ComboboxOption/ComboboxOpt
 import Form from "../../../layouts/Form";
 import SortIcon from "../../../icons/SortIcon/SortIcon";
 import useLocationQuery from "react-use-location-query";
+import DateIcon from "../../../icons/DateIcon";
+import CountIcon from "../../../icons/CountIcon/CountIcon";
+import TotalPriceIcon from "../../../icons/TotalPriceIcon/TotalPriceIcon";
+import PriceItemIcon from "../../../icons/PriceItemIcon/PriceItemIcon";
 
 const FilterPanel = () => {
 	const {
@@ -50,12 +54,26 @@ const FilterPanel = () => {
 				value="Closed"
 				onValueChange={setViewClosed}
 			/>
-			<Combobox className="purchases-page-filter-panel-sort-field" value={sortField} onChange={setSortField}>
-				<ComboboxOption value="created">Created</ComboboxOption>
-				<ComboboxOption value="changed">Changed</ComboboxOption>
-				<ComboboxOption value="count">Count</ComboboxOption>
-				<ComboboxOption value="price">Item price</ComboboxOption>
-				<ComboboxOption value="total">Total price</ComboboxOption>
+			<Combobox
+				className="purchases-page-filter-panel-sort-field"
+				value={sortField}
+				onChange={setSortField}
+			>
+				<ComboboxOption icon={<DateIcon />} value="created">
+					Created
+				</ComboboxOption>
+				<ComboboxOption icon={<DateIcon />} value="changed">
+					Changed
+				</ComboboxOption>
+				<ComboboxOption icon={<CountIcon />} value="count">
+					Count
+				</ComboboxOption>
+				<ComboboxOption icon={<PriceItemIcon />} value="price">
+					Item price
+				</ComboboxOption>
+				<ComboboxOption icon={<TotalPriceIcon />} value="total">
+					Total price
+				</ComboboxOption>
 			</Combobox>
 			<SortIcon
 				className="purchases-page-filter-panel-sort"

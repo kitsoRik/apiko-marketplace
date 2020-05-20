@@ -3,14 +3,11 @@ import React from "react";
 import "./ChatHeader.scss";
 import UserIcon from "../../../../icons/UserIcon";
 import ProductIcon from "../../../../icons/ProductIcon";
-import api from "../../../../../services/api";
 import TREdgeArrow from "../../../../icons/TREdgeArrow";
 import { useHistory } from "react-router-dom";
 import withScreenSize from "../../../../hocs/withScreenSize/withScreenSize";
-import ModalLoading from "../../../../layouts/ModalLoading/ModalLoading";
 import Menu from "../../../../layouts/Menu/Menu";
 import MenuItem from "../../../../layouts/Menu/MenuItem";
-import HeartIcon from "../../../../icons/HeartIcon/HeartIcon";
 import { notifyInfo } from "../../../../other/Snackbar/Snackbar";
 import ReportIcon from "../../../../icons/ReportIcon/ReportIcon";
 
@@ -58,7 +55,9 @@ const ChatHeader = ({ user, product, loading, screenSize }) => {
 					</div>
 					<button
 						className="chats-page-chat-header-product-view-button"
-						onClick={() => history.push(`/products/${product.id}`)}
+						onClick={() =>
+							history.push(`/products/${product.id}`)
+						}
 					>
 						<TREdgeArrow />
 					</button>
@@ -90,7 +89,8 @@ const ChatHeader = ({ user, product, loading, screenSize }) => {
 				<UserIcon
 					userId={user?.id}
 					src={user?.iconName}
-					fullName={user?.fullName} />
+					fullName={user?.fullName}
+				/>
 				<span className="chats-page-chat-header-user-fullname">
 					{user?.fullName ?? "..."}
 				</span>

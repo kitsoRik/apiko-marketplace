@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
 
 import "./CartProductsListItem.scss";
 import ProductIcon from "../../../icons/ProductIcon";
@@ -8,7 +8,7 @@ const CartProductsListItem = ({
 	onCountChange,
 	cartProduct: {
 		count,
-		product: { id, title, imageName, price },
+		product: { title, imageName, price },
 	},
 }) => {
 	return (

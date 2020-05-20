@@ -4,7 +4,7 @@ import "./ChatsListItem.scss";
 import ProductIcon from "../../../../icons/ProductIcon";
 import { useWindowSize } from "@react-hook/window-size";
 import { connect } from "react-redux";
-import moment from 'moment';
+import moment from "moment";
 
 const ChatsListItem = ({
 	chatId,
@@ -27,7 +27,7 @@ const ChatsListItem = ({
 		<div
 			className={`chats-list-item ${
 				selected ? "chats-list-item-selected" : ""
-				}`}
+			}`}
 			onClick={onSelect}
 		>
 			<div className="chats-list-item-user">
@@ -59,7 +59,9 @@ const ChatsListItem = ({
 					{lastMessageTime}
 				</span>
 			</div>
-			{viewUnreadElipse && <div className="chats-list-item-elipse"></div>}
+			{viewUnreadElipse && (
+				<div className="chats-list-item-elipse"></div>
+			)}
 		</div>
 	);
 };

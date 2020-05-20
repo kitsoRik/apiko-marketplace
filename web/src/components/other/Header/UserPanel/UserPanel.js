@@ -3,7 +3,7 @@ import React from "react";
 import UserIcon from "../../../icons/UserIcon";
 
 import "./UserPanel.scss";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Button from "../../../layouts/Button";
 import { useQuery, useMutation, useApolloClient } from "@apollo/react-hooks";
 import { CURRENT_USER_QUERY } from "../../../../apollo/queries/user-queries";
@@ -12,8 +12,6 @@ import OutsideClickHandler from "react-outside-click-handler";
 import { socketReconnect } from "../../../../apollo";
 
 const UserPanel = ({ onClose, ...props }) => {
-	const history = useHistory();
-
 	const { data } = useQuery(CURRENT_USER_QUERY);
 
 	const apolloClient = useApolloClient();

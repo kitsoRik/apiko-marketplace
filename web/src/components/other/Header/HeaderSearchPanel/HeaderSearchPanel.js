@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 
 import "./HeaderSearchPanel.scss";
 import TextField from "../../../layouts/TextField";
-import LocationTextField from "../../LocationTextField";
+import LocationTextField from "../../../layouts/LocationTextField";
 import TextFieldAutocompleteOption from "../../../layouts/TextField/TextFieldAutocompleteOption";
 import Button from "../../../layouts/Button";
 import SearchIcon from "../../../icons/SearchIcon/SearchIcon";
@@ -20,8 +20,10 @@ import {
 import {
 	getLatestProductsTitleQuery,
 	addProductsTitleQuery,
+	clearLatestProductsTitleQuery,
 } from "../../../../services/localstorage/localstore";
 import gql from "graphql-tag";
+import useForceUpdate from "use-force-update";
 
 const HeaderSearchPanel = ({
 	title,
@@ -32,6 +34,7 @@ const HeaderSearchPanel = ({
 	searchProducts,
 }) => {
 	const history = useHistory();
+	const forceUpdate = useForceUpdate();
 
 	const { data, loading } = useQuery(SEARCH_PRODUCTS_QUERY, {
 		variables: {
@@ -79,7 +82,10 @@ const HeaderSearchPanel = ({
 						<Button.Transparent
 							style={{ color: "#349A89" }}
 							value="Clear All"
-							onClick={() => alert(1)}
+							onClick={() => {
+								clearLatestProductsTitleQuery();
+								forceUpdate();
+							}}
 						/>
 					</div>
 				}
@@ -93,7 +99,10 @@ const HeaderSearchPanel = ({
 							icon={
 								<SearchIcon
 									color="#CECECE"
-									style={{ width: "17px", height: "18px" }}
+									style={{
+										width: "17px",
+										height: "18px",
+									}}
 								/>
 							}
 						/>
@@ -101,7 +110,11 @@ const HeaderSearchPanel = ({
 				)}
 				onValueChange={onTitleChange}
 				placeholder="Search products by name"
-				icon={<SearchIcon style={{ width: "17px", height: "18px" }} />}
+				icon={
+					<SearchIcon
+						style={{ width: "17px", height: "18px" }}
+					/>
+				}
 			/>
 			<LocationTextField
 				onLocationIdChange={(locationId) =>

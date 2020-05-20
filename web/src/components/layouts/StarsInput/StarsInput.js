@@ -3,8 +3,7 @@ import React from "react";
 import "./StarsInput.scss";
 import StarIcon from "../../icons/StarIcon/StarIcon";
 
-
-const StarsInput = ({ rate = 0, onRateChange = () => { } }) => {
+const StarsInput = ({ rate = 0, onRateChange = () => {} }) => {
 	const onStarHover = (value, isRight) => {
 		onRateChange(value - (isRight ? 0 : 0.5));
 	};
@@ -30,6 +29,7 @@ const renderStar = (onStarLeftHover, onStarRightHover, rate) => (
 	const isEmpty = value > rate + 0.5;
 	return (
 		<StarIcon
+			key={index}
 			onLeftHover={() => onStarLeftHover(value)}
 			onRightHover={() => onStarRightHover(value)}
 			semi={isSemi}

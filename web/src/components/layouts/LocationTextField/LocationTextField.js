@@ -8,7 +8,7 @@ import gql from "graphql-tag";
 import LocationIcon from "../../icons/LocationIcon";
 
 const LocationTextField = ({
-	onLocationIdChange = () => { },
+	onLocationIdChange = () => {},
 	initialLocationName = "",
 	locationId = -1,
 	withIcon,
@@ -33,8 +33,7 @@ const LocationTextField = ({
 
 	const onValueChange = (value) => {
 		setLocation(value);
-		if (value === "")
-			onLocationIdChange(-1);
+		if (value === "") onLocationIdChange(-1);
 	};
 
 	return (

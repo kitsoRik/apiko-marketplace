@@ -3,15 +3,12 @@ import React, { useEffect, useState } from "react";
 import "./Footer.scss";
 import { debounce } from "lodash";
 
-
 const Footer = () => {
 	const [visible, setVisible] = useState(true);
 
 	useEffect(() => {
 		setVisibleFooter = debounce(setVisible, 1);
 	}, []);
-
-
 
 	if (!visible) return null;
 
@@ -20,4 +17,4 @@ const Footer = () => {
 
 export default Footer;
 
-export let setVisibleFooter = () => { }
+export let setVisibleFooter = () => {};

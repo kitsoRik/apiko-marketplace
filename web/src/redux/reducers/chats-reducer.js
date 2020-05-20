@@ -24,7 +24,9 @@ const chatsReducer = (state = initState, action) => {
 			if (chatId === state.viewingChatId) return state;
 			return {
 				...state,
-				unreadableChatsIds: state.unreadableChatsIds.concat([chatId]),
+				unreadableChatsIds: state.unreadableChatsIds.concat([
+					chatId,
+				]),
 			};
 		}
 

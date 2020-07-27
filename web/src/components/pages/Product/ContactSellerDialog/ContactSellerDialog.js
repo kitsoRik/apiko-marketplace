@@ -40,6 +40,7 @@ const ContactSellerDialog = ({
 	if (!data) return null;
 
 	const { chats } = data;
+	if (!chats) return null;
 	const chat = chats.find((c) => c.product.id === productId);
 
 	const onSubmit = async () => {
@@ -56,7 +57,7 @@ const ContactSellerDialog = ({
 					chats: [...data.chats, chat.data.createChat],
 				},
 			});
-		} catch (e) {}
+		} catch (e) { }
 
 		history.push(`/chats/${chat.data.createChat.id}`);
 	};

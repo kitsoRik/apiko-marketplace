@@ -3,10 +3,11 @@
 exports[`UserIcon should render with image 1`] = `
 <div
   className="user-icon "
+  onClick={[Function]}
 >
   <img
     alt="User icon"
-    src="http://localhost:3500/static/icons/users/http://..."
+    src="http://rostiktest.pw:3300/static/icons/users/http://..."
   />
 </div>
 `;
@@ -14,6 +15,7 @@ exports[`UserIcon should render with image 1`] = `
 exports[`UserIcon should render without image 1`] = `
 <div
   className="user-icon "
+  onClick={[Function]}
 >
   <span
     style={

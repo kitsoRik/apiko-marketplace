@@ -2,7 +2,7 @@
 
 exports[`Combobox should render with options 1`] = `
 <div
-  className="combobox"
+  className="combobox "
   onBlur={[Function]}
   tabIndex={0}
 >
@@ -24,7 +24,7 @@ exports[`Combobox should render with options 1`] = `
 
 exports[`Combobox should render without options 1`] = `
 <div
-  className="combobox"
+  className="combobox "
   onBlur={[Function]}
   tabIndex={0}
 />

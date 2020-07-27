@@ -55,8 +55,8 @@ const DesktopHeader = ({ visibleSearchPanel }) => {
 					/>
 				</div>
 			) : (
-				<div></div>
-			)}
+					<div></div>
+				)}
 
 			<Button.Default
 				asLink={true}

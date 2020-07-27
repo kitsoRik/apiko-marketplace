@@ -7,6 +7,7 @@ exports[`FeedbackCard should render with rate 1`] = `
 >
   <div
     className="user-icon feedback-card-user-icon"
+    onClick={[Function]}
   >
     <span
       style={
@@ -728,6 +729,7 @@ exports[`FeedbackCard should render with text 1`] = `
 >
   <div
     className="user-icon feedback-card-user-icon"
+    onClick={[Function]}
   >
     <span
       style={
@@ -1455,6 +1457,7 @@ exports[`FeedbackCard should rendered 1`] = `
 >
   <div
     className="user-icon feedback-card-user-icon"
+    onClick={[Function]}
   >
     <span
       style={
